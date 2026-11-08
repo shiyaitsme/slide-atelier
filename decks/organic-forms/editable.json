@@ -1,0 +1,111 @@
+{
+  "output": "organic_forms_editable.pptx",
+  "slides": [
+    {
+      "bg_color": "#0A0A0C",
+      "bg_image": "art/foam_dark.png",
+      "notes": "封面",
+      "items": [
+        {
+          "type": "rect",
+          "x": 0,
+          "y": 4.1,
+          "w": 8.6,
+          "h": 3.4,
+          "color": "#0A0A0C"
+        },
+        {
+          "type": "text",
+          "x": 1.0,
+          "y": 0.6,
+          "w": 6,
+          "h": 0.3,
+          "text": "AESTHETICS / FORM / LIFE",
+          "size": 10,
+          "color": "#F2F2F0",
+          "font": "Space Mono",
+          "spacing": 300
+        },
+        {
+          "type": "text",
+          "x": 1.0,
+          "y": 4.4,
+          "w": 7.5,
+          "h": 1.7,
+          "text": "有机生物",
+          "size": 80,
+          "bold": true,
+          "color": "#F2F2F0"
+        },
+        {
+          "type": "text",
+          "x": 1.05,
+          "y": 6.15,
+          "w": 7.5,
+          "h": 0.4,
+          "text": "美学中的有机形态  Biomorphic Aesthetics",
+          "size": 16,
+          "color": "#8C8C90"
+        }
+      ]
+    },
+    {
+      "bg_color": "#EFEFEC",
+      "notes": "定义",
+      "items": [
+        {
+          "type": "image",
+          "src": "art/chrome_c.png",
+          "x": 8.4,
+          "y": 0,
+          "w": 4.93,
+          "h": 7.5
+        },
+        {
+          "type": "text",
+          "x": 0.8,
+          "y": 0.6,
+          "w": 5,
+          "h": 0.3,
+          "text": "01 — DEFINITION",
+          "size": 10,
+          "color": "#8C8C90",
+          "font": "Space Mono",
+          "spacing": 300
+        },
+        {
+          "type": "text",
+          "x": 0.8,
+          "y": 1.7,
+          "w": 7.2,
+          "h": 3.6,
+          "text": "不是模仿\n自然的样子,\n而是模仿它\n生长的方式。",
+          "size": 50,
+          "bold": true,
+          "color": "#0A0A0A",
+          "line_spacing": 1.1
+        },
+        {
+          "type": "line",
+          "x1": 0.8,
+          "y1": 5.55,
+          "x2": 2.0,
+          "y2": 5.55,
+          "color": "#0A0A0A",
+          "width": 2
+        },
+        {
+          "type": "text",
+          "x": 0.8,
+          "y": 5.8,
+          "w": 6.8,
+          "h": 1.0,
+          "text": "有机形态借用生命体的曲线、薄膜、孔洞与骨骼节律,与几何、直角和机械秩序相对。",
+          "size": 14,
+          "color": "#333333",
+          "line_spacing": 1.6
+        }
+      ]
+    }
+  ]
+}

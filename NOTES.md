@@ -26,3 +26,9 @@
 - 沙箱里 `pip install` 默认装到用户目录但不一定能被找到,改用 `pip install --target <dir>` 并设置 `PYTHONPATH`。
 - 临时依赖别装进工作区,会让文件浏览器变慢(曾有 120 MB 的 `.pylibs`)。
 - 没有 LibreOffice。渲染 PPT 靠 Chromium,不要依赖 soffice。
+
+## 检查脚本
+- `tools/check.js` 只查两类硬错误:文字被页面边缘裁掉、文字溢出容器。刻意出血的元素加 `data-bleed` 放行。
+- 没有做"元素重叠"检测:这套风格里大字叠印、镂空词压图是刻意的,检测会大量误报。
+- 竖排文字(`writing-mode: vertical-rl`)的 `scrollWidth` 判断不适用,脚本已跳过。
+- `+` 定位标记的数量要算好:每个 72 px,14 个刚好在 1080 px 内,15 个会被裁掉。
