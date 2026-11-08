@@ -1,0 +1,15 @@
+:root { --ink:#0a0a0a; --paper:#efefec; --grey:#8d8d90; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#444; }
+  .s { position:relative; width:1920px; height:1080px; overflow:hidden; font-family:'Noto Sans SC',sans-serif; margin-bottom:20px; }
+  .dark { background:var(--ink); color:#f2f2f0; }
+  .light { background:var(--paper); color:var(--ink); }
+  .abs { position:absolute; }
+  .mono { font-family:'Space Mono','Noto Sans SC',monospace; font-size:15px; letter-spacing:.16em; text-transform:uppercase; line-height:1.7; }
+  .anton { font-family:'Anton',sans-serif; font-weight:400; line-height:.9; letter-spacing:.005em; }
+  .bleed { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .marks { position:absolute; left:52px; top:36px; font-family:'Space Mono','Noto Sans SC',monospace; font-size:18px; line-height:72px; color:var(--grey); white-space:pre; }
+  .outline-w { color:transparent; -webkit-text-stroke:2px #f2f2f0; }
+  .outline-k { color:transparent; -webkit-text-stroke:2px var(--ink); }
+  .diff { mix-blend-mode:difference; color:#fff; }
+  .hair { position:absolute; height:1px; background:currentColor; opacity:.35; }
