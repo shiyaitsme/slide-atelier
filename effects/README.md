@@ -17,8 +17,8 @@ effects/<name>/
 |---|---|---|---|
 | `grain` | SVG feTurbulence + `mix-blend-mode:overlay` | 元素加 `class="fx-grain"`,`--grain` 调强度 | 静帧、PPTX、PDF 都行 |
 | `halftone` | 纯 CSS:灰度图 + 径向点阵 `plus-lighter` + `contrast` 阈值化 | `.fx-halftone` 包一张 `<img>`,`--dot` 点距,`--blur` 平滑度 | 静帧 |
-| `shader-flow` | WebGL 片元着色器(fbm 域扭曲),无依赖 | `<canvas class="fx-shader" data-colors="#深,#中,#亮">`,`?t=3` 固定时间 | 网页可动;静帧取一帧 |
-| `text-reveal` | CSS 遮罩 + 逐字 stagger,小段 JS 拆字 | 文字加 `data-reveal`,`--stagger` 调间隔 | 网页可动;静帧是终态 |
+| `shader-flow` | WebGL 片元着色器(fbm 域扭曲),无依赖 | `<canvas class="fx-shader" data-colors="#深,#中,#亮">`,`?t=3` 固定时间,`?res=0.5` 降分辨率 | 网页可动;静帧取一帧;[预览视频](shader-flow/preview.mp4) |
+| `text-reveal` | CSS 遮罩 + 逐字 stagger,小段 JS 拆字 | 文字加 `data-reveal`,`--stagger` 调间隔 | 网页可动;静帧是终态;[预览视频](text-reveal/preview.mp4) |
 | `spread-continuation` | 同一组宽元素在相邻页按偏移裁切 | 第 N 页 `left = -偏移 - (N-1)*1920px` | 静帧、PPTX 都行,翻页连续 |
 
 "导出"一列决定它能不能进 PPTX:`build.py` 只打包静帧,动效在 PPTX 里会变成一张图,完整效果要用 `templates/presenter` 在网页里演讲。
@@ -29,6 +29,7 @@ effects/<name>/
 2. 效果代码用 `.fx-<name>` 命名空间,参数走 CSS 变量或 `data-*`,放在文件顶部 `/* EFFECT: ... */` 注释里写清用法。
 3. 尽量零依赖;要用库(GSAP、Three.js)就在注释里写明版本和 CDN。
 4. 用 `node tools/shot.js effects/<name>` 出预览图,并在上表加一行,标明导出能力。
+5. 会动的效果再录一段 `preview.mp4`:`node tools/record.js effects/<name> 4 s1 24`。它逐帧设定时间再截图(CSS 动画走 Web Animations API,WebGL 页读 `window.__t`),所以不卡。需要 ffmpeg:`npm i ffmpeg-static`,用 `FFMPEG_BIN` 指向它。慢的着色器页加 `QUERY="?res=0.5"`,时间太慢看不出动用 `TSCALE=8`。
 
 ## 待做(想法)
 

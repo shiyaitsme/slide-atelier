@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="../../styles/poster-bw.css">
 <style>
 /* EFFECT: shader-flow — WebGL 片元着色器流体渐变背景,无依赖。
-   <canvas class="fx-shader" data-colors="#0a0a0a,#3a3a8a,#e8e8e4"> 即可。?t=数字 可固定时间,用于截图。 */
+   <canvas class="fx-shader" data-colors="#0a0a0a,#3a3a8a,#e8e8e4"> 即可。?t=数字 可固定时间,用于截图;?res=0.5 降低渲染分辨率(慢机器/录制用)。录制时 tools/record.js 会写 window.__t 逐帧控制时间。 */
 .fx-shader{position:absolute;inset:0;width:100%;height:100%}
 </style>
 </head>
@@ -36,7 +36,7 @@
     vec3 col=mix(c0,c1,smoothstep(.2,.65,v));col=mix(col,c2,smoothstep(.55,.95,v*v*2.));
     gl_FragColor=vec4(col,1.);}`;
   document.querySelectorAll('canvas.fx-shader').forEach(cv=>{
-    cv.width=1920;cv.height=1080;
+    const res=parseFloat(q.get('res')||1);cv.width=1920*res;cv.height=1080*res;
     const gl=cv.getContext('webgl');if(!gl)return;
     const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);return o};
     const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));
@@ -48,7 +48,7 @@
     ['c0','c1','c2'].forEach((k,i)=>gl.uniform3fv(gl.getUniformLocation(pr,k),cols[i]));
     gl.uniform2f(gl.getUniformLocation(pr,'r'),cv.width,cv.height);
     const ut=gl.getUniformLocation(pr,'t');
-    const draw=ms=>{gl.uniform1f(ut,fixed??ms/1000);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);if(fixed===null)requestAnimationFrame(draw)};
+    const draw=ms=>{gl.uniform1f(ut,window.__t??fixed??ms/1000);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);if(fixed===null)requestAnimationFrame(draw)};
     draw(fixed===null?0:0);if(fixed===null)requestAnimationFrame(draw);
   });
 })();
