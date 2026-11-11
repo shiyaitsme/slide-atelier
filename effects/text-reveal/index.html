@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: text-reveal — 逐字上滑入场(遮罩裁切)。给文字加 data-reveal,脚本自动拆字。
+   --stagger 控制字间延迟。无依赖。 */
+[data-reveal] .ch{display:inline-block;overflow:hidden;vertical-align:top}
+[data-reveal] .ch>i{display:inline-block;font-style:normal;transform:translateY(110%);
+  animation:rv .7s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*var(--stagger,40ms))}
+@keyframes rv{to{transform:none}}
+</style>
+</head>
+<body>
+<section class="s dark" id="s1">
+  <div class="abs mono" style="left:90px;top:80px">fx / text-reveal</div>
+  <div class="abs anton" data-reveal style="left:80px;top:250px;font-size:420px">REVEAL</div>
+  <div class="abs" data-reveal style="--stagger:25ms;left:90px;top:760px;font-size:90px;font-weight:300;letter-spacing:.12em">每个字从遮罩下升起</div>
+</section>
+<script>
+document.querySelectorAll('[data-reveal]').forEach(el=>{
+  const t=el.textContent;el.textContent='';el.setAttribute('aria-label',t);
+  [...t].forEach((c,i)=>{const s=document.createElement('span');s.className='ch';s.style.setProperty('--i',i);
+    s.innerHTML='<i></i>';s.firstChild.textContent=c===' '?'\u00a0':c;el.appendChild(s)});
+});
+</script>
+</body></html>

@@ -5,6 +5,8 @@
 ```
 styles/     风格 CSS,一种风格一个文件(现有:poster-bw.css 黑白海报风)
 layouts/    版式片段,直接复制进 deck 的 index.html,再改文字和图
+effects/    视觉效果收藏,一个效果一个文件夹,见 effects/README.md
+templates/  共用模板:deck-skeleton(五种基础页型)、presenter(网页演讲模式)
 art/        配图生成脚本(泡沫膜、肋骨、液态金属)
 tools/      shot.js 渲染截图,build.py 打包 PPTX 和 PDF
 decks/      成品,每个 deck 一个文件夹
@@ -37,6 +39,11 @@ python tools/build.py decks/my-deck my-deck       # 打包 pptx 和 pdf
 ```
 
 页面是整页图片,PPTX 里文字不可编辑,文字放在每页的备注里。
+
+## 演讲模式
+
+任何 deck 末尾加一行 `<script src="../../templates/presenter/presenter.js"></script>`(`templates/deck-skeleton` 已带),
+然后打开 `index.html?present`:方向键/空格翻页,`N` 显示备注(读同目录 notes.json),`F` 全屏,自动缩放到窗口。不带 `?present` 时不生效,不影响截图。
 
 ## 现有 deck
 

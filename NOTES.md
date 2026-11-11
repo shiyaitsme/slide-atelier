@@ -26,3 +26,10 @@
 - 沙箱里 `pip install` 默认装到用户目录但不一定能被找到,改用 `pip install --target <dir>` 并设置 `PYTHONPATH`。
 - 临时依赖别装进工作区,会让文件浏览器变慢(曾有 120 MB 的 `.pylibs`)。
 - 没有 LibreOffice。渲染 PPT 靠 Chromium,不要依赖 soffice。
+
+## 效果(effects/)
+- `tools/shot.js` 现在等待 2000 ms 再截图(可用环境变量 `WAIT` 改),让入场动画走完、WebGL 画出第一帧。
+- 无头 Chromium 的 WebGL 可用(软件渲染),shader 页能正常截图。
+- 半调不要用 canvas 读像素:`file://` 下图片会污染画布,`getImageData` 报安全错误。用 CSS 的 `plus-lighter` 加点阵再 `contrast()` 阈值化,黑点大小才会随明暗变化。
+- 跨页延续的图,先看原图主体在哪。`chrome_wide.png` 的主体偏右,不平移的话接缝处是空的,要用 `left:-700px` 之类的偏移让主体跨过 1920 px 的分界。
+- 同一个路径名的图被 `read_file` 看过后会走缓存,改完先复制成新文件名再看。
