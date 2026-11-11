@@ -1,5 +1,5 @@
 /* 风格:dusk-lace — 黄昏粉灰 + 细线像素蕾丝 + 气泡。参考 references/pixel-lace-dream-02..06.png
-   全部用 CSS/SVG/canvas 现画,不嵌入任何参考图。 */
+   主要用 CSS/SVG/canvas 现画;仅 p3、p5 嵌入两张网图(art/dancer.png、art/bone.png,学习用途)。 */
 :root { --sky1:#8b8fb5; --sky2:#c3a3bd; --sky3:#f0cbc6; --plum:#3a2f4d; --rose:#e9aab8; --lav:#9d97c4; --gold:#e3c47c; --cream:#fff8f4; }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:#444; }

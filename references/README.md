@@ -29,7 +29,7 @@
 | 点阵蕾丝 | | `.px-lace`(并入 pixel-ornament) |
 | 星光闪点 | | `effects/sparkle` |
 
-## pixel-lace-dream-02 ~ 06(网图,仅作学习参考,不商用、不嵌入成品)
+## pixel-lace-dream-02 ~ 06(网图,仅作学习参考,不商用;04、05 已嵌入练习稿,仓库建议保持私有)
 
 同一种情绪的不同侧面,用来给 `dusk-lace` 风格和 "Girlhood Heroism" 定调:
 - **02** 纽约黄昏:灰紫到粉的天空,楼顶暖金色灯光。→ 配色(`--sky1..3`)和城市剪影。
