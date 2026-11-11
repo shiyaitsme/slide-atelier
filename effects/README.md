@@ -20,6 +20,10 @@ effects/<name>/
 | `shader-flow` | WebGL 片元着色器(fbm 域扭曲),无依赖 | `<canvas class="fx-shader" data-colors="#深,#中,#亮">`,`?t=3` 固定时间,`?res=0.5` 降分辨率 | 网页可动;静帧取一帧;[预览视频](shader-flow/preview.mp4) |
 | `text-reveal` | CSS 遮罩 + 逐字 stagger,小段 JS 拆字 | 文字加 `data-reveal`,`--stagger` 调间隔 | 网页可动;静帧是终态;[预览视频](text-reveal/preview.mp4) |
 | `spread-continuation` | 同一组宽元素在相邻页按偏移裁切 | 第 N 页 `left = -偏移 - (N-1)*1920px` | 静帧、PPTX 都行,翻页连续 |
+| `dither` | 纯 CSS 有序抖动:灰度图 + Bayer 4×4 阈值矩阵(`plus-lighter`)+ `contrast` 阈值化 | `.fx-dither` 包一张 `<img>`,`--px` 像素块大小,`.invert` 反相 | 静帧 |
+| `chromatic` | SVG 滤镜:R/B 通道左右偏移后 `screen` 混回 | `fx-chroma`(8px)/`fx-chroma-l`(14px);图片要比页面大一圈,否则露出边缘色条 | 静帧、PPTX 都行 |
+| `clip-reveal` | `clip-path` 动画:横扫、自下而上、圆形展开、斜切 | `rv-wipe` `rv-up` `rv-iris` `rv-diag`,`--d` 延迟,`--t` 时长 | 网页可动;静帧是终态;[预览视频](clip-reveal/preview.mp4) |
+| `magic-move` | FLIP:记旧位置,换页后用 Web Animations 过渡到新位置 | 相邻页元素加相同 `data-morph="名字"`,用 `?present` 打开(需 `templates/presenter`) | 仅网页;静帧是各页终态;[预览视频](magic-move/preview.mp4) |
 
 "导出"一列决定它能不能进 PPTX:`build.py` 只打包静帧,动效在 PPTX 里会变成一张图,完整效果要用 `templates/presenter` 在网页里演讲。
 
@@ -33,4 +37,4 @@ effects/<name>/
 
 ## 待做(想法)
 
-dither/ASCII 化图片、色差(chromatic aberration)、液态 goo 滤镜、`clip-path` 形状揭示、Magic Move 式跨页元素延续、Three.js 可旋转模型页、SVG 路径描绘、TouchDesigner 录屏循环背景。
+ASCII 化图片(`file://` 下不能读像素,要走本地服务器或预生成)、液态 goo 滤镜、Three.js 可旋转模型页、SVG 路径描绘、TouchDesigner 录屏循环背景。

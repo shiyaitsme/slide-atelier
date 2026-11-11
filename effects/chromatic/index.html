@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: chromatic — 色差(RGB 通道错位)。SVG 滤镜把 R、B 通道左右各偏移 dx,再 screen 混合回来。
+   class="fx-chroma"(8px)或 "fx-chroma-l"(14px)。可用于文字、图片、任意元素;滤镜定义见下方 <svg>。 */
+.fx-chroma{filter:url(#chroma)} .fx-chroma-l{filter:url(#chroma-l)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="chroma" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feColorMatrix in="SourceGraphic" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/><feOffset in="r" dx="-8" result="ro"/>
+      <feColorMatrix in="SourceGraphic" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"/>
+      <feColorMatrix in="SourceGraphic" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/><feOffset in="b" dx="8" result="bo"/>
+      <feBlend in="ro" in2="g" mode="screen" result="rg"/><feBlend in="rg" in2="bo" mode="screen"/>
+    </filter>
+    <filter id="chroma-l" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+      <feColorMatrix in="SourceGraphic" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/><feOffset in="r" dx="-14" dy="-3" result="ro"/>
+      <feColorMatrix in="SourceGraphic" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"/>
+      <feColorMatrix in="SourceGraphic" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/><feOffset in="b" dx="14" dy="3" result="bo"/>
+      <feBlend in="ro" in2="g" mode="screen" result="rg"/><feBlend in="rg" in2="bo" mode="screen"/>
+    </filter>
+  </defs>
+</svg>
+<section class="s dark" id="s1">
+  <div class="abs mono" style="left:90px;top:80px">fx / chromatic — text</div>
+  <div class="abs anton fx-chroma-l" style="left:80px;top:230px;font-size:560px">GLITCH</div>
+  <div class="abs fx-chroma" style="left:96px;top:880px;font-size:60px;font-weight:300;letter-spacing:.2em">色差让边缘发光,像老显示器</div>
+</section>
+<section class="s dark" id="s2">
+  <!-- 图片比页面大一圈,避免通道偏移后露出边缘色条 -->
+  <img class="abs fx-chroma-l" src="../../decks/organic-forms/art/chrome_wide.png" style="left:-60px;top:-60px;width:2040px;height:1200px;object-fit:cover;object-position:70% 50%">
+  <div class="abs mono" style="left:90px;top:80px;color:#111">fx / chromatic — image</div>
+</section>
+</body></html>

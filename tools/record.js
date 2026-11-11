@@ -1,6 +1,8 @@
 // Record one slide of an effect demo to MP4, frame by frame (deterministic, no jitter).
 // Usage: node tools/record.js effects/<name> [seconds=4] [slideId=s1] [fps=24]
-// Env:   TSCALE  multiply time for shader pages (slow shaders look static otherwise), default 1
+// Env:   PRESS   comma list of seconds at which ArrowRight is pressed (for ?present pages), e.g. '0.5,2.5'
+//        slideId 'page' records the whole viewport instead of one slide
+//        TSCALE  multiply time for shader pages (slow shaders look static otherwise), default 1
 //        QUERY  appended to the page URL, e.g. '?res=0.5'
 //        PLAYWRIGHT_CORE, CHROME_BIN as in shot.js;  FFMPEG_BIN path to ffmpeg (npm i ffmpeg-static)
 // CSS animations are driven through the Web Animations API; WebGL pages read window.__t.
@@ -21,13 +23,16 @@ const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'rec-'));
   await p.goto('file://' + path.join(dir, 'index.html') + (process.env.QUERY || ''), { waitUntil: 'networkidle' });
   await p.evaluate(() => document.fonts.ready);
   await p.evaluate(() => document.getAnimations().forEach(a => a.pause()));
-  const el = await p.$('#' + id);
+  const el = id === 'page' ? p : await p.$('#' + id);
+  const press = (process.env.PRESS || '').split(',').filter(Boolean).map(Number);
+  await p.evaluate(() => { window.__starts = new Map(); });
   const n = Math.round(secs * fps);
   for (let i = 0; i < n; i++) {
     const t = i / fps;
+    while (press.length && press[0] <= t) { press.shift(); await p.keyboard.press('ArrowRight'); }
     await p.evaluate(([t, k]) => {
       window.__t = t * k;
-      document.getAnimations().forEach(a => { a.currentTime = t * 1000; });
+      document.getAnimations().forEach(a => { a.pause(); if (!window.__starts.has(a)) window.__starts.set(a, t); a.currentTime = (t - window.__starts.get(a)) * 1000; });
       return new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
     }, [t, tscale]);
     await el.screenshot({ path: path.join(tmp, `f${String(i).padStart(4, '0')}.png`) });
