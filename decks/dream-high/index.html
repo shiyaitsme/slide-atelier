@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Dream High — glass refraction study</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400&family=Noto+Serif+SC:wght@300&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;background:#e9d9ea;overflow:hidden}
+  section.s{position:relative;width:1920px;height:1080px;overflow:hidden}
+  canvas{position:absolute;inset:0;width:1920px;height:1080px}
+</style>
+</head>
+<body>
+<section class="s" id="s1"><canvas id="c" width="1920" height="1080"></canvas></section>
+<script src="three.bundle.js"></script>
+<script>
+(async()=>{
+const {THREE,RoomEnvironment,EffectComposer,RenderPass,UnrealBloomPass,ShaderPass,OutputPass}=window.__gl;
+const W=1920,H=1080;
+const q=new URLSearchParams(location.search);
+const fixed=q.has('t')?+q.get('t'):null;
+
+try{ await Promise.all([document.fonts.load('italic 300 200px "Cormorant Garamond"'),document.fonts.load('300 40px "Noto Serif SC"','少女时期的英雄主义')]); }catch(e){}
+
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(1);renderer.setSize(W,H,false);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.85;
+
+const scene=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(renderer);
+scene.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
+scene.environmentIntensity=.8;
+
+const cam=new THREE.PerspectiveCamera(32,W/H,0.1,50);cam.position.set(0,0,9);
+
+// ---- backdrop: soft pastel gradient (canvas texture)
+function gradTex(){
+  const c=document.createElement('canvas');c.width=1024;c.height=576;const g=c.getContext('2d');
+  const l=g.createLinearGradient(0,0,0,576);
+  l.addColorStop(0,'#150c35');l.addColorStop(.5,'#5a2a8c');l.addColorStop(.85,'#d9559a');l.addColorStop(1,'#ff9a8a');
+  g.fillStyle=l;g.fillRect(0,0,1024,576);
+  let r=g.createRadialGradient(780,150,0,780,150,420);r.addColorStop(0,'rgba(255,190,220,.55)');r.addColorStop(1,'rgba(255,255,255,0)');
+  g.fillStyle=r;g.fillRect(0,0,1024,576);
+  r=g.createRadialGradient(180,470,0,180,470,380);r.addColorStop(0,'rgba(90,130,255,.5)');r.addColorStop(1,'rgba(90,130,255,0)');
+  g.fillStyle=r;g.fillRect(0,0,1024,576);
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;
+}
+const bgH=2*Math.tan(THREE.MathUtils.degToRad(16))*(9+6);
+const bg=new THREE.Mesh(new THREE.PlaneGeometry(bgH*W/H,bgH),new THREE.MeshBasicMaterial({map:gradTex(),toneMapped:false}));
+bg.position.z=-6;scene.add(bg);
+
+// ---- type plane (refracted by the glass)
+function textTex(){
+  const c=document.createElement('canvas');c.width=W*1.5;c.height=H*1.5;const g=c.getContext('2d');
+  g.scale(1.5,1.5);g.textAlign='left';g.fillStyle='#fffaf5';
+  g.font='italic 300 250px "Cormorant Garamond","Noto Serif SC",serif';
+  g.fillText('Dream big.',150,H/2-40);
+  g.fillText('Dream high.',150,H/2+200);
+  g.font='300 30px "Noto Serif SC",serif';g.fillStyle='rgba(255,235,245,.85)';
+  if(g.letterSpacing!==undefined)g.letterSpacing='22px';
+  g.textAlign='left';g.fillText('少女时期的英雄主义',158,H-90);
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t;
+}
+const th=2*Math.tan(THREE.MathUtils.degToRad(16))*(9+1.6);
+const tp=new THREE.Mesh(new THREE.PlaneGeometry(th*W/H,th),new THREE.MeshBasicMaterial({map:textTex(),transparent:true,toneMapped:false}));
+tp.position.z=-1.6;scene.add(tp);
+
+// ---- glass objects
+const glass=(col,att)=>new THREE.MeshPhysicalMaterial({
+  color:col,metalness:0,roughness:0.03,transmission:1,thickness:0.9,ior:1.5,dispersion:8,
+  iridescence:1,iridescenceIOR:1.35,iridescenceThicknessMinimum:200,iridescenceThicknessMaximum:700,
+  attenuationColor:new THREE.Color(att),attenuationDistance:1.6,
+  clearcoat:1,clearcoatRoughness:0.02,envMapIntensity:1.4});
+const knot=new THREE.Mesh(new THREE.TorusKnotGeometry(1.25,0.42,420,96,2,3),glass('#ffffff','#ff9fd0'));
+knot.position.set(2.1,0.1,0);scene.add(knot);
+const pearls=[];
+[[4.4,2.0,.5,.42],[0.2,-1.9,1.2,.5],[4.3,-2.0,1.0,.26],[-0.6,2.1,.8,.2]].forEach(([x,y,z,r],i)=>{
+  const m=new THREE.Mesh(new THREE.SphereGeometry(r,96,64),glass('#ffffff',i%2?'#9fc0ff':'#ffc29f'));
+  m.position.set(x,y,z);m.userData.b=[x,y,z,i];scene.add(m);pearls.push(m);
+});
+// colored rim lights
+const l1=new THREE.PointLight(0xff9ccf,60,0,2);l1.position.set(-4,3,4);scene.add(l1);
+const l2=new THREE.PointLight(0x9db4ff,60,0,2);l2.position.set(4,-3,4);scene.add(l2);
+
+// ---- post
+const comp=new EffectComposer(renderer);comp.setSize(W,H);
+comp.addPass(new RenderPass(scene,cam));
+comp.addPass(new UnrealBloomPass(new THREE.Vector2(W,H),0.35,0.7,0.9));
+comp.addPass(new OutputPass());
+comp.addPass(new ShaderPass({
+  uniforms:{tDiffuse:{value:null},t:{value:0}},
+  vertexShader:'varying vec2 v;void main(){v=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:`uniform sampler2D tDiffuse;uniform float t;varying vec2 v;
+  float r(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
+  void main(){vec2 d=v-.5;float k=dot(d,d);
+    vec3 c=vec3(texture2D(tDiffuse,v+d*k*.012).r,texture2D(tDiffuse,v).g,texture2D(tDiffuse,v-d*k*.012).b);
+    c*=1.-k*.55; c+=(r(v*1920.+t)-.5)*.04; gl_FragColor=vec4(c,1.);}`}));
+const grain=comp.passes[comp.passes.length-1];
+
+function frame(t){
+  knot.rotation.set(.55+Math.sin(t*.3)*.15, t*.28+.4, .2);
+  pearls.forEach(m=>{const [x,y,z,i]=m.userData.b;m.position.set(x,y+Math.sin(t*.6+i*1.7)*.18,z);});
+  grain.uniforms.t.value=t;
+  comp.render();
+}
+if(fixed!==null){frame(fixed);document.body.dataset.ready=1;}
+else{(function f(ms){frame(ms/1000);requestAnimationFrame(f)})(0);}
+})();
+</script>
+</body>
+</html>
