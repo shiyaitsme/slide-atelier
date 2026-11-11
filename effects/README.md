@@ -31,6 +31,7 @@ effects/<name>/
 | `duotone` | SVG 灰度 + `feComponentTransfer` 线性映射到两色 | `fx-duo-a/b/c`,改 `tableValues` 换色 | 静帧、PPTX 都行 |
 | `pixel-ornament` | 40×68 像素花纹遮罩(`art/pixel_ornament.py` 生成 `ornament.css`),同一遮罩可做白色花纹或透出照片,可镜像 | `px-white` / `px-orn` / `flip`,见 demo | 静帧、PPTX 都行 |
 | `sparkle` | 纯 CSS 星光、加号、菱形,可闪烁 | `sp-star` / `sp-plus` / `sp-dia`,`--s` 大小 `--c` 颜色 | 静帧可导出;闪烁只在网页 |
+| `thin-lace` | 2 格宽的细线像素蕾丝(卷草+小花+叶),canvas 自绘 | `<canvas class="lace" data-w data-h data-cell data-color data-flip data-seed>` + `thin-lace.js` | 静帧可导出 |
 
 "导出"一列决定它能不能进 PPTX:`build.py` 只打包静帧,动效在 PPTX 里会变成一张图,完整效果要用 `templates/presenter` 在网页里演讲。
 
