@@ -24,6 +24,11 @@ effects/<name>/
 | `chromatic` | SVG 滤镜:R/B 通道左右偏移后 `screen` 混回 | `fx-chroma`(8px)/`fx-chroma-l`(14px);图片要比页面大一圈,否则露出边缘色条 | 静帧、PPTX 都行 |
 | `clip-reveal` | `clip-path` 动画:横扫、自下而上、圆形展开、斜切 | `rv-wipe` `rv-up` `rv-iris` `rv-diag`,`--d` 延迟,`--t` 时长 | 网页可动;静帧是终态;[预览视频](clip-reveal/preview.mp4) |
 | `magic-move` | FLIP:记旧位置,换页后用 Web Animations 过渡到新位置 | 相邻页元素加相同 `data-morph="名字"`,用 `?present` 打开(需 `templates/presenter`) | 仅网页;静帧是各页终态;[预览视频](magic-move/preview.mp4) |
+| `goo` | SVG 滤镜:高斯模糊 + alpha 对比拉高,圆形靠近时像水银一样粘连 | 容器 `.fx-goo`,里面放 `<i>` 圆形,用 CSS 动画移动,`--goo` 定颜色 | 网页可动;静帧;[预览视频](goo/preview.mp4) |
+| `warp` | SVG `feTurbulence` + `feDisplacementMap` 噪声位移 | `fx-warp`(22)/`fx-warp-l`(55);`baseFrequency` 越小波纹越大 | 静帧、PPTX 都行 |
+| `marquee` | CSS 无限平移,内容写两遍,位移 -50% 循环 | `.fx-marquee` 包 `<div>`,`.rev` 反向,`--s` 一圈时长 | 网页可动;静帧;[预览视频](marquee/preview.mp4) |
+| `path-draw` | SVG `pathLength="1"` + `stroke-dashoffset` 动画 | 路径加 `class="draw"`,`--d` 延迟 `--t` 时长,节点用 `.pop` | 网页可动;静帧是终态;[预览视频](path-draw/preview.mp4) |
+| `duotone` | SVG 灰度 + `feComponentTransfer` 线性映射到两色 | `fx-duo-a/b/c`,改 `tableValues` 换色 | 静帧、PPTX 都行 |
 
 "导出"一列决定它能不能进 PPTX:`build.py` 只打包静帧,动效在 PPTX 里会变成一张图,完整效果要用 `templates/presenter` 在网页里演讲。
 
@@ -37,4 +42,4 @@ effects/<name>/
 
 ## 待做(想法)
 
-ASCII 化图片(`file://` 下不能读像素,要走本地服务器或预生成)、液态 goo 滤镜、Three.js 可旋转模型页、SVG 路径描绘、TouchDesigner 录屏循环背景。
+ASCII 化图片(`file://` 下不能读像素,要走本地服务器或预生成)、Three.js 可旋转模型页、SVG 路径描绘、TouchDesigner 录屏循环背景。

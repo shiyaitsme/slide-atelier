@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: goo — 液态融合。容器套 filter:url(#goo)(先模糊再把 alpha 对比拉高),里面的圆形靠近时会像水银一样粘连。
+   子元素用 CSS 动画移动即可,颜色由 --goo 指定。 */
+.fx-goo{position:absolute;inset:0;filter:url(#goo)}
+.fx-goo i{position:absolute;border-radius:50%;background:var(--goo,#f2f2f0)}
+@keyframes gx{0%,100%{transform:translate(0,0)}50%{transform:translate(var(--dx),var(--dy))}}
+.fx-goo i{animation:gx var(--s,6s) ease-in-out infinite}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="goo" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="28" result="b"/>
+    <feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -12"/>
+  </filter>
+</defs></svg>
+<section class="s dark" id="s1">
+  <div class="fx-goo">
+    <i style="left:560px;top:300px;width:420px;height:420px;--dx:260px;--dy:60px;--s:5s"></i>
+    <i style="left:1000px;top:380px;width:340px;height:340px;--dx:-300px;--dy:-40px;--s:5s"></i>
+    <i style="left:780px;top:620px;width:260px;height:260px;--dx:80px;--dy:-280px;--s:4s"></i>
+    <i style="left:1320px;top:200px;width:180px;height:180px;--dx:-360px;--dy:300px;--s:6s"></i>
+    <i style="left:420px;top:700px;width:150px;height:150px;--dx:420px;--dy:-260px;--s:7s"></i>
+  </div>
+  <div class="abs mono" style="left:90px;top:80px">fx / goo</div>
+  <div class="abs anton diff" style="left:80px;bottom:80px;font-size:380px">MERGE</div>
+</section>
+<section class="s light" id="s2">
+  <div class="fx-goo" style="--goo:#0a0a0a">
+    <i style="left:1100px;top:140px;width:520px;height:520px;--dx:-200px;--dy:120px;--s:6s"></i>
+    <i style="left:1420px;top:520px;width:360px;height:360px;--dx:-260px;--dy:-140px;--s:5s"></i>
+    <i style="left:860px;top:600px;width:220px;height:220px;--dx:220px;--dy:-120px;--s:7s"></i>
+  </div>
+  <div class="abs mono" style="left:90px;top:80px">--goo:#0a0a0a</div>
+</section>
+</body></html>

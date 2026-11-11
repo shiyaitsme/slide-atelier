@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: duotone — 双色调。图片先转灰度,再用 feComponentTransfer 把 0→暗色、1→亮色 线性映射。
+   class="fx-duo-a/b/c" 三套配色;换色只改 filter 里 tableValues(R G B 各一组:暗,亮)。 */
+.fx-duo-a{filter:url(#duo-a)} .fx-duo-b{filter:url(#duo-b)} .fx-duo-c{filter:url(#duo-c)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="duo-a" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="table" tableValues=".04 .93"/><feFuncG type="table" tableValues=".05 .85"/><feFuncB type="table" tableValues=".35 .98"/></feComponentTransfer></filter>
+  <filter id="duo-b" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="table" tableValues=".10 1"/><feFuncG type="table" tableValues=".02 .45"/><feFuncB type="table" tableValues=".02 .12"/></feComponentTransfer></filter>
+  <filter id="duo-c" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="table" tableValues=".02 .80"/><feFuncG type="table" tableValues=".10 1"/><feFuncB type="table" tableValues=".08 .70"/></feComponentTransfer></filter>
+</defs></svg>
+<section class="s light" id="s1">
+  <img class="abs fx-duo-a" src="../../decks/organic-forms/art/ribs.png" style="left:0;top:0;width:640px;height:760px;object-fit:cover">
+  <img class="abs fx-duo-b" src="../../decks/organic-forms/art/foam_dark.png" style="left:640px;top:0;width:640px;height:760px;object-fit:cover">
+  <img class="abs fx-duo-c" src="../../decks/organic-forms/art/chrome.png" style="left:1280px;top:0;width:640px;height:760px;object-fit:cover">
+  <div class="abs mono" style="right:90px;bottom:60px;color:#0a0a0a">fx / duotone — 同一套工具,三套配色</div>
+  <div class="abs anton" style="left:80px;bottom:30px;font-size:300px">DUOTONE</div>
+</section>
+</body></html>
