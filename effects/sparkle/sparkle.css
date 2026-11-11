@@ -1,0 +1,11 @@
+/* EFFECT: sparkle — 星光闪点。三种形状:
+   .sp-star  四角星(clip-path),--s 大小,--c 颜色
+   .sp-plus  像素十字(5 格拼成),--s 每格大小
+   .sp-dia   像素菱形(8 格空心),--s 每格大小
+   .tw 加在任意一个上让它闪烁;--d 延迟,--t 周期。 */
+.sp-star{position:absolute;width:var(--s,24px);height:var(--s,24px);background:var(--c,#d9b86a);clip-path:polygon(50% 0,59% 41%,100% 50%,59% 59%,50% 100%,41% 59%,0 50%,41% 41%)}
+.sp-plus,.sp-dia{position:absolute;width:var(--s,8px);height:var(--s,8px);background:transparent}
+.sp-plus{box-shadow:calc(var(--s,8px)*1) 0 0 var(--c,#7f97dc),calc(var(--s,8px)*-1) 0 0 var(--c,#7f97dc),0 calc(var(--s,8px)*1) 0 var(--c,#7f97dc),0 calc(var(--s,8px)*-1) 0 var(--c,#7f97dc)}
+.sp-dia{box-shadow:calc(var(--s,8px)*1) calc(var(--s,8px)*-1) 0 var(--c,#7f97dc),calc(var(--s,8px)*-1) calc(var(--s,8px)*-1) 0 var(--c,#7f97dc),calc(var(--s,8px)*1) calc(var(--s,8px)*1) 0 var(--c,#7f97dc),calc(var(--s,8px)*-1) calc(var(--s,8px)*1) 0 var(--c,#7f97dc),calc(var(--s,8px)*2) 0 0 var(--c,#7f97dc),calc(var(--s,8px)*-2) 0 0 var(--c,#7f97dc),0 calc(var(--s,8px)*2) 0 var(--c,#7f97dc),0 calc(var(--s,8px)*-2) 0 var(--c,#7f97dc)}
+.tw{animation:tw var(--t,2.4s) ease-in-out var(--d,0s) infinite}
+@keyframes tw{0%,100%{opacity:.25;transform:scale(.7) rotate(0)}50%{opacity:1;transform:scale(1.1) rotate(12deg)}}

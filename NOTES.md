@@ -35,3 +35,6 @@
 - 同一个路径名的图被 `read_file` 看过后会走缓存,改完先复制成新文件名再看。
 - 沙箱里软件渲染 WebGL 很慢:1920×1080 的 fbm 着色器约 5 秒一帧。录制时用 `?res=0.5`,约 1.7 秒一帧。
 - 沙箱的 `/tmp` 会被清空,`/root` 只读。ffmpeg 的安装和录制要放在同一条命令里,别分开跑;`pkill -f record.js` 会把自己的 shell 也杀掉。
+
+## pixel-lace 风格练习
+`styles/pixel-lace.css` 是配色和字体,`decks/pixel-lace-study` 是 6 页练习稿(占位图在 `art/photo-*.png`,可按文件名替换),花纹由 `art/pixel_ornament.py` 生成。参考图见 `references/pixel-lace-dream-01.png`。

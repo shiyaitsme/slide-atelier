@@ -29,6 +29,8 @@ effects/<name>/
 | `marquee` | CSS 无限平移,内容写两遍,位移 -50% 循环 | `.fx-marquee` 包 `<div>`,`.rev` 反向,`--s` 一圈时长 | 网页可动;静帧;[预览视频](marquee/preview.mp4) |
 | `path-draw` | SVG `pathLength="1"` + `stroke-dashoffset` 动画 | 路径加 `class="draw"`,`--d` 延迟 `--t` 时长,节点用 `.pop` | 网页可动;静帧是终态;[预览视频](path-draw/preview.mp4) |
 | `duotone` | SVG 灰度 + `feComponentTransfer` 线性映射到两色 | `fx-duo-a/b/c`,改 `tableValues` 换色 | 静帧、PPTX 都行 |
+| `pixel-ornament` | 40×68 像素花纹遮罩(`art/pixel_ornament.py` 生成 `ornament.css`),同一遮罩可做白色花纹或透出照片,可镜像 | `px-white` / `px-orn` / `flip`,见 demo | 静帧、PPTX 都行 |
+| `sparkle` | 纯 CSS 星光、加号、菱形,可闪烁 | `sp-star` / `sp-plus` / `sp-dia`,`--s` 大小 `--c` 颜色 | 静帧可导出;闪烁只在网页 |
 
 "导出"一列决定它能不能进 PPTX:`build.py` 只打包静帧,动效在 PPTX 里会变成一张图,完整效果要用 `templates/presenter` 在网页里演讲。
 

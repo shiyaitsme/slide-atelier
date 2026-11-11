@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/pixel-lace.css">
+<link rel="stylesheet" href="ornament.css">
+<link rel="stylesheet" href="extra.css">
+</head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="pixelate" x="0" y="0" width="100%" height="100%"><feFlood x="7" y="7" width="2" height="2"/><feComposite width="16" height="16"/><feTile result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/><feMorphology operator="dilate" radius="8"/></filter>
+  <filter id="blue" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values=".15"/><feComponentTransfer><feFuncR type="table" tableValues=".38 1"/><feFuncG type="table" tableValues=".46 1"/><feFuncB type="table" tableValues=".78 1"/></feComponentTransfer></filter>
+</defs></svg>
+<section class="s grain" id="s1">
+  <!-- 蕾丝点阵:放在边缘,放大后一部分出画 -->
+  <div class="px-lace" style="left:-180px;top:0;width:560px;height:1080px;opacity:.5"></div>
+  <div class="px-lace" style="left:1560px;top:0;width:560px;height:1080px;opacity:.5;transform:scaleX(-1)"></div>
+  <!-- 上半:蓝调照片,向下渐隐 -->
+  <div class="abs fade-down" style="left:640px;top:0;width:640px;height:1080px"><img class="bleed" src="../../decks/organic-forms/art/foam_dark.png" style="filter:url(#blue) contrast(1.05)"></div>
+  <!-- 上半:白色像素花纹压在照片上 -->
+  <div class="px-white" style="left:640px;top:0;width:640px;height:1080px"></div>
+  <!-- 下半:同一花纹反相——图从白色里透出花纹,上下镜像 -->
+  <div class="abs fade-up" style="left:640px;top:0;width:640px;height:1080px"><div class="px-orn flip" style="inset:0;--orn-white:.55"><img src="../../decks/organic-forms/art/foam_dark.png" style="filter:url(#pixelate) url(#blue)"></div></div>
+  <div class="abs mono" style="left:90px;top:80px;color:var(--blue)">fx / pixel-ornament</div>
+</section>
+</body></html>

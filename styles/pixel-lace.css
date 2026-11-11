@@ -1,0 +1,18 @@
+/* 风格:pixel-lace — 淡蓝梦幻像素蕾丝。参考 references/pixel-lace-dream-01.png */
+:root { --blue:#5b73c4; --peri:#aebfee; --mist:#e6ebfb; --paper:#fbfcff; --gold:#d9b86a; --ink:#2b3566; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#444; }
+.s { position:relative; width:1920px; height:1080px; overflow:hidden; font-family:'Noto Sans SC',sans-serif; margin-bottom:20px; color:var(--ink); background:linear-gradient(var(--peri) 0,#dbe3fa 32%,var(--paper) 58%); }
+.s.flat { background:var(--paper); }
+.s.blue { background:linear-gradient(#9fb3ea,#c9d5f6); }
+.abs { position:absolute; }
+.mono { font-family:'Space Mono','Noto Sans SC',monospace; font-size:15px; letter-spacing:.16em; text-transform:uppercase; line-height:1.7; }
+.serif { font-family:'Cormorant Garamond','Noto Serif SC',serif; font-style:italic; font-weight:500; line-height:.9; letter-spacing:-.01em; }
+.pxfont { font-family:'Silkscreen','Space Mono',monospace; letter-spacing:.04em; }
+.bleed { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+/* 胶片颗粒覆盖层:给 .s 加 grain */
+.grain::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.55; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .5  0 0 0 0 .7  0 0 0 1.6 -.55'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+/* 细密半调网点覆盖层:给元素加 dots,--dot 点距 */
+.dots::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:.35; z-index:1;
+  background:radial-gradient(circle,#fff 0 1px,transparent 1.4px) 0 0/var(--dot,5px) var(--dot,5px); }

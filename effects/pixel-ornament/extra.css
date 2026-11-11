@@ -1,0 +1,8 @@
+/* 辅助类,配合 ornament.css 使用
+   .px-white  白色花纹压在图上(逐格半透明,约 20% 的格子透出下面的图)
+   .fade-down 向下渐隐到透明(上半图用);.fade-up 向上渐隐(下半倒影用)
+   .flipx     水平镜像 */
+.px-white{position:absolute;background:#fff;-webkit-mask:var(--orn-var) center/100% 100% no-repeat;mask:var(--orn-var) center/100% 100% no-repeat}
+.fade-down{-webkit-mask-image:linear-gradient(#000 40%,transparent 56%);mask-image:linear-gradient(#000 40%,transparent 56%)}
+.fade-up{-webkit-mask-image:linear-gradient(transparent 46%,#000 62%);mask-image:linear-gradient(transparent 46%,#000 62%)}
+.flipx{transform:scaleX(-1)} .px-orn.flip.flipx{transform:scale(-1,-1)}
