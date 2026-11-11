@@ -1,310 +1,199 @@
 <!doctype html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Dream High — pixel-lace poster + glass bubbles (refraction study)</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400&family=Noto+Serif+SC:wght@300&display=swap" rel="stylesheet">
-<style>
-  html,body{margin:0;background:#dfe5f6;overflow:hidden}
-  section.s{position:relative;width:1920px;height:1080px;overflow:hidden}
-  canvas{position:absolute;inset:0;width:1920px;height:1080px}
-</style>
+<title>Dream big. Dream high. — Girlhood Heroism</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<section class="s" id="s1"><canvas id="c" width="1920" height="1080"></canvas></section>
-<script src="three.bundle.js"></script>
-<script src="ref-assets.js"></script>
-<script>
-/*
-  参考图运用 (references/README.md)
-  01 配色与整体风格:淡蓝→白纵向渐变、上半白色像素卷草压在图上、下半图从白底里透出卷草(反相)、
-     点阵蕾丝、金色小星/蓝色十字闪点、胶片颗粒+半调网点。全部程序化重做,不是贴图。
-  04 舞者  → 蓝白双色调,作为上半的"图",黑底变透明
-  05 骨骼  → 蓝灰双色调,作为下半透出卷草的"图"
-  03 气球/泡泡 → 3D:灰玫瑰缎面气球 + 近乎透明的肥皂泡,折射上面这张海报
-*/
-(async()=>{
-const {THREE,RoomEnvironment,EffectComposer,RenderPass,UnrealBloomPass,ShaderPass,OutputPass}=window.__gl;
-const W=1920,H=1080;
-const q=new URLSearchParams(location.search);
-const fixed=q.has('t')?+q.get('t'):null;
+<div id="stage">
+<canvas id="gl"></canvas>
 
-try{ await Promise.all([document.fonts.load('italic 300 200px "Cormorant Garamond"'),document.fonts.load('300 40px "Noto Serif SC"','少女时期的英雄主义')]); }catch(e){}
-const loadImg=src=>new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src;});
-const [dancer,bone]=await Promise.all([loadImg(window.__ref.dancer),loadImg(window.__ref.bone)]);
+<!-- ============ 1 · COVER ============ -->
+<section class="s" id="p1" data-theme="light" data-ch="Cover">
+  <div class="frame" data-img="1"></div>
+  <div class="g">
+    <div class="e eyebrow rv" style="--i:0"><b>Girlhood Heroism</b> — a field manual · Vol. 01</div>
+    <h1 class="t d1"><span class="mk" style="--i:0"><span>Dream big.</span></span><span class="mk" style="--i:1"><span><i>Dream high.</i></span></span></h1>
+    <div class="zh-l zh rv" style="--i:3">少女时期的英雄主义</div>
+    <p class="lead rv" style="--i:4">A visual essay on courage at seventeen: how the softest things — bubbles, ribbons, lace — turn out to be armour.<br><span class="cn" style="font-size:20px">关于十七岁的勇气:最柔软的东西,如何成为铠甲。</span></p>
+    <ul class="toc rv" style="--i:5">
+      <li><span><b>01</b></span><span>Lighter than air<i>轻</i></span><span>02</span></li>
+      <li><span><b>02</b></span><span>The long dusk<i>暮</i></span><span>03</span></li>
+      <li><span><b>03</b></span><span>Soft armour<i>甲</i></span><span>04</span></li>
+      <li><span><b>04</b></span><span>Dance as defiance<i>舞</i></span><span>05</span></li>
+      <li><span><b>05</b></span><span>Signal &amp; noise<i>噪</i></span><span>06</span></li>
+      <li><span><b>06</b></span><span>One system<i>系</i></span><span>07</span></li>
+    </ul>
+  </div>
+</section>
 
-// ---------- helpers
-function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-const R=rng(20261111);
-const hash=(x,y)=>{let h=Math.imul(x,374761393)+Math.imul(y,668265263);h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)/4294967295;};
-const sm=t=>t*t*(3-2*t);
-function vnoise(x,y){const xi=Math.floor(x),yi=Math.floor(y),xf=sm(x-xi),yf=sm(y-yi);
-  const a=hash(xi,yi),b=hash(xi+1,yi),c=hash(xi,yi+1),d=hash(xi+1,yi+1);
-  return a+(b-a)*xf+(c-a)*yf+(a-b-c+d)*xf*yf;}
-const fbm=(x,y)=>{let s=0,a=.5,f=1;for(let i=0;i<5;i++){s+=a*vnoise(x*f,y*f);a*=.5;f*=2.03;}return s;};
-const lerp=(a,b,t)=>a+(b-a)*t, clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
-const hex=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
-const mix3=(a,b,t)=>[lerp(a[0],b[0],t),lerp(a[1],b[1],t),lerp(a[2],b[2],t)];
+<!-- ============ 2 · LIGHTER THAN AIR ============ -->
+<section class="s" id="p2" data-theme="light" data-ch="01 — Weightless">
+  <div class="g">
+    <div class="e eyebrow rv" style="--i:0"><b>Chapter 01</b> — 轻 / Weightless</div>
+    <h2 class="t h2"><span class="mk" style="--i:0"><span>Lighter</span></span><span class="mk" style="--i:1"><span><i>than air.</i></span></span></h2>
+    <p class="lead rv" style="--i:2">Every girl is handed something fragile early on: a balloon, a bubble, a promise. The first act of heroism is neither letting go nor gripping so hard it breaks.</p>
+    <p class="cn1 cn rv" style="--i:3">每个女孩很早就会被交到手里一样易碎的东西:气球、泡泡、一个承诺。英雄主义的第一步,是既不松手,也不攥碎。</p>
+    <div class="frame fr" data-img="3"></div>
+    <div class="qt">
+      <p class="q rv" style="--i:2">Float first.<br><i>Fly later.</i></p>
+      <p class="cap rv" style="--i:3">— Rule zero, age eleven</p>
+    </div>
+    <div class="rules">
+      <div class="rl rv" style="--i:3"><span class="px">R1</span><div><h4>Hold loosely<i>松而不脱</i></h4><p>A string, not a fist.</p></div></div>
+      <div class="rl rv" style="--i:4"><span class="px">R2</span><div><h4>Rise slowly<i>缓慢上升</i></h4><p>Altitude is earned in centimetres.</p></div></div>
+      <div class="rl rv" style="--i:5"><span class="px">R3</span><div><h4>Shine when struck<i>遇光则亮</i></h4><p>Let the light show you your own edges.</p></div></div>
+    </div>
+    <p class="fcap cap rv" style="--i:4"><b>FIG. 1</b> Balloon over the rooftops, dusk.<br>18 refracting bubbles · cursor repels.</p>
+  </div>
+</section>
 
-// ---------- pages (1920x1080 space)
-// 每页只保留一个主体:cover=舞者, 2=气球, 3=舞者大图, 4=骨骼, 5=纯文字, 6=气球收尾
-const T1='italic 300 {S}px "Cormorant Garamond","Noto Serif SC",serif';
-const SUB={t:'少女时期的英雄主义',x:120,y:H-70,font:'300 26px "Noto Serif SC",serif',color:'#4a58a6',ls:26};
-const PAGES=[
- {seed:11,sky:0,fade:[600,900],dancer:{cx:1480,s:1.04,y:-24},bone:{x:720,y:330,w:1180},pw:'grad',
-  pairs:[[[1010,920,95,1],[1560,960,100,-1],1.2,240]],stars:8,cross:[4,3],lace:[],
-  text:[{t:'Dream big.',x:112,y:470,font:T1.replace('{S}',176),color:'#2f3d93',glow:1},
-        {t:'Dream high.',x:112,y:640,font:T1.replace('{S}',176),color:'#2f3d93',glow:1},SUB],
-  bubbles:[[1120,430,1.2,.6],[1760,830,1.4,.22],[760,900,1.2,.14],[1840,170,1.0,.2]]},
- {seed:22,sky:3,fade:[780,1080],bone:{x:720,y:330,w:1180},pw:'grad',pairs:[],stars:6,cross:[3,3],lace:[[1410,420,340,-1]],
-  text:[{t:'Dream big.',x:112,y:610,font:T1.replace('{S}',230),color:'#2f3d93',glow:1},
-        {t:'把愿望吹得比自己更大',x:122,y:700,font:'300 28px "Noto Serif SC",serif',color:'#4a58a6',ls:16}],
-  balloon:{x:1410,y:400,s:1.1},bubbles:[[900,300,1.2,.2],[1750,800,1.4,.3],[1000,880,1.2,.12]]},
- {seed:33,sky:6,fade:[650,950],dancer:{cx:1260,s:1.12,y:-60},bone:{x:720,y:330,w:1180},pw:'grad',
-  pairs:[[[1780,900,110,-1],[1400,1000,100,1],1.2,220]],stars:7,cross:[3,2],lace:[],
-  text:[{t:'少女时期',x:120,y:500,font:'300 116px "Noto Serif SC",serif',color:'#2f3d93',ls:14,glow:1},
-        {t:'的英雄主义',x:120,y:640,font:'300 116px "Noto Serif SC",serif',color:'#2f3d93',ls:14,glow:1},
-        {t:'Heroism, in girlhood.',x:126,y:730,font:T1.replace('{S}',46),color:'#4a58a6'}],
-  bubbles:[[820,300,1.2,.3],[1700,350,1.4,.16],[700,880,1.0,.12]]},
- {seed:44,sky:9,fade:[0,300],paper:'#dfe5f6',bone:{x:880,y:-220,w:1100},pw:'bone',ht:300,
-  pairs:[[[1500,330,170,1],[1050,560,150,-1],1.3,260],[[1700,820,140,-1],[1250,900,150,1],1.3,260]],stars:3,cross:[4,0],lace:[],
-  text:[{t:'Dream',x:112,y:520,font:T1.replace('{S}',200),color:'#2f3d93'},
-        {t:'high.',x:112,y:710,font:T1.replace('{S}',200),color:'#2f3d93'},SUB],
-  bubbles:[[1180,520,1.2,.5],[1800,330,1.4,.2],[700,900,1.0,.14]]},
- {seed:55,sky:12,fade:[0,320],paper:'#dfe5f6',bone:{x:720,y:330,w:1180},pw:'white',ht:320,starY:320,
-  pairs:[[[1700,190,90,1],[1290,230,80,-1],1.1,170]],stars:6,cross:[3,0],lace:[],
-  text:[{t:'Look up long enough,',x:960,y:490,font:T1.replace('{S}',96),color:'#2f3d93',align:'center'},
-        {t:'and the ceiling becomes sky.',x:960,y:610,font:T1.replace('{S}',96),color:'#2f3d93',align:'center'},
-        {t:'抬头够久,天花板也会变成天空',x:960,y:760,font:'300 26px "Noto Serif SC",serif',color:'#4a58a6',ls:12,align:'center'}],
-  bubbles:[[200,860,1.2,.3],[1750,820,1.4,.22],[1560,430,1.0,.12]]},
- {seed:66,sky:15,fade:[820,1080],bone:{x:700,y:330,w:1180},pw:'grad',
-  pairs:[],stars:8,cross:[3,3],lace:[],
-  text:[{t:'Keep rising.',x:112,y:580,font:T1.replace('{S}',200),color:'#2f3d93',glow:1},SUB],
-  balloon:{x:1560,y:330,s:.8},bubbles:[[1000,300,1.2,.35],[1350,780,1.4,.2],[1800,820,1.2,.28],[500,150,1.0,.14]]}
-];
+<!-- ============ 3 · THE LONG DUSK ============ -->
+<section class="s" id="p3" data-theme="dark" data-ch="02 — The long dusk">
+  <div class="frame" data-img="2"></div>
+  <div class="g">
+    <div class="e eyebrow rv" style="--i:0"><b>Chapter 02</b> — 暮 / The long dusk</div>
+    <h2 class="t h2"><span class="mk" style="--i:0"><span>Every skyline</span></span><span class="mk" style="--i:1"><span><i>starts at dusk.</i></span></span></h2>
+    <p class="lead rv" style="--i:2">Nobody switches a city on at noon. The windows that matter light up one at a time, after the sun has gone, because someone stayed.</p>
+    <p class="cn1 cn rv" style="--i:3">没有人在正午点亮一座城市。真正重要的窗,是太阳落下之后,因为有人留下,才一扇一扇亮起来的。</p>
+    <div class="st">
+      <div class="stg rv" style="--i:3"><span class="px">01</span><h4>Spark<i>心动</i></h4><p>A thing you cannot stop looking at.</p></div>
+      <div class="stg rv" style="--i:4"><span class="px">02</span><h4>Doubt<i>迟疑</i></h4><p>The room tells you to be smaller.</p></div>
+      <div class="stg rv" style="--i:5"><span class="px">03</span><h4>Practice<i>练习</i></h4><p>Hours that nobody applauds.</p></div>
+      <div class="stg rv" style="--i:6"><span class="px">04</span><h4>Leap<i>跃起</i></h4><p>The fear stays. You go anyway.</p></div>
+      <div class="stg rv" style="--i:7"><span class="px">05</span><h4>Light<i>点灯</i></h4><p>Someone sees your window come on.</p></div>
+    </div>
+    <p class="fcap cap rv" style="--i:7"><b>FIG. 2</b> New York, 6:12 pm · depth-from-luminance parallax, windows pulse · move the cursor.</p>
+  </div>
+</section>
 
-try{ await document.fonts.load('300 40px "Noto Serif SC"',PAGES.flatMap(p=>p.text.map(o=>o.t)).join('')); }catch(e){}
+<!-- ============ 4 · SOFT ARMOUR ============ -->
+<section class="s" id="p4" data-theme="light" data-ch="03 — Soft armour">
+  <div class="frame" data-img="5"></div>
+  <div class="g">
+    <div class="e eyebrow rv" style="--i:0"><b>Chapter 03</b> — 甲 / Soft armour</div>
+    <h2 class="t h2"><span class="mk" style="--i:0"><span>Armour doesn’t</span></span><span class="mk" style="--i:1"><span><i>have to be hard.</i></span></span></h2>
+    <div class="tr">
+      <div class="tt rv" style="--i:2"><span class="px">01</span><div><h4>Porous<i>镂空</i></h4><p>Lace lets light and breath through, and still stops a blow.</p></div></div>
+      <div class="tt rv" style="--i:3"><span class="px">02</span><div><h4>Layered<i>层叠</i></h4><p>Strength is many thin things, held together.</p></div></div>
+      <div class="tt rv" style="--i:4"><span class="px">03</span><div><h4>Shadow-casting<i>投影</i></h4><p>Even softness leaves a mark on the wall behind it.</p></div></div>
+    </div>
+    <div class="spec rv" style="--i:5">
+      <div><b>Material</b><span>Bone-white resin, hand-poured</span></div>
+      <div><b>Weight</b><span>Nearly none</span></div>
+      <div><b>Weak point</b><span>None disclosed</span></div>
+    </div>
+  </div>
+  <p class="fcap cap rv" style="--i:6"><b>FIG. 3</b> Cast relief, raking light · normals from luminance · the light follows your cursor.</p>
+</section>
 
-// ---------- cached source canvases (duotoned once, reused by every page)
-const box=(src,dw,dh,rad)=>{const o=new Float32Array(src.length),t=new Float32Array(src.length),n=2*rad+1;
-  for(let j=0;j<dh;j++){let s0=0;for(let i=-rad;i<=rad;i++)s0+=src[j*dw+clamp(i,0,dw-1)];
-    for(let i=0;i<dw;i++){t[j*dw+i]=s0/n;s0+=src[j*dw+Math.min(dw-1,i+rad+1)]-src[j*dw+Math.max(0,i-rad)];}}
-  for(let i=0;i<dw;i++){let s0=0;for(let j=-rad;j<=rad;j++)s0+=t[clamp(j,0,dh-1)*dw+i];
-    for(let j=0;j<dh;j++){o[j*dw+i]=s0/n;s0+=t[Math.min(dh-1,j+rad+1)*dw+i]-t[Math.max(0,j-rad)*dw+i];}}
-  return o;};
-// 04 dancer: blue→white duotone, black ground becomes transparent
-const dancerC=(()=>{const dw=dancer.width,dh=dancer.height,c=document.createElement('canvas');c.width=dw;c.height=dh;const x=c.getContext('2d');
-  x.drawImage(dancer,0,0);const im=x.getImageData(0,0,dw,dh),d=im.data;
-  const dark=hex('#4d61b2'),tint=hex('#aebbea');
-  let A=new Float32Array(dw*dh);
-  for(let k=0;k<A.length;k++){const l=(.299*d[k*4]+.587*d[k*4+1]+.114*d[k*4+2])/255;A[k]=sm(clamp((l-.05)/.25));}
-  A=box(box(A,dw,dh,9),dw,dh,9);
-  for(let j=0;j<dh;j++)for(let i=0;i<dw;i++){
-    const k=(j*dw+i)*4,r=d[k],gg=d[k+1],b=d[k+2],l=(.299*r+.587*gg+.114*b)/255;
-    const ll=Math.pow(l,.8);
-    let col=ll<.5?mix3(dark,tint,ll*2):mix3(tint,[255,255,255],(ll-.5)*2);
-    col=[col[0]+(r-gg)*.14,col[1]-(r-gg)*.04,col[2]+(r-gg)*.04];
-    const e=Math.min(i,dw-1-i)/70, t=j/70;
-    const a=sm(clamp((A[j*dw+i]-.10)/.25))*sm(clamp(e))*sm(clamp(t));
-    d[k]=col[0];d[k+1]=col[1];d[k+2]=col[2];d[k+3]=a*255;}
-  x.putImageData(im,0,0);return c;})();
-// 05 bone: blue-grey duotone
-const boneSrc=(()=>{const bw=bone.width,bh=bone.height,c=document.createElement('canvas');c.width=bw;c.height=bh;const x=c.getContext('2d');
-  x.drawImage(bone,0,0);const im=x.getImageData(0,0,bw,bh),d=im.data;
-  const sh=hex('#5f74c0'),pk=hex('#e9b9cf');
-  for(let k=0;k<d.length;k+=4){const l=(.299*d[k]+.587*d[k+1]+.114*d[k+2])/255;
-    const t=clamp((l-.34)/.6);let col=mix3(sh,[255,255,255],Math.pow(t,1.15));
-    col=mix3(col,pk,clamp(.5-t)*.35);d[k]=col[0];d[k+1]=col[1];d[k+2]=col[2];}
-  x.putImageData(im,0,0);return c;})();
+<!-- ============ 5 · DANCE AS DEFIANCE ============ -->
+<section class="s" id="p5" data-theme="dark" data-ch="04 — Dance">
+  <div class="frame" data-img="4"></div>
+  <div class="g">
+    <div class="e eyebrow rv" style="--i:0"><b>Chapter 04</b> — 舞 / Dance</div>
+    <div class="t">
+      <h2 class="h2 s3"><span class="mk" style="--i:0"><span>She moves</span></span><span class="mk" style="--i:1"><span>like the room</span></span><span class="mk" style="--i:2"><span><i>belongs to her.</i></span></span></h2>
+      <p class="cn rv" style="--i:3">她一动,整个房间就成了她的。</p>
+    </div>
+    <div class="mv">
+      <p class="eyebrow rv" style="--i:2;margin-bottom:16px">Three movements</p>
+      <div class="mvi rv" style="--i:3"><span class="tc">00:12</span><h4>Reach<i>伸展</i></h4><p>An arm over the head, towards nothing yet.</p></div>
+      <div class="mvi rv" style="--i:4"><span class="tc">00:27</span><h4>Turn<i>回旋</i></h4><p>The hair keeps going after she stops.</p></div>
+      <div class="mvi rv" style="--i:5"><span class="tc">00:41</span><h4>Release<i>释放</i></h4><p>Nobody was watching, and it doesn’t matter.</p></div>
+    </div>
+    <p class="fcap cap rv" style="--i:6"><b>FIG. 4</b> Oil study · hair advected by curl noise · chromatic split on highlights.</p>
+  </div>
+  <div class="big rv" style="--i:4">Higher.</div>
+</section>
 
-// ---------- 2D poster
-function poster(P){
-  const R=rng(P.seed*7919+20261111);
-  const S=2,cv=document.createElement('canvas');cv.width=W*S;cv.height=H*S;const g=cv.getContext('2d');
-  g.scale(S,S);g.imageSmoothingQuality='high';
+<!-- ============ 6 · SIGNAL & NOISE ============ -->
+<section class="s" id="p6" data-theme="light" data-ch="05 — Signal / Noise">
+  <div class="g">
+    <div class="frame fr" data-img="6"></div>
+    <p class="fcap cap rv" style="--i:6"><b>FIG. 5</b> Gothic collage · datamosh pass: row tearing, block swap, RGB split, scan bar.</p>
+    <div class="e eyebrow rv" style="--i:0"><b>Chapter 05</b> — 噪 / Signal &amp; noise</div>
+    <h2 class="t h2 s2"><span class="mk" style="--i:0"><span>Not every layer</span></span><span class="mk" style="--i:1"><span><i>is for you.</i></span></span></h2>
+    <p class="lead rv" style="--i:2">Girlhood is also a collage: other people’s captions, screenshots, rumours. Heroes edit.</p>
+    <p class="cn1 cn rv" style="--i:3">少女时代也是一张拼贴:别人的字幕、截图、传闻。英雄会剪辑。</p>
+    <div class="tb rv" style="--i:4">
+      <table>
+        <tr><th>ID</th><th>LAYER</th><th style="text-align:right">STATE</th></tr>
+        <tr><td>A01</td><td>Their caption</td><td><span class="tag k">MUTED</span></td></tr>
+        <tr><td>A02</td><td>Silver hair</td><td><span class="tag y">KEPT</span></td></tr>
+        <tr><td>A03</td><td>Chain &amp; glass</td><td><span class="tag y">WORN</span></td></tr>
+        <tr><td>A04</td><td>Static</td><td><span class="tag">SAMPLED</span></td></tr>
+        <tr><td>A05</td><td>Her own name</td><td><span class="tag">LOUD</span></td></tr>
+      </table>
+    </div>
+  </div>
+</section>
 
-  // 1. cloudy periwinkle sky (01)
-  {const w=320,h=180,c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');
-   const im=x.createImageData(w,h),o=P.sky;
-   const deep=hex('#7186cf'),mid=hex('#97a9e0'),pale=hex('#c9d3f1'),vio=hex('#9a8fd4');
-   for(let j=0;j<h;j++)for(let i=0;i<w;i++){
-     const n=fbm(i/60+o,j/60+o*.7), n2=fbm(i/45+9+o,j/45+4), n3=fbm(i/18+3,j/18+7+o);
-     let col=mix3(deep,mid,clamp(n*1.25+j/h*.1));
-     col=mix3(col,pale,clamp((n2-.42)*2.6)*.8);
-     col=mix3(col,vio,clamp((n-.5)*2.2)*.35);
-     col=mix3(col,deep,clamp((n3-.55)*3)*.25);
-     const k=(j*w+i)*4;im.data[k]=col[0];im.data[k+1]=col[1];im.data[k+2]=col[2];im.data[k+3]=255;}
-   x.putImageData(im,0,0);g.drawImage(c,0,0,W,H);}
+<!-- ============ 7 · ONE SYSTEM ============ -->
+<section class="s" id="p7" data-theme="light" data-ch="06 — System">
+  <div class="g">
+    <div class="e eyebrow rv" style="--i:0"><b>Chapter 06</b> — 系 / One system</div>
+    <h2 class="t h2"><span class="mk" style="--i:0"><span>Six references, <i>one system.</i></span></span></h2>
+    <p class="tn cn rv" style="--i:2">六张参考图,一套规则。01 占大头,其余各取一种角色。</p>
+    <div class="th" style="grid-column:1/3"><div class="frame" data-img="1" data-k="0"></div><p class="cap rv" style="--i:2"><b>01 PIXEL LACE</b>sky · paper</p></div>
+    <div class="th" style="grid-column:3/5"><div class="frame" data-img="2" data-k="1"></div><p class="cap rv" style="--i:3"><b>02 DUSK</b>lilac · rose · gold</p></div>
+    <div class="th" style="grid-column:5/7"><div class="frame" data-img="3" data-k="2"></div><p class="cap rv" style="--i:4"><b>03 BALLOON</b>mauve · ink</p></div>
+    <div class="th" style="grid-column:7/9"><div class="frame" data-img="4" data-k="3"></div><p class="cap rv" style="--i:5"><b>04 DANCER</b>violet · white</p></div>
+    <div class="th" style="grid-column:9/11"><div class="frame" data-img="5" data-k="4"></div><p class="cap rv" style="--i:6"><b>05 BONE</b>stone · bone</p></div>
+    <div class="th" style="grid-column:11/13"><div class="frame" data-img="6" data-k="5"></div><p class="cap rv" style="--i:7"><b>06 SIGNAL</b>yellow · blue</p></div>
+    <div class="pal rv" style="--i:6">
+      <div class="bar">
+        <div style="width:55%;background:linear-gradient(90deg,#89a6d8,#b7c9e8 55%,#f7f7f7)"><span><b>55%</b>01 sky → paper · the ground colour</span></div>
+        <div style="width:10%;background:#b7b8cd"><span><b>10%</b>02 dusk</span></div>
+        <div style="width:8%;background:#979599"><span><b>8%</b>03 mauve</span></div>
+        <div style="width:8%;background:#6b5a8c"><span><b>8%</b>04 violet</span></div>
+        <div style="width:11%;background:#c7c3bb"><span><b>11%</b>05 bone</span></div>
+        <div style="width:5%;background:#e8dc4a"></div>
+        <div style="width:3%;background:#2c46d6"><span style="left:auto;right:0"><b>8%</b>06 signal</span></div>
+      </div>
+    </div>
+    <div class="typ rv" style="--i:7">
+      <div class="sp"><span class="a" style="font-family:var(--f-disp);font-style:italic">Aa</span><span class="n">Cormorant Garamond</span><span class="r">Display · 192 / 96 / 68</span></div>
+      <div class="sp"><span class="a" style="font-family:var(--f-text)">Aa</span><span class="n">DM Sans</span><span class="r">Text · 27 / 22</span></div>
+      <div class="sp"><span class="a" style="font-family:var(--f-mono);font-size:28px">Aa</span><span class="n">Space Mono</span><span class="r">Label · 15 / 14</span></div>
+      <div class="sp"><span class="a" style="font-family:var(--f-px);font-size:24px">Aa</span><span class="n">Silkscreen</span><span class="r">Pixel · 18</span></div>
+      <div class="sp"><span class="a" style="font-family:var(--f-cjk);font-weight:700">字</span><span class="n">Noto Serif SC</span><span class="r">汉字 · all sizes</span></div>
+    </div>
+    <div class="rls rv" style="--i:8">
+      <div class="rr"><span class="px">R1</span><span><b>Pixel grid.</b> Every ornament snaps to a 14 px cell and a 12-column page grid.</span></div>
+      <div class="rr"><span class="px">R2</span><span><b>Corners only.</b> Filigree lives in the margins, one corner per page, placed where the layout is empty, always clear of the header and footer.</span></div>
+      <div class="rr"><span class="px">R3</span><span><b>One guest per page.</b> Reference 01 sets the ground; each chapter invites exactly one other reference as its accent.</span></div>
+      <div class="rr"><span class="px">R4</span><span><b>Four text levels.</b> Eyebrow, headline, lead, caption. Nothing else gets a size.</span></div>
+    </div>
+  </div>
+</section>
 
-  // 2. dancer
-  if(P.dancer){const {cx,s,y}=P.dancer,sc=H/dancerC.height*s,dW=dancerC.width*sc,dH=dancerC.height*sc;
-   g.save();g.filter='blur(1.3px)';g.drawImage(dancerC,cx-dW/2,y,dW,dH);g.restore();
-   g.save();g.globalCompositeOperation='screen';g.filter='blur(30px)';g.globalAlpha=.28;g.drawImage(dancerC,cx-dW/2,y,dW,dH);g.restore();}
+<!-- ============ 8 · CODA ============ -->
+<section class="s" id="p8" data-theme="light" data-ch="Coda">
+  <div class="g">
+    <div class="e eyebrow rv" style="--i:0"><b>Coda</b> — 终 / Epilogue</div>
+    <h2 class="t d1"><span class="mk" style="--i:0"><span>Dream big.</span></span><span class="mk" style="--i:1"><span><i>Dream high.</i></span></span></h2>
+    <div class="zh-l zh rv" style="--i:3">少女时期的英雄主义</div>
+    <p class="lead rv" style="--i:4">Keep climbing. The sky is not a ceiling, it is a direction.<br><span class="cn" style="font-size:22px">继续向上。天空不是天花板,是方向。</span></p>
+    <div class="cr rv" style="--i:5">
+      <div><p class="cap"><b>DECK</b><br>slide-atelier / decks / dream-high</p></div>
+      <div><p class="cap"><b>RENDER</b><br>WebGL2 · 8 shader scenes · pixel-dissolve transitions</p></div>
+      <div><p class="cap"><b>REFERENCES</b><br>01–06 · study use only · keep repo private</p></div>
+    </div>
+  </div>
+</section>
 
-  // 3. fade to white paper
-  {const [f0,f1]=P.fade,f=g.createLinearGradient(0,f0,0,f1),pc=hex(P.paper||'#fbfcff').join(',');
-   f.addColorStop(0,`rgba(${pc},0)`);f.addColorStop(.6,`rgba(${pc},.88)`);f.addColorStop(1,`rgba(${pc},1)`);
-   g.fillStyle=f;g.fillRect(0,f0,W,H-f0);}
-
-  // pixel-scroll mask grid
-  const C=14,GW=Math.ceil(W/C),GH=Math.ceil(H/C);
-  const cell=new Uint8Array(GW*GH);
-  const mark=(arr,px,py,rc)=>{const cx=px/C,cy=py/C,r=Math.ceil(rc);
-    for(let j=-r;j<=r;j++)for(let i=-r;i<=r;i++){const X=Math.floor(cx)+i,Y=Math.floor(cy)+j;
-      if(X<0||Y<0||X>=GW||Y>=GH)continue;const dx=X+.5-cx,dy=Y+.5-cy;if(dx*dx+dy*dy<=rc*rc)arr[Y*GW+X]=1;}};
-  const spiral=(cx,cy,Rr,dir,a0,turns=1.65,rEnd=7)=>{const pts=[],Th=turns*Math.PI*2;
-    for(let th=0;th<=Th;th+=.02){const t=th/Th,r=rEnd+(Rr-rEnd)*Math.pow(1-t,.9),a=a0+dir*th;pts.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);}return pts;};
-  const bez=(p0,p1,p2,p3)=>{const o=[];for(let t=0;t<=1;t+=.005){const u=1-t;o.push([u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]]);}return o;};
-  function pair(A,B,rc,tailL){
-    const dAB=Math.atan2(B[1]-A[1],B[0]-A[0]);
-    const a0=(s,dir,ang)=>Math.atan2(dir*Math.cos(ang)*s,-dir*Math.sin(ang)*s);
-    const aA=a0(1,A[3],dAB), aB=a0(1,B[3],dAB+Math.PI);
-    const sA=spiral(A[0],A[1],A[2],A[3],aA), sB=spiral(B[0],B[1],B[2],B[3],aB);
-    const tb=(dir,a)=>[dir*Math.sin(a),-dir*Math.cos(a)];
-    const tA=tb(A[3],aA),tB=tb(B[3],aB),P0=sA[0],P3=sB[0];
-    const tail=bez(P0,[P0[0]+tA[0]*tailL,P0[1]+tA[1]*tailL],[P3[0]+tB[0]*tailL,P3[1]+tB[1]*tailL],P3);
-    [sA,sB].forEach(p=>p.forEach(([x,y])=>mark(cell,x,y,rc)));
-    tail.forEach(([x,y])=>mark(cell,x,y,rc*.82));
-  }
-  P.pairs.forEach(([A,B,rc,tl])=>pair(A,B,rc,tl));
-  for(let j=1;j<GH-1;j++)for(let i=1;i<GW-1;i++){const k=j*GW+i;
-    if(cell[k]&&R()<.05&&(!cell[k-1]||!cell[k+1]||!cell[k-GW]||!cell[k+GW]))cell[k]=0;}
-
-  // 4. dot lace (only where the page asks for it)
-  {const dots=(pts,rad)=>{let acc=0,px=null;pts.forEach(([x,y],i)=>{if(i===0){px=[x,y];return;}
-      acc+=Math.hypot(x-px[0],y-px[1]);px=[x,y];if(acc<7.5)return;acc=0;
-      const c=y<P.fade[0]+150?[255,255,255]:[150,165,215];
-      g.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},${.8*(0.7+R()*.3)})`;g.beginPath();g.arc(x,y,rad,0,6.283);g.fill();});};
-   P.lace.forEach(([cx,cy,Rr,dir])=>{const a=R()*6.28;
-     dots(spiral(cx,cy,Rr,dir,a,1.9,10),1.5);dots(spiral(cx,cy,Rr-16,dir,a,1.8,10),1.2);});}
-
-  // 5. bone placed for the lower cells
-  const boneC=document.createElement('canvas');boneC.width=W*S;boneC.height=H*S;
-  {const bx=boneC.getContext('2d');bx.scale(S,S);bx.imageSmoothingQuality='high';
-   const sc=P.bone.w/boneSrc.width;bx.drawImage(boneSrc,P.bone.x,P.bone.y,boneSrc.width*sc,boneSrc.height*sc);}
-
-  // 6. pixel-scroll cells
-  g.imageSmoothingEnabled=false;
-  for(let j=0;j<GH;j++)for(let i=0;i<GW;i++){
-    if(!cell[j*GW+i])continue;
-    const x=i*C,y=j*C,yc=y+C/2;
-    const pw=P.pw==='white'?1:P.pw==='bone'?0:clamp((860-yc)/220);
-    const white=R()<pw;
-    let a=R()<.16?.35+.4*R():1;
-    if(white){g.globalAlpha=a*.97;g.fillStyle='#ffffff';g.fillRect(x,y,C,C);}
-    else{g.globalAlpha=a;g.drawImage(boneC,x*S,y*S,C*S,C*S,x,y,C,C);}
-  }
-  g.globalAlpha=1;g.imageSmoothingEnabled=true;
-
-  // 7. a few stars
-  const star=(x,y,r,col,gl)=>{g.save();g.shadowColor=gl;g.shadowBlur=r*1.2;g.fillStyle=col;g.beginPath();
-    g.moveTo(x,y-r);g.quadraticCurveTo(x+r*.1,y-r*.1,x+r,y);g.quadraticCurveTo(x+r*.1,y+r*.1,x,y+r);
-    g.quadraticCurveTo(x-r*.1,y+r*.1,x-r,y);g.quadraticCurveTo(x-r*.1,y-r*.1,x,y-r);g.fill();g.restore();};
-  for(let i=0;i<P.stars;i++){const x=R()*W,y=Math.pow(R(),1.4)*(P.starY||600);star(x,y,4+R()*R()*12,'rgba(226,200,140,.95)','rgba(255,240,200,.9)');}
-  const cross=(x,y,s,col)=>{g.fillStyle=col;[[0,-1],[0,1],[-1,0],[1,0]].forEach(([dx,dy])=>{g.beginPath();g.arc(x+dx*s,y+dy*s,s*.38,0,6.283);g.fill();});};
-  for(let i=0;i<P.cross[0];i++)cross(R()*W,Math.max(P.fade[0]+60,640)+R()*300,5+R()*4,'rgba(122,142,208,.8)');
-  for(let i=0;i<P.cross[1];i++)cross(R()*W,R()*Math.min(560,P.fade[0]+200),4+R()*3,'rgba(255,255,255,.75)');
-
-  // 8. halftone
-  {const ht=P.ht||620;
-   const pc=document.createElement('canvas');pc.width=pc.height=5;const p=pc.getContext('2d');
-   p.fillStyle='#fff';p.beginPath();p.arc(2.5,2.5,1.1,0,6.283);p.fill();
-   g.save();g.globalAlpha=.16;g.fillStyle=g.createPattern(pc,'repeat');g.fillRect(0,0,W,ht);g.restore();
-   const pd=document.createElement('canvas');pd.width=pd.height=5;const q2=pd.getContext('2d');
-   q2.fillStyle='#8294d0';q2.beginPath();q2.arc(2.5,2.5,.9,0,6.283);q2.fill();
-   g.save();g.globalAlpha=.14;g.fillStyle=g.createPattern(pd,'repeat');g.fillRect(0,ht,W,H-ht);g.restore();}
-
-  // 9. type
-  P.text.forEach(o=>{
-    g.save();g.textAlign=o.align||'left';g.fillStyle=o.color;g.font=o.font;
-    if(o.glow){g.shadowColor='rgba(255,255,255,.7)';g.shadowBlur=24;}
-    if(g.letterSpacing!==undefined)g.letterSpacing=(o.ls||0)+'px';
-    g.fillText(o.t,o.x,o.y);g.restore();});
-  const t=new THREE.CanvasTexture(cv);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t;
-}
-
-// ---------- WebGL
-const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,preserveDrawingBuffer:true});
-renderer.setPixelRatio(1);renderer.setSize(W,H,false);
-renderer.toneMapping=THREE.NoToneMapping;
-
-const scene=new THREE.Scene();
-const pm=new THREE.PMREMGenerator(renderer);
-scene.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
-scene.environmentIntensity=.85;
-const cam=new THREE.PerspectiveCamera(32,W/H,0.1,50);cam.position.set(0,0,9);
-
-const bgH=2*Math.tan(THREE.MathUtils.degToRad(16))*(9+3);
-const bg=new THREE.Mesh(new THREE.PlaneGeometry(bgH*W/H,bgH),new THREE.MeshBasicMaterial({toneMapped:false}));
-bg.position.z=-3;scene.add(bg);
-
-const U=5.16/1080, wx=px=>(px-960)*U, wy=py=>(540-py)*U;
-
-// satin balloon (03): dusty rose, one clean highlight
-const bal=new THREE.Group();
-const balMat=new THREE.MeshPhysicalMaterial({color:'#d6aac0',roughness:.45,metalness:0,
-  clearcoat:.5,clearcoatRoughness:.14,sheen:.4,sheenColor:new THREE.Color('#ffe0ea'),sheenRoughness:.55});
-const balloon=new THREE.Mesh(new THREE.SphereGeometry(1,128,96),balMat);balloon.scale.set(1,1.14,1);bal.add(balloon);
-const kn=new THREE.Mesh(new THREE.ConeGeometry(.07,.16,24),balMat);kn.position.set(.03,-1.2,0);kn.rotation.z=Math.PI+.1;bal.add(kn);
-const curve=new THREE.CatmullRomCurve3([[.04,-1.27,0],[.2,-1.75,.1],[.05,-2.3,0],[.3,-3.0,.1]].map(a=>new THREE.Vector3(...a)));
-bal.add(new THREE.Mesh(new THREE.TubeGeometry(curve,40,.006,6),new THREE.MeshBasicMaterial({color:'#f3c5d6'})));
-scene.add(bal);
-const hot=new THREE.PointLight(0xffffff,.55,0,2);scene.add(hot);
-
-// soap bubbles (03): nearly clear, thin-film edge, pin highlights. Pool of 4, per-page placement.
-const soap=()=>new THREE.MeshPhysicalMaterial({
-  color:'#ffffff',metalness:0,roughness:0,transmission:1,thickness:.35,ior:1.12,dispersion:3,
-  iridescence:1,iridescenceIOR:1.3,iridescenceThicknessMinimum:120,iridescenceThicknessMaximum:520,
-  clearcoat:1,clearcoatRoughness:0,envMapIntensity:1.8,
-  attenuationColor:new THREE.Color('#9db4f2'),attenuationDistance:3.2});
-const bubbles=[0,1,2,3].map(()=>{const m=new THREE.Mesh(new THREE.SphereGeometry(1,96,64),soap());scene.add(m);return m;});
-
-let cur=0,PG=PAGES[0],balBase=[0,0];
-function setPage(i){
-  cur=((i%PAGES.length)+PAGES.length)%PAGES.length;PG=PAGES[cur];
-  const old=bg.material.map;bg.material.map=poster(PG);bg.material.needsUpdate=true;if(old)old.dispose();
-  const b=PG.balloon;bal.visible=hot.visible=!!b;
-  if(b){bal.scale.setScalar(b.s);balBase=[wx(b.x)*8.7/9,wy(b.y)*8.7/9];bal.position.set(balBase[0],balBase[1],.3);
-    hot.position.set(balBase[0]-.5*b.s,balBase[1]+.5*b.s,2.4);}
-  bubbles.forEach((m,k)=>{const d=PG.bubbles[k];m.visible=!!d;if(!d)return;
-    const [px,py,z,r]=d,pf=(9-z)/9;m.scale.setScalar(r);m.position.set(wx(px)*pf,wy(py)*pf,z);m.userData.b=[m.position.x,m.position.y,z,k];});
-  document.title='Dream High '+(cur+1)+'/'+PAGES.length;
-}
-
-// post: bloom only on highlights >1, chromatic fringe, film grain
-const comp=new EffectComposer(renderer);comp.setSize(W,H);
-comp.addPass(new RenderPass(scene,cam));
-comp.addPass(new UnrealBloomPass(new THREE.Vector2(W,H),0.3,0.8,1.0));
-comp.addPass(new OutputPass());
-comp.addPass(new ShaderPass({
-  uniforms:{tDiffuse:{value:null},t:{value:0}},
-  vertexShader:'varying vec2 v;void main(){v=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-  fragmentShader:`uniform sampler2D tDiffuse;uniform float t;varying vec2 v;
-  float r(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
-  void main(){vec2 d=v-.5;float k=dot(d,d);
-    vec3 c=vec3(texture2D(tDiffuse,v+d*k*.0022).r,texture2D(tDiffuse,v).g,texture2D(tDiffuse,v-d*k*.0022).b);
-    c*=1.-k*.12;
-    vec2 gp=floor(v*vec2(960.,540.));
-    float gr=(r(gp+t)-.5)*.07+(r(v*1920.+t*1.7)-.5)*.03;
-    c+=gr*(1.-.35*smoothstep(.75,1.,dot(c,vec3(.333))));
-    gl_FragColor=vec4(c,1.);}`}));
-const grain=comp.passes[comp.passes.length-1];
-
-function frame(t){
-  if(PG.balloon){bal.position.y=balBase[1]+Math.sin(t*.5)*.08;bal.rotation.z=Math.sin(t*.4)*.03;}
-  bubbles.forEach(m=>{if(!m.visible)return;const [x,y,z,i]=m.userData.b;m.position.set(x+Math.sin(t*.35+i)*.04,y+Math.sin(t*.6+i*1.7)*.07,z);});
-  grain.uniforms.t.value=Math.floor(t*12)/12;
-  comp.render();
-}
-const startPage=(q.has('p')?+q.get('p')-1:+(location.hash.slice(1)||1)-1)||0;
-setPage(startPage);
-if(fixed!==null){frame(fixed);document.body.dataset.ready=1;}
-else{
-  addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key))setPage(cur+1);if(['ArrowLeft','PageUp'].includes(e.key))setPage(cur-1);});
-  addEventListener('click',()=>setPage(cur+1));
-  (function f(ms){frame(ms/1000);requestAnimationFrame(f)})(0);
-}
-})();
-</script>
+<div class="chrome" id="chrome" data-theme="light">
+  <div class="c-tl">Slide Atelier · Dream High</div>
+  <div class="c-tr" id="c-ch">Cover</div>
+  <div class="c-bl" id="c-fo">01 — 08</div>
+  <div class="c-br" id="c-pr"></div>
+</div>
+</div>
+<script src="assets.js"></script>
+<script src="deck.js"></script>
 </body>
 </html>
