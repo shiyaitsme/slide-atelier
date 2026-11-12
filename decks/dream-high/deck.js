@@ -313,7 +313,7 @@
     float oy=(pg==5)?150.:84.;
     vec2 cp=vec2(0.);
     if(k==0) cp=vec2(p.x,p.y-oy)/14.; else if(k==1) cp=vec2(1920.-p.x,p.y-oy)/14.; else if(k==2) cp=vec2(1920.-p.x,1080.-p.y-oy)/14.; else cp=vec2(p.x,1080.-p.y-oy)/14.;
-    float m=(cp.y<0.||pg==0)?0.:filigree(floor(cp)+.5,uT*.3);   // cover: the lace chain on the photo is its ornament
+    float m=(cp.y<0.||pg==0||(pg==5&&cp.x>11.)||(pg==6&&cp.x>20.))?0.:filigree(floor(cp)+.5,uT*.3);   // cover: the lace chain on the photo is its ornament
     vec3 oc; float oa;
     if(pg==0){ oc=vec3(1.); oa=.92; } else if(pg==1){ oc=vec3(1.); oa=.85; } else if(pg==2){ oc=vec3(.95,.9,1.); oa=.55; }
     else if(pg==3){ oc=vec3(.96,.95,.92); oa=.36; } else if(pg==4){ oc=vec3(.58,.5,.8); oa=.8; } else if(pg==5){ oc=vec3(.17,.27,.84); oa=.9; }
