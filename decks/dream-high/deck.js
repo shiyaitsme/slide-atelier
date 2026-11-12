@@ -67,20 +67,21 @@
   float halft(vec2 p,float cs,float ang){ float c=cos(ang),s=sin(ang); vec2 g=vec2(c*p.x-s*p.y,s*p.x+c*p.y)/cs; return length(fract(g)-.5); }
 
   /* ---------- ornament system: everything lives on a 14px cell grid ---------- */
-  float volute(vec2 q, vec2 c, float R, float s, float ph){
+  float voluteX(vec2 q, vec2 c, float R, float s, float ph, float P, float w){
     vec2 d=q-c; d.x*=s; float r=length(d); if(r>R||r<1.2) return 0.;
-    float a=atan(d.y,d.x)+ph; const float P=4.4;
-    float u=(r-a*P/6.2831853)/P; float f=fract(u); float dist=min(f,1.-f)*P; return step(dist,1.15); }
+    float a=atan(d.y,d.x)+ph;
+    float u=(r-a*P/6.2831853)/P; float f=fract(u); float dist=min(f,1.-f)*P; return step(dist,w); }
+  float volute(vec2 q, vec2 c, float R, float s, float ph){ return voluteX(q,c,R,s,ph,4.4,1.15); }
   float rose(vec2 q, vec2 c, float R){ vec2 d=q-c; float r=length(d); float a=atan(d.y,d.x);
     float k=R*(.64+.36*cos(5.*a+1.)); return step(r,k)*step(R*.3,r); }
-  float chain(vec2 q, float t){            // 01's five alternating scrolls joined by an S-curve
-    float m=0.;
-    m=max(m,volute(q,vec2(-8.,6.),9.,1.,t));   m=max(m,volute(q,vec2(8.,22.),9.,-1.,-t));
-    m=max(m,volute(q,vec2(-8.,38.),9.,1.,t));  m=max(m,volute(q,vec2(8.,54.),9.,-1.,-t));
-    m=max(m,volute(q,vec2(-8.,70.),9.,1.,t));
+  float chain(vec2 q, float t){            // 01's five alternating scrolls joined by an S-curve (airy: pitch 6.6, line 0.8)
+    const float CP=6.6, CW=.8; float m=0.;
+    m=max(m,voluteX(q,vec2(-8.,6.),9.,1.,t,CP,CW));   m=max(m,voluteX(q,vec2(8.,22.),9.,-1.,-t,CP,CW));
+    m=max(m,voluteX(q,vec2(-8.,38.),9.,1.,t,CP,CW));  m=max(m,voluteX(q,vec2(8.,54.),9.,-1.,-t,CP,CW));
+    m=max(m,voluteX(q,vec2(-8.,70.),9.,1.,t,CP,CW));
     m=max(m,rose(q,vec2(9.,-4.),5.));          m=max(m,rose(q,vec2(-9.,82.),5.));
     float sx=-8.*cos(3.14159*(q.y-6.)/16.);
-    m=max(m,step(abs(q.x-sx),1.1)*step(6.,q.y)*step(q.y,70.));
+    m=max(m,step(abs(q.x-sx),.8)*step(6.,q.y)*step(q.y,70.));
     return m; }
   float filigree(vec2 cp, float t){        // corner piece, cp = cells from the corner
     float m=0.;
@@ -121,10 +122,10 @@
       vec2 cq=floor((p-r.xy)/14.)+.5;
       vec2 pq=cq*14./r.zw; pq.y-=.55*step(.5,pq.y); vec3 pp=T(1,covq(r.z/r.w,pq,isz,foc));
       float m=chain(cq-vec2(r.z/28.,1.),uT*.45);
-      float jt=hash(cq*1.7); float mm=m*(jt>.07?1.:.35);
+      float jt=hash(cq*1.7); float mm=m*(jt>.2?1.:.3);
       float fy=smoothstep(.42,.60,q.y), fx=smoothstep(0.,.2,q.x);
       vec3 phf=mix(ph,vec3(.969),fy);
-      vec3 up=mix(phf,mix(vec3(1.),pp,step(.82,jt)*.5),mm*(1.-fy)*.97);
+      vec3 up=mix(phf,mix(vec3(1.),pp,step(.92,jt)*.5),mm*(1.-fy)*.8);
       vec3 lo=mix(vec3(.969),pp,mm);
       vec3 res=mix(up,lo,smoothstep(.46,.64,q.y));
       res+=vec3(.9,.8,.4)*stars(p,110.,.22)*(1.-smoothstep(.35,.55,q.y));
@@ -140,6 +141,7 @@
     col-=smoothstep(.34,.3,halft(p,7.,.785))*.035;
     vec4 r=F[0];
     if(inR(r,p)){
+      vec3 bg=col;
       vec2 q=(p-r.xy)/r.zw; float asp=r.z/r.w; vec2 isz=TS(3);
       vec2 foc=vec2(.5,.5);
       vec3 base=T(3,covq(asp,q,isz,foc)); col=base;
@@ -162,6 +164,9 @@
         }
       }
       col=mix(col,vec3(lum(col)),.12)*vec3(1.02,1.0,1.03);
+      col=col*.84+vec3(.17,.14,.2)*.55;                        // lift blacks toward the mauve ground
+      float fx=smoothstep(0.,.24,q.x)*smoothstep(1.,.76,q.x)*smoothstep(1.,.84,q.y);
+      col=mix(bg,col,fx);
     }
     return col; }
 
@@ -311,7 +316,7 @@
     float m=(cp.y<0.||pg==0)?0.:filigree(floor(cp)+.5,uT*.3);   // cover: the lace chain on the photo is its ornament
     vec3 oc; float oa;
     if(pg==0){ oc=vec3(1.); oa=.92; } else if(pg==1){ oc=vec3(1.); oa=.85; } else if(pg==2){ oc=vec3(.95,.9,1.); oa=.55; }
-    else if(pg==3){ oc=vec3(.96,.95,.92); oa=.6; } else if(pg==4){ oc=vec3(.58,.5,.8); oa=.8; } else if(pg==5){ oc=vec3(.17,.27,.84); oa=.9; }
+    else if(pg==3){ oc=vec3(.96,.95,.92); oa=.36; } else if(pg==4){ oc=vec3(.58,.5,.8); oa=.8; } else if(pg==5){ oc=vec3(.17,.27,.84); oa=.9; }
     else if(pg==6){ oc=vec3(.537,.651,.847); oa=.95; } else { oc=vec3(.537,.651,.847); oa=.9; }
     c=mix(c,oc,m*oa);
     float side=(pg-(pg/2)*2==0)?0.:1.;
