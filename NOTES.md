@@ -38,3 +38,19 @@
 
 ## pixel-lace 风格练习
 `styles/pixel-lace.css` 是配色和字体,`decks/pixel-lace-study` 是 6 页练习稿(占位图在 `art/photo-*.png`,可按文件名替换),花纹由 `art/pixel_ornament.py` 生成。参考图见 `references/pixel-lace-dream-01.png`。
+
+## dream-high(WebGL2 多页 deck)
+- **架构**:DOM/CSS 负责版式和文字,一个全屏片元着色器读每个 `.frame` 的 `getBoundingClientRect` 去画图。版式只有 CSS 一个来源,改版式不用动着色器。早先的 three.js 版把文字烤进一张不透明平面,版式被锁死,已放弃。
+- **每页一个不同技术**:像素花边、折射气泡、亮度视差、法线重打光、旋度噪声发丝、数据马赛克、像素揭示、程序日出。别把八页都做成同一个效果加不同图。
+- **装饰要有规则**:每页最多一个角花,放在版式的空白处,落在 14 px 网格上,避开页眉页脚。顺时针轮换四角会撞内容,要按每页版式逐页指定。封面已有照片上的花边链,不再加角花。
+- **深色页的字**:`--fg2` 用 .78 不透明度,标题以外的正文加 text-shadow,不然压在图上看不清。
+- **中文字体**:Noto Serif SC 只内嵌 `index.html` 里用到的字(`build-fonts.js` 切片)。改了文字必须重跑,否则新字显示成方块。
+- **配色**:从参考图用 canvas 量化取色,主图占比要大但不能是 100%。第 7 页的色条直接画出各参考的占比。
+- **渲染**:`gl-shot.js` 的 `PAGES` 环境变量指定页数(默认 6,忘设会少渲染)。软件渲染一页要几十秒,命令超时设到 600 s。
+- **不能直接打印成 PDF**:`tools/pdf.js` 打印 DOM,拿不到 canvas。WebGL deck 用 `tools/png-pdf.js` 拼截图。
+- **改完先看图**:一轮渲染里肉眼才发现的问题(图注压到色条、角花撞标题、深色页文字发灰)占了大半,别只看命令有没有报错。
+- **未验证**:真机上的实时帧率(18 个气泡循环加 12 次采样模糊较重)、过渡动画的实际观感。
+
+## Git
+- 推送常被拒,因为别人也往 `initial-structure` 推(上传的参考图、其他 deck)。先 `git fetch`,看新提交有没有碰同一批文件,没有就 `git rebase origin/initial-structure` 再推。不要强推。
+- `rebase` 和 `push` 不要放在同一轮并行执行,顺序错了会推出旧的历史。

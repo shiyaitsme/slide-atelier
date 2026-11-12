@@ -8,7 +8,8 @@ layouts/    版式片段,直接复制进 deck 的 index.html,再改文字和图
 effects/    视觉效果收藏,一个效果一个文件夹,见 effects/README.md
 templates/  共用模板:deck-skeleton(五种基础页型)、presenter(网页演讲模式)
 art/        配图生成脚本(泡沫膜、肋骨、液态金属)
-tools/      shot.js 渲染截图,build.py 打包 PPTX 和 PDF
+tools/      shot.js 渲染截图,build.py 打包 PPTX 和 PDF,gl-shot.js 给 WebGL 页截图,
+            png-pdf.js 把一组 PNG 拼成 PDF,record.js 录效果演示视频
 decks/      成品,每个 deck 一个文件夹
 NOTES.md    踩坑记录
 ```
@@ -40,6 +41,20 @@ python tools/build.py decks/my-deck my-deck       # 打包 pptx 和 pdf
 
 页面是整页图片,PPTX 里文字不可编辑,文字放在每页的备注里。
 
+## WebGL deck(dream-high 这一类)
+
+文字和版式用 DOM/CSS 排,一个全屏 WebGL2 着色器按每个 `.frame` 的位置画图和特效。页面里不能直接打印成 PDF,要走截图。
+
+```bash
+cd decks/dream-high && FONTSRC=<node_modules>/@fontsource node build-fonts.js   # index.html 文字改了就重跑,生成 fonts.css
+export PLAYWRIGHT_CORE=<playwright-core 路径> CHROME_BIN=<chrome-headless-shell 路径>
+PAGES=8 node tools/gl-shot.js decks/dream-high/index.html decks/dream-high/png/s%d.png 3 all   # 软件渲染,每页要等几十秒
+node tools/png-pdf.js decks/dream-high/dream-high.pdf decks/dream-high/png/s{1..8}.png
+```
+
+打开 `index.html` 直接放映:方向键/空格/点击翻页(点左侧 18% 返回),滚轮和触摸滑动也行,`?p=N` 从第 N 页开始。
+普通 DOM deck 仍用 `tools/pdf.js` 或 `build.py` 导出。
+
 ## 演讲模式
 
 任何 deck 末尾加一行 `<script src="../../templates/presenter/presenter.js"></script>`(`templates/deck-skeleton` 已带),
@@ -48,3 +63,6 @@ python tools/build.py decks/my-deck my-deck       # 打包 pptx 和 pdf
 ## 现有 deck
 
 - `decks/organic-forms`:美学中的有机生物(8 页)。
+- `decks/dream-high`:Dream big. Dream high.(8 页,WebGL2)。以 `references/` 的 01 为主色调(约 55%),其余五张各占 3–11%。每页一个不同的着色器效果,PDF 为 `dream-high.pdf`(静态画面,26 MB)。
+- `decks/girlhood-heroism`:少女时期的英雄主义。
+- `decks/stp-member4`:超级猩猩 STP 作业第 9–11 页。
