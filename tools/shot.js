@@ -19,7 +19,7 @@ const exe = process.env.CHROME_BIN || (() => {
   const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
   await p.goto('file://' + path.join(deck, 'index.html'), { waitUntil: 'networkidle' });
   await p.evaluate(() => document.fonts.ready);
-  await p.waitForTimeout(800);
+  await p.waitForTimeout(+(process.env.WAIT||2000));
   const out = path.join(deck, 'png');
   fs.mkdirSync(out, { recursive: true });
   const n = await p.$$eval('section.s', els => els.length);

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: spread-continuation — 一张图/一条线横跨相邻两页,翻页时无缝接上。
+   做法:每页放同一组宽元素(图 3840 宽,线 4600 宽),第 N 页 left = -偏移 - (N-1)*1920px。 */
+.wide{position:absolute;top:0;width:3840px;height:1080px}
+.wide-svg{width:4600px}
+</style>
+</head>
+<body>
+<section class="s light" style="background:#f2f2f2" id="s1">
+  <img class="wide" src="../../decks/organic-forms/art/chrome_wide.png" style="left:-700px;object-fit:cover">
+  <svg class="wide wide-svg" style="left:-700px" viewBox="0 0 4600 1080"><path d="M0 820 C 900 820, 1500 300, 1920 540 S 3000 900, 3840 260 S 4300 -20, 4600 200" fill="none" stroke="#0a0a0a" stroke-width="3"/></svg>
+  <div class="abs mono" style="left:90px;top:80px">fx / spread — 1 / 2</div>
+  <div class="abs anton" style="left:80px;bottom:80px;font-size:300px">ACROSS</div>
+</section>
+<section class="s light" style="background:#f2f2f2" id="s2">
+  <img class="wide" src="../../decks/organic-forms/art/chrome_wide.png" style="left:-2620px;object-fit:cover">
+  <svg class="wide wide-svg" style="left:-2620px" viewBox="0 0 4600 1080"><path d="M0 820 C 900 820, 1500 300, 1920 540 S 3000 900, 3840 260 S 4300 -20, 4600 200" fill="none" stroke="#0a0a0a" stroke-width="3"/></svg>
+  <div class="abs mono" style="right:90px;top:80px">2 / 2</div>
+  <div class="abs anton" style="right:80px;bottom:80px;font-size:300px">TWO PAGES</div>
+</section>
+</body></html>

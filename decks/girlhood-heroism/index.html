@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Silkscreen&family=Space+Mono:wght@400&family=Noto+Sans+SC:wght@300;500&family=Noto+Serif+SC:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/dusk-lace.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="skyline" viewBox="0 0 1920 300" preserveAspectRatio="none">
+    <g fill="#2b2338">
+      <rect x="0" y="170" width="150" height="130"/><rect x="150" y="120" width="90" height="180"/><rect x="240" y="200" width="130" height="100"/>
+      <rect x="370" y="90" width="110" height="210"/><polygon points="400,90 425,10 450,90"/><rect x="480" y="150" width="100" height="150"/>
+      <rect x="580" y="60" width="130" height="240"/><rect x="710" y="190" width="150" height="110"/><rect x="860" y="130" width="90" height="170"/>
+      <rect x="950" y="170" width="160" height="130"/><rect x="1110" y="100" width="120" height="200"/><polygon points="1130,100 1170,30 1210,100"/>
+      <rect x="1230" y="180" width="140" height="120"/><rect x="1370" y="70" width="120" height="230"/><rect x="1490" y="150" width="110" height="150"/>
+      <rect x="1600" y="110" width="130" height="190"/><rect x="1730" y="190" width="190" height="110"/>
+    </g>
+    <g fill="#f3d58f" opacity=".85">
+      <rect x="170" y="150" width="6" height="8"/><rect x="200" y="190" width="6" height="8"/><rect x="600" y="100" width="6" height="8"/><rect x="640" y="150" width="6" height="8"/>
+      <rect x="1130" y="150" width="6" height="8"/><rect x="1160" y="200" width="6" height="8"/><rect x="1390" y="120" width="6" height="8"/><rect x="1420" y="190" width="6" height="8"/>
+      <rect x="1620" y="160" width="6" height="8"/><rect x="390" y="130" width="6" height="8"/><rect x="990" y="210" width="6" height="8"/><rect x="740" y="230" width="6" height="8"/>
+    </g>
+  </symbol>
+</defs></svg>
+
+<!-- 1 COVER -->
+<section class="s grain" id="s1">
+  <canvas class="lace" data-w="42" data-h="136" data-cell="8" data-seed="3" style="left:20px;top:0"></canvas>
+  <canvas class="lace" data-w="42" data-h="136" data-cell="8" data-seed="9" data-flip="1" style="left:1564px;top:0"></canvas>
+  <div class="balloon" style="left:1150px;top:90px;width:420px;height:500px;filter:blur(.6px)"></div>
+  <div style="position:absolute;left:1352px;top:585px;width:2px;height:260px;background:rgba(255,235,240,.55);transform:rotate(8deg);transform-origin:top"></div>
+  <div class="bubs" data-n="26" data-seed="5"></div>
+  <svg class="abs" style="left:0;bottom:0;width:1920px;height:300px"><use href="#skyline"/></svg>
+  <i class="st" style="left:430px;top:150px;--s:44px"></i><i class="st" style="left:1010px;top:110px;--s:26px;--d:.9s"></i><i class="st" style="left:1680px;top:600px;--s:30px;--d:1.4s"></i>
+  <div class="abs mono" style="left:430px;top:60px;color:#fff;opacity:.85;position:absolute;z-index:9">study 01 — dusk lace</div>
+  <div class="abs serif" style="left:420px;top:330px;font-size:190px;color:#fff;text-shadow:0 4px 40px rgba(58,47,77,.35)">Girlhood<br>Heroism</div>
+  <div class="abs zh" style="left:430px;top:720px;font-size:46px;color:#fff;text-shadow:0 2px 20px rgba(58,47,77,.4)">少女时期的英雄主义</div>
+</section>
+
+<!-- 2 CONTENTS -->
+<section class="s cream grain" id="s2">
+  <canvas class="lace" data-w="42" data-h="136" data-cell="8" data-seed="3" data-color="#e9aab8" style="left:20px;top:0"></canvas>
+  <i class="st" style="left:1720px;top:110px;--s:40px"></i>
+  <div class="abs serif" style="left:470px;top:110px;font-size:150px;color:var(--plum)">contents</div>
+  <div class="abs" style="left:470px;top:380px;width:1200px">
+    <div class="row"><span class="px n">01</span><span class="zh t">披风是蕾丝做的</span><span class="mono p">p.03</span></div>
+    <div class="row"><span class="px n">02</span><span class="zh t">没人看见的战场</span><span class="mono p">p.04</span></div>
+    <div class="row"><span class="px n">03</span><span class="zh t">小方格里的勇气</span><span class="mono p">p.05</span></div>
+    <div class="row last"><span class="px n">04</span><span class="zh t">余光</span><span class="mono p">p.06</span></div>
+  </div>
+  <style>.row{display:flex;align-items:baseline;gap:50px;padding:28px 0;border-top:1px solid #d9a9b4}.row.last{border-bottom:1px solid #d9a9b4}.n{font-size:28px;color:#c9788f}.t{font-size:64px}.p{margin-left:auto;color:#a58aa0}</style>
+</section>
+
+<!-- 3 CAPE -->
+<section class="s night grain" id="s3">
+  <canvas class="lace" data-w="60" data-h="136" data-cell="8" data-seed="11" style="left:-10px;top:0;opacity:.55"></canvas>
+  <canvas class="lace" data-w="60" data-h="136" data-cell="8" data-seed="12" data-flip="1" style="left:520px;top:0;opacity:.55"></canvas>
+  <img src="art/dancer.png" class="abs" style="left:120px;top:-20px;height:1120px;mix-blend-mode:screen;-webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000 45%,transparent 72%);mask-image:radial-gradient(ellipse at 50% 50%,#000 45%,transparent 72%)">
+  <i class="st" style="left:1010px;top:160px;--s:44px"></i><i class="st" style="left:1700px;top:880px;--s:24px;--d:1s"></i>
+  <div class="abs mono" style="left:1130px;top:200px;color:var(--rose)">01 — cape</div>
+  <div class="abs zh" style="left:1130px;top:290px;font-size:92px;line-height:1.3">披风是<br>蕾丝做的</div>
+  <div class="abs" style="left:1130px;top:660px;width:640px;font-size:28px;font-weight:300;line-height:2;opacity:.9">把喜欢的东西穿在身上,<br>本身就是一种勇气。</div>
+</section>
+
+<!-- 4 QUOTE -->
+<section class="s grain" id="s4">
+  <div class="bubs" data-n="30" data-seed="21"></div>
+  <svg class="abs" style="left:0;bottom:0;width:1920px;height:230px"><use href="#skyline"/></svg>
+  <i class="st" style="left:300px;top:200px;--s:38px;--c:#fff"></i><i class="st" style="left:1560px;top:760px;--s:26px;--d:.8s"></i>
+  <div class="abs mono" style="left:0;width:100%;text-align:center;top:190px;color:#fff;opacity:.85">02 — unseen</div>
+  <div class="abs serif" style="left:260px;top:300px;width:1400px;text-align:center;font-size:118px;color:#fff;text-shadow:0 4px 40px rgba(58,47,77,.35)">she was brave when<br>no one was watching.</div>
+  <div class="abs zh" style="left:0;width:100%;text-align:center;top:680px;font-size:40px;color:#fff;text-shadow:0 2px 16px rgba(58,47,77,.4)">没人看见的时候,她也在认真地勇敢。</div>
+</section>
+
+<!-- 5 VEIL -->
+<section class="s cream grain" id="s5">
+  <canvas class="lace" data-w="60" data-h="136" data-cell="8" data-seed="4" data-color="#fff" style="left:-30px;top:0"></canvas>
+  <canvas class="lace" data-w="60" data-h="136" data-cell="8" data-seed="6" data-color="#fff" data-flip="1" style="left:1470px;top:0"></canvas>
+  <img src="art/bone.png" class="abs" style="left:560px;top:-20px;height:1120px;opacity:.32;mix-blend-mode:multiply;-webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000 35%,transparent 70%);mask-image:radial-gradient(ellipse at 50% 50%,#000 35%,transparent 70%)">
+  <i class="st" style="left:380px;top:200px;--s:46px"></i><i class="st" style="left:1500px;top:860px;--s:30px;--d:1s"></i>
+  <div class="abs mono" style="left:0;width:100%;text-align:center;top:150px;color:#b8798f">03 — veil</div>
+  <div class="abs zh" style="left:0;width:100%;text-align:center;top:420px;font-size:70px;line-height:1.6;text-shadow:0 0 30px #fbeee9,0 0 14px #fbeee9">面纱不是遮掩,<br>是另一种材质的铠甲。</div>
+</section>
+
+<!-- 6 AFTERGLOW -->
+<section class="s grain" id="s6" style="background:linear-gradient(#a89cc4,#e3b6c4 60%,#f6d9cc)">
+  <div class="bubs" data-n="16" data-seed="8"></div>
+  <svg class="abs" style="left:0;bottom:0;width:1920px;height:170px"><use href="#skyline"/></svg>
+  <i class="st" style="left:930px;top:170px;--s:48px;--c:#fff"></i><i class="st" style="left:1180px;top:240px;--s:22px;--d:.7s"></i>
+  <div class="abs zh" style="left:0;width:100%;text-align:center;top:360px;font-size:120px;color:#fff;text-shadow:0 4px 40px rgba(58,47,77,.35)">谢谢</div>
+  <div class="abs zh" style="left:0;width:100%;text-align:center;top:580px;font-size:34px;color:#fff;text-shadow:0 2px 16px rgba(58,47,77,.4)">献给所有笨拙地认真过的人</div>
+</section>
+
+<script src="../../effects/pixel-ornament/thin-lace.js"></script>
+<script>
+// 气泡:伪随机但可复现
+function rng(s){return()=>(s=(s*1664525+1013904223)>>>0)/4294967296}
+document.querySelectorAll('.bubs').forEach(el=>{
+  el.style.cssText='position:absolute;inset:0';
+  const r=rng(+el.dataset.seed||1),n=+el.dataset.n||20;
+  for(let i=0;i<n;i++){const d=document.createElement('div'),sz=18+Math.pow(r(),2.2)*150;
+    d.className='bub';d.style.cssText=`left:${r()*1920-40}px;top:${r()*950-30}px;width:${sz}px;height:${sz}px;opacity:${.55+r()*.45}`;el.appendChild(d)}
+});
+</script>
+</body></html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: path-draw — SVG 路径描绘。路径加 pathLength="1" 和 class="draw",stroke-dasharray/offset 从 1 动画到 0。
+   --d 延迟、--t 时长。适合时间线、地图路线、手绘强调。纯 CSS,可录视频。 */
+.draw{fill:none;stroke-dasharray:1;stroke-dashoffset:1;animation:dr var(--t,2s) cubic-bezier(.6,0,.2,1) var(--d,0s) forwards}
+@keyframes dr{to{stroke-dashoffset:0}}
+.pop{opacity:0;animation:pp .5s ease-out var(--d,0s) forwards}
+@keyframes pp{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:none}}
+.pop{transform-box:fill-box;transform-origin:center}
+</style>
+</head>
+<body>
+<section class="s light" id="s1">
+  <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080">
+    <path class="draw" pathLength="1" stroke="#0a0a0a" stroke-width="3" style="--t:2.6s" d="M120 820 C 420 820, 520 300, 820 420 S 1180 900, 1460 560 S 1700 260, 1820 300"/>
+    <path class="draw" pathLength="1" stroke="#8d8d90" stroke-width="1.5" stroke-dasharray="1" style="--t:2.6s;--d:.3s" d="M120 880 C 460 880, 560 360, 860 480 S 1220 960, 1500 620 S 1720 320, 1820 360"/>
+    <g fill="#0a0a0a">
+      <circle class="pop" style="--d:.2s" cx="120" cy="820" r="14"/>
+      <circle class="pop" style="--d:1s" cx="820" cy="420" r="14"/>
+      <circle class="pop" style="--d:1.8s" cx="1460" cy="560" r="14"/>
+      <circle class="pop" style="--d:2.6s" cx="1820" cy="300" r="14"/>
+    </g>
+  </svg>
+  <div class="abs mono" style="left:90px;top:80px">fx / path-draw</div>
+  <div class="abs anton" style="left:80px;top:130px;font-size:260px">DRAW</div>
+</section>
+</body></html>

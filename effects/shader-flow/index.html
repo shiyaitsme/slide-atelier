@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: shader-flow — WebGL 片元着色器流体渐变背景,无依赖。
+   <canvas class="fx-shader" data-colors="#0a0a0a,#3a3a8a,#e8e8e4"> 即可。?t=数字 可固定时间,用于截图;?res=0.5 降低渲染分辨率(慢机器/录制用)。录制时 tools/record.js 会写 window.__t 逐帧控制时间。 */
+.fx-shader{position:absolute;inset:0;width:100%;height:100%}
+</style>
+</head>
+<body>
+<section class="s dark" id="s1">
+  <canvas class="fx-shader" data-colors="#050505,#2a2a9a,#d8d8ff"></canvas>
+  <div class="abs mono" style="left:90px;top:80px">fx / shader-flow</div>
+  <div class="abs anton" style="left:80px;bottom:80px;font-size:380px">FLOW</div>
+</section>
+<section class="s dark" id="s2">
+  <canvas class="fx-shader" data-colors="#0a0a0a,#b8321a,#f2e8d8"></canvas>
+  <div class="abs anton" style="right:80px;top:60px;font-size:380px;text-align:right">WARM</div>
+</section>
+<script>
+(function(){
+  const q=new URLSearchParams(location.search), fixed=q.has('t')?parseFloat(q.get('t')):null;
+  const hex=h=>{const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255]};
+  const vs='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+  const fs=`precision highp float;uniform vec2 r;uniform float t;uniform vec3 c0,c1,c2;
+  float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+  float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+    return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
+  float fbm(vec2 p){float a=.5,s=0.;for(int i=0;i<5;i++){s+=a*n(p);p*=2.;a*=.5;}return s;}
+  void main(){vec2 uv=gl_FragCoord.xy/r.y*1.6;
+    vec2 q=vec2(fbm(uv+t*.08),fbm(uv+vec2(5.2,1.3)-t*.06));
+    float v=fbm(uv+2.2*q+vec2(t*.05,0.));
+    vec3 col=mix(c0,c1,smoothstep(.2,.65,v));col=mix(col,c2,smoothstep(.55,.95,v*v*2.));
+    gl_FragColor=vec4(col,1.);}`;
+  document.querySelectorAll('canvas.fx-shader').forEach(cv=>{
+    const res=parseFloat(q.get('res')||1);cv.width=1920*res;cv.height=1080*res;
+    const gl=cv.getContext('webgl');if(!gl)return;
+    const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);return o};
+    const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));
+    gl.linkProgram(pr);gl.useProgram(pr);
+    gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    const cols=cv.dataset.colors.split(',').map(hex);
+    ['c0','c1','c2'].forEach((k,i)=>gl.uniform3fv(gl.getUniformLocation(pr,k),cols[i]));
+    gl.uniform2f(gl.getUniformLocation(pr,'r'),cv.width,cv.height);
+    const ut=gl.getUniformLocation(pr,'t');
+    const draw=ms=>{gl.uniform1f(ut,window.__t??fixed??ms/1000);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);if(fixed===null)requestAnimationFrame(draw)};
+    draw(fixed===null?0:0);if(fixed===null)requestAnimationFrame(draw);
+  });
+})();
+</script>
+</body></html>

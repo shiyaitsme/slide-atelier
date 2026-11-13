@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: warp — 噪声位移扭曲(像隔着水波/热浪)。SVG feTurbulence 生成噪声,feDisplacementMap 按噪声推像素。
+   class="fx-warp"(scale 22)/"fx-warp-l"(scale 55)。baseFrequency 越小,波纹越大越柔。 */
+.fx-warp{filter:url(#warp)} .fx-warp-l{filter:url(#warp-l)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="warp" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".008 .02" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="warp-l" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".005 .01" numOctaves="2" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="55" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs></svg>
+<section class="s dark" id="s1">
+  <div class="abs mono" style="left:90px;top:80px">fx / warp — text</div>
+  <div class="abs anton fx-warp-l" style="left:80px;top:250px;font-size:520px">LIQUID</div>
+  <div class="abs fx-warp" style="left:96px;top:860px;font-size:60px;font-weight:300;letter-spacing:.2em">像隔着水面看的字</div>
+</section>
+<section class="s light" id="s2">
+  <img class="abs fx-warp-l" src="../../decks/organic-forms/art/ribs.png" style="left:-100px;top:-100px;width:2120px;height:1280px;object-fit:cover">
+  <div class="abs mono" style="left:90px;top:80px">fx / warp — image</div>
+</section>
+</body></html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: dither — 有序抖动(Bayer 4×4)。灰度图 + 4×4 阈值矩阵相加(plus-lighter),再 contrast 阈值化,
+   只剩纯黑白像素点。--px 控制像素块大小,.invert 反相。纯 CSS,不读像素,file:// 下也能用。 */
+.fx-dither{position:absolute;inset:0;background:#000;overflow:hidden;isolation:isolate;filter:brightness(.62) contrast(60)}
+.fx-dither.invert{filter:brightness(.62) contrast(60) invert(1)}
+.fx-dither img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(var(--c,1.15))}
+.fx-dither::after{content:"";position:absolute;inset:0;mix-blend-mode:plus-lighter;image-rendering:pixelated;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='4' shape-rendering='crispEdges'><rect x='0' y='0' width='1' height='1' fill='rgb(8,8,8)'/><rect x='1' y='0' width='1' height='1' fill='rgb(135,135,135)'/><rect x='2' y='0' width='1' height='1' fill='rgb(40,40,40)'/><rect x='3' y='0' width='1' height='1' fill='rgb(167,167,167)'/><rect x='0' y='1' width='1' height='1' fill='rgb(199,199,199)'/><rect x='1' y='1' width='1' height='1' fill='rgb(72,72,72)'/><rect x='2' y='1' width='1' height='1' fill='rgb(231,231,231)'/><rect x='3' y='1' width='1' height='1' fill='rgb(104,104,104)'/><rect x='0' y='2' width='1' height='1' fill='rgb(56,56,56)'/><rect x='1' y='2' width='1' height='1' fill='rgb(183,183,183)'/><rect x='2' y='2' width='1' height='1' fill='rgb(24,24,24)'/><rect x='3' y='2' width='1' height='1' fill='rgb(151,151,151)'/><rect x='0' y='3' width='1' height='1' fill='rgb(247,247,247)'/><rect x='1' y='3' width='1' height='1' fill='rgb(120,120,120)'/><rect x='2' y='3' width='1' height='1' fill='rgb(215,215,215)'/><rect x='3' y='3' width='1' height='1' fill='rgb(88,88,88)'/></svg>") 0 0/calc(var(--px,4px)*4) calc(var(--px,4px)*4)}
+</style>
+</head>
+<body>
+<section class="s dark" id="s1">
+  <div class="fx-dither" style="--px:4px"><img src="../../decks/organic-forms/art/chrome.png"></div>
+  <div class="abs mono" style="left:90px;top:80px;color:#0a0a0a">fx / dither — 4px</div>
+  <div class="abs anton" style="left:80px;bottom:80px;font-size:380px;color:#0a0a0a">DITHER</div>
+</section>
+<section class="s dark" id="s2">
+  <div class="fx-dither invert" style="--px:8px"><img src="../../decks/organic-forms/art/foam_light.png"></div>
+  <div class="abs mono" style="right:90px;top:80px;text-align:right;color:#fff">8px + invert</div>
+  <div class="abs anton" style="left:80px;bottom:80px;font-size:380px;color:#f2f2f0">PIXELS</div>
+</section>
+</body></html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: marquee — 无限跑马灯大字。每行内容写两遍,整体向左平移 50% 循环;.rev 反向;--s 一圈时长。
+   实心与镂空交替、行与行反向,是很省力的"海报感"。 */
+.fx-marquee{position:absolute;left:0;width:100%;overflow:hidden;white-space:nowrap}
+.fx-marquee>div{display:inline-block;animation:mq var(--s,20s) linear infinite}
+.fx-marquee.rev>div{animation-direction:reverse}
+@keyframes mq{to{transform:translateX(-50%)}}
+</style>
+</head>
+<body>
+<section class="s dark" id="s1">
+  <div class="fx-marquee" style="top:-10px"><div class="anton" style="font-size:420px;--s:24s">MOTION MOTION MOTION MOTION&nbsp;</div></div>
+  <div class="fx-marquee rev" style="top:380px"><div class="anton outline-w" style="font-size:420px;--s:30s">MOTION MOTION MOTION MOTION&nbsp;</div></div>
+  <div class="fx-marquee" style="top:770px"><div class="anton" style="font-size:420px;--s:36s">MOTION MOTION MOTION MOTION&nbsp;</div></div>
+  <div class="abs mono diff" style="left:90px;top:80px">fx / marquee</div>
+</section>
+</body></html>

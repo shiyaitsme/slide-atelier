@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: clip-reveal — clip-path 形状揭示。给元素加 rv-wipe(横扫)/ rv-up(自下而上)/ rv-iris(圆形展开)/ rv-diag(斜切),
+   --d 延迟、--t 时长。纯 CSS,动画结束停在完整状态,静帧即成品。 */
+[class*="rv-"]{animation-duration:var(--t,1.1s);animation-delay:var(--d,0s);animation-timing-function:cubic-bezier(.7,0,.2,1);animation-fill-mode:both}
+.rv-wipe{animation-name:rv-wipe} .rv-up{animation-name:rv-up} .rv-iris{animation-name:rv-iris} .rv-diag{animation-name:rv-diag}
+@keyframes rv-wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes rv-up{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes rv-iris{from{clip-path:circle(0% at 50% 50%)}to{clip-path:circle(75% at 50% 50%)}}
+@keyframes rv-diag{from{clip-path:polygon(0 0,0 0,0 100%,0 100%)}to{clip-path:polygon(0 0,130% 0,100% 100%,-30% 100%)}}
+</style>
+</head>
+<body>
+<section class="s dark" id="s1">
+  <img class="bleed rv-iris" src="../../decks/organic-forms/art/foam_dark.png" style="--t:1.4s;filter:brightness(.8)">
+  <div class="abs mono" style="left:90px;top:80px">fx / clip-reveal — iris + wipe</div>
+  <div class="abs anton rv-wipe" style="--d:.5s;left:80px;bottom:80px;font-size:380px">IRIS</div>
+</section>
+<section class="s light" id="s2">
+  <div class="abs mono" style="left:90px;top:80px">fx / clip-reveal — wipe · up · diag</div>
+  <img class="abs rv-wipe" src="../../decks/organic-forms/art/ribs.png" style="left:90px;top:200px;width:560px;height:700px;object-fit:cover">
+  <img class="abs rv-up" style="--d:.25s;left:680px;top:200px;width:560px;height:700px;object-fit:cover" src="../../decks/organic-forms/art/foam_light.png">
+  <img class="abs rv-diag" style="--d:.5s;left:1270px;top:200px;width:560px;height:700px;object-fit:cover" src="../../decks/organic-forms/art/chrome.png">
+</section>
+</body></html>
