@@ -2,6 +2,7 @@
    .sp-star  四角星(clip-path),--s 大小,--c 颜色
    .sp-plus  像素十字(5 格拼成),--s 每格大小
    .sp-dia   像素菱形(8 格空心),--s 每格大小
+   .sp-halo  柔光圈,放在星星前面、坐标和 --s 相同,星星就带光晕(星星有 clip-path,没法直接加 glow)
    .tw 加在任意一个上让它闪烁;--d 延迟,--t 周期。 */
 .sp-star{position:absolute;width:var(--s,24px);height:var(--s,24px);background:var(--c,#d9b86a);clip-path:polygon(50% 0,59% 41%,100% 50%,59% 59%,50% 100%,41% 59%,0 50%,41% 41%)}
 .sp-plus,.sp-dia{position:absolute;width:var(--s,8px);height:var(--s,8px);background:transparent}
@@ -9,3 +10,7 @@
 .sp-dia{box-shadow:calc(var(--s,8px)*1) calc(var(--s,8px)*-1) 0 var(--c,#7f97dc),calc(var(--s,8px)*-1) calc(var(--s,8px)*-1) 0 var(--c,#7f97dc),calc(var(--s,8px)*1) calc(var(--s,8px)*1) 0 var(--c,#7f97dc),calc(var(--s,8px)*-1) calc(var(--s,8px)*1) 0 var(--c,#7f97dc),calc(var(--s,8px)*2) 0 0 var(--c,#7f97dc),calc(var(--s,8px)*-2) 0 0 var(--c,#7f97dc),0 calc(var(--s,8px)*2) 0 var(--c,#7f97dc),0 calc(var(--s,8px)*-2) 0 var(--c,#7f97dc)}
 .tw{animation:tw var(--t,2.4s) ease-in-out var(--d,0s) infinite}
 @keyframes tw{0%,100%{opacity:.25;transform:scale(.7) rotate(0)}50%{opacity:1;transform:scale(1.1) rotate(12deg)}}
+.sp-halo{position:absolute;width:calc(var(--s,24px)*2.6);height:calc(var(--s,24px)*2.6);margin:calc(var(--s,24px)*-.8);border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,var(--c,#d9b86a) 0,transparent 62%);opacity:.24}
+.sp-halo.tw{animation-name:twh}
+@keyframes twh{0%,100%{opacity:.06;transform:scale(.7)}50%{opacity:.32;transform:scale(1.1)}}

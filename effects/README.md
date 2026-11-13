@@ -30,7 +30,7 @@ effects/<name>/
 | `path-draw` | SVG `pathLength="1"` + `stroke-dashoffset` 动画 | 路径加 `class="draw"`,`--d` 延迟 `--t` 时长,节点用 `.pop` | 网页可动;静帧是终态;[预览视频](path-draw/preview.mp4) |
 | `duotone` | SVG 灰度 + `feComponentTransfer` 线性映射到两色 | `fx-duo-a/b/c`,改 `tableValues` 换色 | 静帧、PPTX 都行 |
 | `pixel-ornament` | 40×68 像素花纹遮罩(`art/pixel_ornament.py` 生成 `ornament.css`),同一遮罩可做白色花纹或透出照片,可镜像 | `px-white` / `px-orn` / `flip`,见 demo | 静帧、PPTX 都行 |
-| `sparkle` | 纯 CSS 星光、加号、菱形,可闪烁 | `sp-star` / `sp-plus` / `sp-dia`,`--s` 大小 `--c` 颜色 | 静帧可导出;闪烁只在网页 |
+| `sparkle` | 纯 CSS 星光、加号、菱形,可闪烁,可加柔光圈 | `sp-star` / `sp-plus` / `sp-dia`,`--s` 大小 `--c` 颜色;`sp-halo` 放在星星前面带光晕;`tw` 闪烁 | 静帧可导出;闪烁只在网页 |
 | `thin-lace` | 2 格宽的细线像素蕾丝(卷草+小花+叶),canvas 自绘 | `<canvas class="lace" data-w data-h data-cell data-color data-flip data-seed>` + `thin-lace.js` | 静帧可导出 |
 | `risograph` | SVG 滤镜:拆成两层单色油墨,按明暗取墨量,错位后 `multiply` 叠在纸色上,噪声打掉部分墨点 | `fx-riso`(粉+蓝,暗部上墨)/ `fx-riso-inv`(深底亮主体的图,亮部上墨)/ `fx-riso-2`(橙+青绿);文字用 `.riso-t` + `data-t`,`--a` `--b` 换色 | 静帧、PPTX 都行(文字层是 CSS,导出时当图) |
 | `glitch-slice` | SVG 滤镜:只沿 y 变化的噪声量化成横带,`feDisplacementMap` 左右错位,再做 R/B 通道分离 | `fx-glitch` / `fx-glitch-l`;图片要比页面大一圈;URL 加 `?live` 开动态脉冲 | 静帧、PPTX 都行;动态仅网页;[预览视频](glitch-slice/preview.mp4)(录制要 `QUERY='?live'`) |
@@ -43,8 +43,9 @@ effects/<name>/
 1. 新建 `effects/<name>/index.html`,引用 `../../styles/poster-bw.css`,保证 1920×1080 的 `section.s`。
 2. 效果代码用 `.fx-<name>` 命名空间,参数走 CSS 变量或 `data-*`,放在文件顶部 `/* EFFECT: ... */` 注释里写清用法。
 3. 尽量零依赖;要用库(GSAP、Three.js)就在注释里写明版本和 CDN。
-4. 用 `node tools/shot.js effects/<name>` 出预览图,并在上表加一行,标明导出能力。
-5. 会动的效果再录一段 `preview.mp4`:`node tools/record.js effects/<name> 4 s1 24`。它逐帧设定时间再截图(CSS 动画走 Web Animations API,WebGL 页读 `window.__t`),所以不卡。需要 ffmpeg:`npm i ffmpeg-static`,用 `FFMPEG_BIN` 指向它。慢的着色器页加 `QUERY="?res=0.5"`,时间太慢看不出动用 `TSCALE=8`。
+4. 页面末尾加 `<script src="../../styles/fit.js"></script>`,窗口比 1920 窄时自动缩放(1920 宽时不变,不影响截图)。
+5. 用 `node tools/shot.js effects/<name>` 出预览图,并在上表加一行,标明导出能力。
+6. 会动的效果再录一段 `preview.mp4`:`node tools/record.js effects/<name> 4 s1 24`。它逐帧设定时间再截图(CSS 动画走 Web Animations API,WebGL 页读 `window.__t`),所以不卡。需要 ffmpeg:`npm i ffmpeg-static`,用 `FFMPEG_BIN` 指向它。慢的着色器页加 `QUERY="?res=0.5"`,时间太慢看不出动用 `TSCALE=8`。
 
 ## 待做(想法)
 
