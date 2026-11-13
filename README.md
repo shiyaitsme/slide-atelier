@@ -8,9 +8,11 @@ layouts/    版式片段,直接复制进 deck 的 index.html,再改文字和图
 effects/    视觉效果收藏,一个效果一个文件夹,见 effects/README.md
 templates/  共用模板:deck-skeleton(五种基础页型)、presenter(网页演讲模式)
 art/        配图生成脚本(泡沫膜、肋骨、液态金属)
-tools/      shot.js 渲染截图,build.py 打包 PPTX 和 PDF,gl-shot.js 给 WebGL 页截图,
-            png-pdf.js 把一组 PNG 拼成 PDF,record.js 录效果演示视频
+tools/      shot.js 渲染截图,build.py 打包图片版,gl-shot.js 给 WebGL 页截图,
+            png-pdf.js 把一组 PNG 拼成 PDF,record.js 录效果演示视频,
+            check.js 版面检查,build_editable.py 可编辑版
 decks/      成品,每个 deck 一个文件夹
+DESIGN.md   设计原则与交付检查表
 NOTES.md    踩坑记录
 ```
 
@@ -36,10 +38,20 @@ python art/generate.py decks/my-deck/art          # 重新生成配图(可选)
 # 编辑 decks/my-deck/index.html 与 notes.json
 export PLAYWRIGHT_CORE=<playwright-core 路径>
 node tools/shot.js decks/my-deck                  # 渲染成 png/
+node tools/check.js decks/my-deck                 # 检查文字裁切和溢出
 python tools/build.py decks/my-deck my-deck       # 打包 pptx 和 pdf
 ```
 
-页面是整页图片,PPTX 里文字不可编辑,文字放在每页的备注里。
+## 两条输出路线
+
+| | 图片版 (`shot.js` + `build.py`) | 可编辑版 (`build_editable.py`) |
+|---|---|---|
+| 文字 | 烘进图片,不可改,文字在备注里 | 真文本框,可直接改 |
+| 视觉 | 叠印、镂空字、任意 CSS 效果 | 只有普通文字、线条、矩形、图片 |
+| 字体 | 不依赖对方电脑 | 对方需安装 Anton、Space Mono、Noto Sans SC |
+| 适用 | 展示、投稿、视觉优先 | 需要多人修改、反复改字 |
+
+可编辑版的写法见 `tools/build_editable.py` 顶部注释,示例在 `decks/organic-forms/editable.json`(只做了 2 页,没有在 PowerPoint 里实际打开确认过版面)。
 
 ## WebGL deck(dream-high 这一类)
 

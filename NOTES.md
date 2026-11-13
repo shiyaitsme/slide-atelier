@@ -54,3 +54,9 @@
 ## Git
 - 推送常被拒,因为别人也往 `initial-structure` 推(上传的参考图、其他 deck)。先 `git fetch`,看新提交有没有碰同一批文件,没有就 `git rebase origin/initial-structure` 再推。不要强推。
 - `rebase` 和 `push` 不要放在同一轮并行执行,顺序错了会推出旧的历史。
+
+## 检查脚本
+- `tools/check.js` 只查两类硬错误:文字被页面边缘裁掉、文字溢出容器。刻意出血的元素加 `data-bleed` 放行。
+- 没有做"元素重叠"检测:这套风格里大字叠印、镂空词压图是刻意的,检测会大量误报。
+- 竖排文字(`writing-mode: vertical-rl`)的 `scrollWidth` 判断不适用,脚本已跳过。
+- `+` 定位标记的数量要算好:每个 72 px,14 个刚好在 1080 px 内,15 个会被裁掉。
