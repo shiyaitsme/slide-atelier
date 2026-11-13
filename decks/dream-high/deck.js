@@ -377,7 +377,7 @@
   for (let i = 0; i < NP; i++) cpr.appendChild(document.createElement('i'));
   function chromeSet() {
     const s = slides[cur];
-    chrome.dataset.theme = s.dataset.theme; cch.textContent = s.dataset.ch;
+    chrome.dataset.theme = s.dataset.theme; chrome.dataset.pg = cur + 1; cch.textContent = s.dataset.ch;
     cfo.textContent = String(cur + 1).padStart(2, '0') + ' — ' + String(NP).padStart(2, '0');
     [...cpr.children].forEach((c, i) => { c.className = i === cur ? 'on' : (i < cur ? 'done' : ''); });
     document.title = 'Dream big. Dream high. — ' + (cur + 1) + '/' + NP;
@@ -414,7 +414,7 @@
     if (STATIC || t - mouse.last > 2.5) { mx = .55 + .25 * Math.sin(t * .5); my = .4 + .2 * Math.cos(t * .37); mouse.tx = mx; mouse.ty = my; }
     mouse.x += (mouse.tx - mouse.x) * (STATIC ? 1 : .08); mouse.y += (mouse.ty - mouse.y) * (STATIC ? 1 : .08);
     gl.viewport(0, 0, cv.width, cv.height);
-    gl.uniform2f(u.res, cv.width, cv.height); gl.uniform1f(u.t, t); gl.uniform1f(u.te, t - tEnter); gl.uniform1f(u.prog, prog);
+    gl.uniform2f(u.res, cv.width, cv.height); gl.uniform1f(u.t, t); gl.uniform1f(u.te, STATIC ? 99 : t - tEnter); gl.uniform1f(u.prog, prog);   // static export: entrance animations (p7 pixel reveal) are already resolved
     gl.uniform2f(u.m, mouse.x, mouse.y); gl.uniform1i(u.pg, cur); gl.uniform1i(u.pv, prev);
     gl.uniform1i(u.n, frames[cur].length); gl.uniform1i(u.np, frames[prev].length);
     gl.uniform4fv(u.f, fa); gl.uniform1fv(u.fi, fia); gl.uniform4fv(u.fp, fpa); gl.uniform1fv(u.fpi, fpia);

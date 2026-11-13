@@ -50,6 +50,9 @@ html,body{width:100%;height:100%;background:#0d0d0d;overflow:hidden}
 .cap b{color:var(--fg);font-weight:700;letter-spacing:.14em}
 .px{font:400 18px/1 var(--f-px);letter-spacing:.06em;color:var(--acc)}
 .rule{height:1px;background:var(--fg);opacity:.28}
+/* no one-word last lines */
+.lead{text-wrap:pretty}
+.cn,.stg p,.tt p,.rl p,.mvi p{text-wrap:balance}
 .mk{display:block;overflow:hidden;padding-bottom:.24em;margin-bottom:-.24em}
 .mk>span{display:block}
 .right{text-align:right}
@@ -70,6 +73,8 @@ body.static .rv,body.static .mk>span{transition:none!important}
 .chrome>*{position:absolute;white-space:nowrap}
 .c-tl{left:96px;top:44px}.c-tr{right:96px;top:44px}
 .c-bl{left:96px;bottom:44px}.c-br{right:96px;bottom:44px;display:flex;gap:6px}
+/* p4: the photo is busy right up to the corners, so give the top-right label and pager a paper backing (same treatment as its FIG. caption) */
+.chrome[data-pg="4"] :is(.c-tr,.c-br){background:rgba(232,228,219,.88);padding:6px 10px;margin:-6px -10px;backdrop-filter:blur(6px)}
 .c-br i{display:block;width:12px;height:12px;border:1px solid currentColor;opacity:.45;transition:all .4s}
 .c-br i.on{background:currentColor;opacity:1}
 .c-br i.done{opacity:.9;background:currentColor;transform:scale(.55)}
@@ -144,7 +149,7 @@ body.static .rv,body.static .mk>span{transition:none!important}
 .mvi h4{font:500 54px/1 var(--f-disp);margin:14px 0 6px}
 .mvi h4 i{font:400 20px/1 var(--f-cjk);font-style:normal;margin-left:14px;letter-spacing:.12em;color:var(--fg2)}
 .mvi p{font:400 20px/1.5 var(--f-text);color:var(--fg2)}
-#p5 .big{position:absolute;left:700px;top:790px;font:500 260px/1 var(--f-disp);font-style:italic;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1.5px #fff;mix-blend-mode:difference;white-space:nowrap;text-align:left}
+#p5 .big{position:absolute;left:700px;top:730px;font:500 260px/1 var(--f-disp);font-style:italic;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:2.5px #fff;mix-blend-mode:difference;white-space:nowrap;text-align:left}
 #p5 .fcap{grid-column:1/5;grid-row:8/9;align-self:end;margin-bottom:-58px;margin-left:150px}
 
 /* ---------- P6 ---------- */
@@ -167,9 +172,9 @@ body.static .rv,body.static .mk>span{transition:none!important}
 /* ---------- P7 ---------- */
 #p7 .e{grid-column:1/9;grid-row:1/2;align-self:start}
 #p7 .t{grid-column:1/9;grid-row:1/2;align-self:end}
-#p7 .t.h2{font-size:70px}
+#p7 .t.h2{font-size:70px;margin-bottom:-12px}
 #p7 .tn{grid-column:9/13;grid-row:1/2;align-self:end}
-#p7 .th{grid-row:2/5;position:relative}
+#p7 .th{grid-row:2/5;position:relative;margin-top:14px}
 #p7 .th .frame{position:relative;width:100%;height:100%}
 #p7 .th .cap{position:absolute;left:0;top:calc(100% + 14px);line-height:1.5;font-size:12.5px;white-space:nowrap}
 #p7 .th .cap b{display:block;font-size:13px}
@@ -189,9 +194,9 @@ body.static .rv,body.static .mk>span{transition:none!important}
 
 /* ---------- P8 ---------- */
 #p8 .g{text-align:center}
-#p8 .e{grid-column:1/13;grid-row:2/3;align-self:end}
+#p8 .e{grid-column:1/13;grid-row:2/3;align-self:end;margin-bottom:40px}
 #p8 .t{grid-column:1/13;grid-row:3/6;align-self:center}
-#p8 .zh-l{grid-column:1/13;grid-row:6/7;font-size:44px;color:var(--ink);align-self:start;margin-top:30px}
+#p8 .zh-l{grid-column:1/13;grid-row:6/7;font-size:44px;color:var(--ink);align-self:start;margin-top:62px}
 #p8 .lead{grid-column:4/10;grid-row:7/8;align-self:start}
 #p8 .cr{grid-column:1/13;grid-row:8/9;align-self:end;display:grid;grid-template-columns:1fr 1fr 1fr;text-align:left;column-gap:24px}
 .cr div{border-top:1px solid rgba(22,23,21,.4);padding-top:10px}
