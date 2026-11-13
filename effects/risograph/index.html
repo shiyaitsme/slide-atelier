@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: risograph — 孔版套印。把图拆成两层单色油墨(A、B),各自按明暗取墨量,错位几像素后 multiply 叠在纸色上,
+   再用噪声打掉一部分墨点(漏墨)。
+   图片:  <img class="fx-riso">      浅底深色图(墨 = 暗部)      粉 + 蓝
+          <img class="fx-riso-inv">  深底亮主体的图(墨 = 亮部)   粉 + 蓝
+          <img class="fx-riso-2">    橙 + 青绿
+   文字:  <div class="riso-t" data-t="同样的文字">同样的文字</div>  两层字错位 multiply,--a / --b 换色,--dx / --dy 错位量
+   改墨色:改 <filter> 里 feColorMatrix 的第 1、2、3 行常数(RGB 0-1);改错位:改 feOffset。
+   纸色在 feFlood,默认等于 poster-bw 的 --paper,所以图的边缘和页面无缝。 */
+.fx-riso{filter:url(#riso)} .fx-riso-inv{filter:url(#riso-inv)} .fx-riso-2{filter:url(#riso-2)}
+.riso-t{position:relative;color:var(--a,#ff4f9a)}
+.riso-t::after{content:attr(data-t);position:absolute;left:0;top:0;color:var(--b,#1f4fd8);
+  transform:translate(var(--dx,10px),var(--dy,-6px));mix-blend-mode:multiply}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- 粉 + 蓝,墨量 = 暗部 -->
+    <filter id="riso" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feFlood flood-color="#efefec" result="paper"/>
+      <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>
+      <feColorMatrix in="g" values="0 0 0 0 1  0 0 0 0 .31  0 0 0 0 .6  -1.25 0 0 0 1.1" result="a0"/>
+      <feColorMatrix in="g" values="0 0 0 0 .12  0 0 0 0 .31  0 0 0 0 .85  -2.4 0 0 0 1.25" result="b0"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="3" result="n1"/>
+      <feColorMatrix in="n1" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 5.9" result="m1"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="9" result="n2"/>
+      <feColorMatrix in="n2" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 5.9" result="m2"/>
+      <feComposite in="a0" in2="m1" operator="in" result="a1"/>
+      <feComposite in="b0" in2="m2" operator="in" result="b1"/>
+      <feOffset in="a1" dx="-5" dy="3" result="a"/>
+      <feOffset in="b1" dx="6" dy="-3" result="b"/>
+      <feBlend in="a" in2="paper" mode="multiply" result="p"/>
+      <feBlend in="b" in2="p" mode="multiply"/>
+    </filter>
+    <!-- 粉 + 蓝,墨量 = 亮部(深底亮主体的图) -->
+    <filter id="riso-inv" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feFlood flood-color="#efefec" result="paper"/>
+      <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>
+      <feColorMatrix in="g" values="0 0 0 0 1  0 0 0 0 .31  0 0 0 0 .6  1.5 0 0 0 -.12" result="a0"/>
+      <feColorMatrix in="g" values="0 0 0 0 .12  0 0 0 0 .31  0 0 0 0 .85  2.6 0 0 0 -1.25" result="b0"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="3" result="n1"/>
+      <feColorMatrix in="n1" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 5.9" result="m1"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="9" result="n2"/>
+      <feColorMatrix in="n2" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 5.9" result="m2"/>
+      <feComposite in="a0" in2="m1" operator="in" result="a1"/>
+      <feComposite in="b0" in2="m2" operator="in" result="b1"/>
+      <feOffset in="a1" dx="-5" dy="3" result="a"/>
+      <feOffset in="b1" dx="6" dy="-3" result="b"/>
+      <feBlend in="a" in2="paper" mode="multiply" result="p"/>
+      <feBlend in="b" in2="p" mode="multiply"/>
+    </filter>
+    <!-- 橙 + 青绿,墨量 = 暗部 -->
+    <filter id="riso-2" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feFlood flood-color="#efefec" result="paper"/>
+      <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>
+      <feColorMatrix in="g" values="0 0 0 0 1  0 0 0 0 .42  0 0 0 0 .13  -1.25 0 0 0 1.1" result="a0"/>
+      <feColorMatrix in="g" values="0 0 0 0 .02  0 0 0 0 .5  0 0 0 0 .52  -2.4 0 0 0 1.25" result="b0"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="5" result="n1"/>
+      <feColorMatrix in="n1" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 5.9" result="m1"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="12" result="n2"/>
+      <feColorMatrix in="n2" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 5.9" result="m2"/>
+      <feComposite in="a0" in2="m1" operator="in" result="a1"/>
+      <feComposite in="b0" in2="m2" operator="in" result="b1"/>
+      <feOffset in="a1" dx="7" dy="4" result="a"/>
+      <feOffset in="b1" dx="-6" dy="-4" result="b"/>
+      <feBlend in="a" in2="paper" mode="multiply" result="p"/>
+      <feBlend in="b" in2="p" mode="multiply"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- 1: 深底亮主体的图 -->
+<section class="s light" id="s1">
+  <img class="abs fx-riso-inv" src="../../decks/girlhood-heroism/art/dancer.png" style="left:900px;top:0;width:1020px;height:1080px;object-fit:cover;object-position:50% 20%">
+  <div class="abs mono" style="left:90px;top:80px">fx / risograph — inverted photo</div>
+  <div class="abs anton riso-t" data-t="RISO" style="left:80px;top:230px;font-size:520px">RISO</div>
+  <div class="abs" style="left:96px;top:840px;font-size:44px;font-weight:300;letter-spacing:.14em;line-height:1.6">两层油墨,错位几像素<br>叠出来的地方变成第三种颜色</div>
+</section>
+
+<!-- 2: 白底黑线的图 + 另一组墨色 -->
+<section class="s light" id="s2">
+  <img class="abs fx-riso-2" src="../../decks/organic-forms/art/foam_light.png" style="left:90px;top:90px;width:900px;height:900px">
+  <div class="abs mono" style="left:1100px;top:100px">fx / risograph — 橙 + 青绿</div>
+  <div class="abs riso-t" data-t="套印" style="--a:#ff6a21;--b:#0a8186;--dx:-12px;--dy:8px;left:1090px;top:200px;font-size:360px;font-weight:900;line-height:1">套印</div>
+  <div class="abs mono" style="left:1100px;top:700px;color:#111;font-size:18px">--a / --b 换墨色<br>--dx / --dy 调错位<br>feOffset 调图片的错位</div>
+</section>
+</body></html>

@@ -32,6 +32,9 @@ effects/<name>/
 | `pixel-ornament` | 40×68 像素花纹遮罩(`art/pixel_ornament.py` 生成 `ornament.css`),同一遮罩可做白色花纹或透出照片,可镜像 | `px-white` / `px-orn` / `flip`,见 demo | 静帧、PPTX 都行 |
 | `sparkle` | 纯 CSS 星光、加号、菱形,可闪烁 | `sp-star` / `sp-plus` / `sp-dia`,`--s` 大小 `--c` 颜色 | 静帧可导出;闪烁只在网页 |
 | `thin-lace` | 2 格宽的细线像素蕾丝(卷草+小花+叶),canvas 自绘 | `<canvas class="lace" data-w data-h data-cell data-color data-flip data-seed>` + `thin-lace.js` | 静帧可导出 |
+| `risograph` | SVG 滤镜:拆成两层单色油墨,按明暗取墨量,错位后 `multiply` 叠在纸色上,噪声打掉部分墨点 | `fx-riso`(粉+蓝,暗部上墨)/ `fx-riso-inv`(深底亮主体的图,亮部上墨)/ `fx-riso-2`(橙+青绿);文字用 `.riso-t` + `data-t`,`--a` `--b` 换色 | 静帧、PPTX 都行(文字层是 CSS,导出时当图) |
+| `glitch-slice` | SVG 滤镜:只沿 y 变化的噪声量化成横带,`feDisplacementMap` 左右错位,再做 R/B 通道分离 | `fx-glitch` / `fx-glitch-l`;图片要比页面大一圈;URL 加 `?live` 开动态脉冲 | 静帧、PPTX 都行;动态仅网页;[预览视频](glitch-slice/preview.mp4)(录制要 `QUERY='?live'`) |
+| `particle-text` | canvas:文字画到离屏层采样成点阵,粒子从外围飞入成字,鼠标靠近被推开 | `<canvas class="fx-particles" data-text data-font data-gap …>`,`data-ghost` 在没有鼠标时用自动游走的"幽灵鼠标" | 网页可动、可交互;静帧是成字后一刻;[预览视频](particle-text/preview.mp4) |
 
 "导出"一列决定它能不能进 PPTX:`build.py` 只打包静帧,动效在 PPTX 里会变成一张图,完整效果要用 `templates/presenter` 在网页里演讲。
 
@@ -45,4 +48,4 @@ effects/<name>/
 
 ## 待做(想法)
 
-ASCII 化图片(`file://` 下不能读像素,要走本地服务器或预生成)、Three.js 可旋转模型页、SVG 路径描绘、TouchDesigner 录屏循环背景。
+ASCII 化图片(`file://` 下不能读像素,要走本地服务器或预生成)、Three.js 可旋转模型页、TouchDesigner 录屏循环背景、扫描线/CRT、光斑渐变背景、文字残影、磨砂玻璃、鼠标视差、鼠标放大镜。

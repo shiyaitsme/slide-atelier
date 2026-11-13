@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: particle-text — 粒子成字。canvas 把文字画到离屏层,按 gap 间距采样出点阵,每个点从随机位置飞到目标位置;
+   鼠标靠近时粒子被推开,移开后弹回。零依赖。
+   <canvas class="fx-particles" width="1920" height="1080"
+           data-text="PARTICLE" data-font="400 380px Anton" data-x="960" data-y="540"
+           data-align="center" data-gap="6" data-color="#f2f2f0" data-accent="#ff4f9a" data-ghost></canvas>
+   data-text     文字(\n 换行,行距 data-lh,默认 1.05 倍字号)
+   data-font     canvas font 简写,须是页面已加载的字体
+   data-x/y      文字锚点(画布坐标),data-align = left | center | right,y 是整段文字的垂直中心
+   data-gap      采样间距 px,越小越密越慢(6 ≈ 几千个点)
+   data-accent   强调色,约 12% 的点用它(可省略)
+   data-ghost    没有真实鼠标时用一个自动游走的"幽灵鼠标",展示推开效果(静帧、录视频用)
+   画布默认铺满整页并接收鼠标;页面上的其他文字加 pointer-events:none,否则会挡住鼠标。
+   时间:window.__t 存在时用它(record.js 逐帧录制),否则用页面自己的时钟。成字约 1.6 秒完成。 */
+canvas.fx-particles{position:absolute;left:0;top:0;width:1920px;height:1080px}
+</style>
+</head>
+<body>
+<section class="s dark" id="s1">
+  <canvas class="fx-particles" width="1920" height="1080"
+    data-text="PARTICLE" data-font="400 400px Anton" data-x="960" data-y="520" data-align="center"
+    data-gap="6" data-color="#f2f2f0" data-accent="#ff4f9a" data-ghost></canvas>
+  <div class="abs mono" style="left:90px;top:80px;pointer-events:none">fx / particle-text — 鼠标靠近会推开</div>
+  <div class="abs mono" style="left:90px;top:960px;pointer-events:none;color:#8d8d90">canvas · 无依赖 · 网页演讲时可交互</div>
+</section>
+
+<section class="s dark" id="s2">
+  <canvas class="fx-particles" width="1920" height="1080"
+    data-text="粒子&#10;成字" data-font="900 330px 'Noto Sans SC'" data-x="140" data-y="540" data-align="left" data-lh="1.08"
+    data-gap="7" data-color="#f2f2f0" data-accent="#7fe3d0" data-ghost></canvas>
+  <div class="abs mono" style="left:1180px;top:140px;pointer-events:none">fx / particle-text — 中文</div>
+  <div class="abs" style="left:1180px;top:200px;font-size:40px;font-weight:300;letter-spacing:.14em;line-height:1.8;pointer-events:none">任何字体、任何文字<br>采样出来的都是点</div>
+</section>
+
+<script>
+(function(){
+  const hash=n=>{const x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x)};
+  const ease=x=>1-Math.pow(1-x,3);
+  const jobs=[];
+  const t0=performance.now();
+  const clock=()=>window.__t!==undefined?window.__t:(performance.now()-t0)/1000;
+
+  async function init(cv){
+    const W=cv.width,H=cv.height,gap=+(cv.dataset.gap||6);
+    const font=cv.dataset.font||"400 300px Anton";
+    await document.fonts.load(font,cv.dataset.text);
+    // 1. 离屏画文字
+    const off=document.createElement('canvas');off.width=W;off.height=H;
+    const g=off.getContext('2d',{willReadFrequently:true});
+    g.font=font;g.fillStyle='#fff';g.textBaseline='middle';
+    const align=cv.dataset.align||'center';g.textAlign=align;
+    const size=parseFloat(font.match(/(\d+(?:\.\d+)?)px/)[1]);
+    const lh=size*(+(cv.dataset.lh||1.05));
+    const lines=(cv.dataset.text||'').split('\n');
+    const y0=(+cv.dataset.y||H/2)-lh*(lines.length-1)/2;
+    lines.forEach((ln,i)=>g.fillText(ln,+cv.dataset.x||W/2,y0+i*lh));
+    const px=g.getImageData(0,0,W,H).data;
+    // 2. 采样
+    const ps=[];let k=0;
+    for(let y=gap/2;y<H;y+=gap)for(let x=gap/2;x<W;x+=gap){
+      if(px[((y|0)*W+(x|0))*4+3]>128){
+        k++;
+        // 起点:画面外围的随机点,有一点向中心的偏移
+        const a=hash(k*1.3)*Math.PI*2,r=700+hash(k*2.7)*600;
+        ps.push({tx:x,ty:y,sx:W/2+Math.cos(a)*r,sy:H/2+Math.sin(a)*r*.62,
+          d:hash(k*5.1)*.45+(x/W)*.2,acc:hash(k*9.3)<.12,ph:hash(k*3.3)*6.28});
+      }
+    }
+    let x0=1e9,x1=-1,y0b=1e9,y1=-1;
+    for(const p of ps){x0=Math.min(x0,p.tx);x1=Math.max(x1,p.tx);y0b=Math.min(y0b,p.ty);y1=Math.max(y1,p.ty)}
+    const o={cv,ctx:cv.getContext('2d'),ps,gap,box:[(x0+x1)/2,(y0b+y1)/2,(x1-x0)/2,(y1-y0b)/2],
+      c:cv.dataset.color||'#fff',a:cv.dataset.accent||null,ghost:'ghost' in cv.dataset,mx:-9999,my:-9999,real:false};
+    cv.addEventListener('mousemove',e=>{
+      const b=cv.getBoundingClientRect();
+      o.mx=(e.clientX-b.left)*W/b.width;o.my=(e.clientY-b.top)*H/b.height;o.real=true});
+    cv.addEventListener('mouseleave',()=>{o.real=false;o.mx=o.my=-9999});
+    jobs.push(o);
+  }
+
+  function draw(o,t){
+    const {ctx,ps,gap}=o,W=o.cv.width,H=o.cv.height;
+    ctx.clearRect(0,0,W,H);
+    let mx=o.mx,my=o.my;
+    if(!o.real&&o.ghost&&t>1.6){           // 幽灵鼠标:成字后才出现,在文字范围内沿李萨如曲线游走
+      const u=t-1.6,[cx,cy,ax,ay]=o.box;
+      mx=cx+ax*.8*Math.sin(u*.9+.9);my=cy+ay*.7*Math.sin(u*1.3+.4);
+    }
+    const R=170,s=gap*.62,off=(gap-s)/2;
+    const fills=[o.c,o.a||o.c];
+    for(let pass=0;pass<2;pass++){
+      ctx.fillStyle=fills[pass];ctx.beginPath();
+      for(const p of ps){
+        if((p.acc?1:0)!==pass)continue;
+        const q=Math.min(1,Math.max(0,(t-p.d)/1.0)),e=ease(q);
+        let x=p.sx+(p.tx-p.sx)*e,y=p.sy+(p.ty-p.sy)*e;
+        if(q>=1){                             // 到位后轻微呼吸
+          x+=Math.sin(t*1.7+p.ph)*.9;y+=Math.cos(t*1.3+p.ph)*.9;
+        }
+        const dx=x-mx,dy=y-my,d2=dx*dx+dy*dy;
+        if(d2<R*R&&d2>.01){
+          const d=Math.sqrt(d2),f=Math.pow(1-d/R,2)*120;
+          x+=dx/d*f;y+=dy/d*f;
+        }
+        ctx.rect(x+off-gap/2,y+off-gap/2,s,s);
+      }
+      ctx.fill();
+    }
+  }
+
+  function loop(){
+    const t=clock();
+    for(const o of jobs)draw(o,t);
+    requestAnimationFrame(loop);
+  }
+  Promise.all([...document.querySelectorAll('canvas.fx-particles')].map(init)).then(()=>requestAnimationFrame(loop));
+})();
+</script>
+</body></html>

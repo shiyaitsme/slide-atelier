@@ -35,6 +35,11 @@
 - 同一个路径名的图被 `read_file` 看过后会走缓存,改完先复制成新文件名再看。
 - 沙箱里软件渲染 WebGL 很慢:1920×1080 的 fbm 着色器约 5 秒一帧。录制时用 `?res=0.5`,约 1.7 秒一帧。
 - 沙箱的 `/tmp` 会被清空,`/root` 只读。ffmpeg 的安装和录制要放在同一条命令里,别分开跑;`pkill -f record.js` 会把自己的 shell 也杀掉。
+- `risograph`:墨层的 alpha 用 `feColorMatrix` 的最后一行做明暗映射(`-1.25R+1.1`),深底亮主体的图要反号。漏墨用 `feTurbulence` 再过一次阈值矩阵,`feComposite in` 打掉。
+- `glitch-slice`:`feTurbulence baseFrequency="0 f"` 的 x 频率为 0,噪声只沿 y 变,才会是横带。带高由 f 决定,`.045` 太碎(像扫描线),`.016` 左右才是成块的色带。位移图的 y 通道要固定 .5,否则会上下错位。
+- 动态滤镜默认关,用 `?live` 打开;否则 `shot.js` 的截图会随机落在"关"的瞬间。`record.js` 要带 `QUERY='?live'`。
+- `particle-text`:`document.fonts.load(font)` 之后才能采样,否则画出来的是回退字体。成字动画写成时间的纯函数,`window.__t` 才能逐帧录制。"幽灵鼠标"要按粒子包围盒游走,放在固定位置可能落在空白处,截图看不到推开效果。
+- `read_file` 读过的图改完后仍返回缓存(哪怕文件已经重新渲染),要复制成新文件名再看。读图和复制不要放在同一批并行调用里,读会先于复制执行。
 
 ## pixel-lace 风格练习
 `styles/pixel-lace.css` 是配色和字体,`decks/pixel-lace-study` 是 6 页练习稿(占位图在 `art/photo-*.png`,可按文件名替换),花纹由 `art/pixel_ornament.py` 生成。参考图见 `references/pixel-lace-dream-01.png`。

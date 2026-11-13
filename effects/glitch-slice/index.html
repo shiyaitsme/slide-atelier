@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles/poster-bw.css">
+<style>
+/* EFFECT: glitch-slice — 切片故障。只沿 y 变化的噪声量化成一条条横带,每条带用 feDisplacementMap 左右错位,
+   最后把 R、B 通道再各偏一点(和 chromatic 同法)。纯 SVG 滤镜,静帧能进 PPTX。
+   class="fx-glitch"(中) / "fx-glitch-l"(强)。图片要比页面大一圈,否则位移后露出边缘。
+   换切片分布:改 feTurbulence 的 seed;改带高:改 baseFrequency 的第二个值(越小带越高);
+   改错位量:改 feDisplacementMap 的 scale。
+   网页动态:URL 加 ?live,底部脚本会每 1/8 秒换一次 seed,并忽强忽弱(约 40% 时间在故障),
+   驱动页面上所有 glitch 滤镜。默认关闭,所以截图和导出是固定的静帧。
+   window.__t 存在时用它当时间(record.js 逐帧录制用,QUERY='?live')。 */
+.fx-glitch{filter:url(#glitch)} .fx-glitch-l{filter:url(#glitch-l)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="glitch" x="-6%" y="-2%" width="112%" height="104%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0 .016" numOctaves="1" seed="7" result="n"/>
+      <!-- 拉开对比,量化成台阶,x 通道 = 位移,y 通道固定 .5(不上下位移) -->
+      <feColorMatrix in="n" values="3.2 0 0 0 -1.1  0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 1" result="c"/>
+      <feComponentTransfer in="c" result="q">
+        <feFuncR type="discrete" tableValues=".5 .5 0 .5 .5 .5 .5 .5 1 .5 .5 .22 .5 .5 .5 .78"/>
+      </feComponentTransfer>
+      <feDisplacementMap in="SourceGraphic" in2="q" scale="110" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feColorMatrix in="d" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/><feOffset in="r" dx="-7" result="ro"/>
+      <feColorMatrix in="d" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"/>
+      <feColorMatrix in="d" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/><feOffset in="b" dx="7" result="bo"/>
+      <feBlend in="ro" in2="g" mode="screen" result="rg"/><feBlend in="rg" in2="bo" mode="screen"/>
+    </filter>
+    <filter id="glitch-l" x="-10%" y="-2%" width="120%" height="104%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0 .011" numOctaves="2" seed="21" result="n"/>
+      <feColorMatrix in="n" values="3.6 0 0 0 -1.3  0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 1" result="c"/>
+      <feComponentTransfer in="c" result="q">
+        <feFuncR type="discrete" tableValues=".5 .5 0 .5 .5 1 .5 .5 .5 .1 .5 .5 .9 .5 .3 .5"/>
+      </feComponentTransfer>
+      <feDisplacementMap in="SourceGraphic" in2="q" scale="220" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feColorMatrix in="d" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/><feOffset in="r" dx="-14" dy="-2" result="ro"/>
+      <feColorMatrix in="d" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"/>
+      <feColorMatrix in="d" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/><feOffset in="b" dx="14" dy="2" result="bo"/>
+      <feBlend in="ro" in2="g" mode="screen" result="rg"/><feBlend in="rg" in2="bo" mode="screen"/>
+    </filter>
+  </defs>
+</svg>
+
+<section class="s dark" id="s1">
+  <!-- 图片比页面大一圈 -->
+  <img class="abs fx-glitch" src="../../decks/girlhood-heroism/art/dancer.png" style="left:760px;top:-80px;width:1260px;height:1240px;object-fit:cover;object-position:50% 20%">
+  <div class="abs mono" style="left:90px;top:80px">fx / glitch-slice — image</div>
+  <div class="abs anton" style="left:80px;top:300px;font-size:430px;mix-blend-mode:difference;color:#fff">SLICE</div>
+  <div class="abs" style="left:96px;top:880px;font-size:48px;font-weight:300;letter-spacing:.18em">横向切片错位 + 通道分离</div>
+</section>
+
+<section class="s dark" id="s2">
+  <div class="abs anton fx-glitch-l" style="left:70px;top:210px;font-size:640px;color:#f2f2f0">SIGNAL</div>
+  <div class="abs mono" style="left:90px;top:80px">fx / glitch-slice — text (strong)</div>
+  <div class="abs fx-glitch" style="left:96px;top:860px;font-size:96px;font-weight:900;letter-spacing:.12em">信号在这里断掉一秒</div>
+</section>
+
+<script>
+/* 网页动态(?live):每 1/8 秒换一个 seed;约 40% 的时间故障,其余时间不位移(scale 压到 0) */
+(function(){
+  if(!/[?&]live/.test(location.search)) return;
+  const defs=[...document.querySelectorAll('filter')].map(f=>({
+    t:f.querySelector('feTurbulence'),d:f.querySelector('feDisplacementMap'),s0:+f.querySelector('feDisplacementMap').getAttribute('scale')}));
+  const hash=n=>{const x=Math.sin(n*127.1)*43758.5453;return x-Math.floor(x)};
+  let last=-1;
+  function tick(){
+    const t=window.__t!==undefined?window.__t:performance.now()/1000;
+    const step=Math.floor(t*8);
+    if(step!==last){
+      last=step;
+      const on=hash(step>>1)<.4;                 // 每两步决定一次开关
+      defs.forEach((o,i)=>{
+        o.t.setAttribute('seed',1+Math.floor(hash(step+i*31)*60));
+        o.d.setAttribute('scale',on?o.s0*(.5+hash(step*3+i)*.8):0);
+      });
+    }
+    requestAnimationFrame(tick);
+  }
+  /* 元素是否带 由使用者决定;这里直接驱动滤镜,所以只在需要动的页面引入本脚本 */
+  tick();
+})();
+</script>
+</body></html>
