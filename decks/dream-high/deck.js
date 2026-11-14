@@ -44,7 +44,7 @@
   precision highp float; precision highp int;
   uniform vec2 uRes; uniform float uT, uTe, uProg; uniform vec2 uM; uniform int uPg, uPv, uN, uNp;
   uniform vec4 uF[8]; uniform float uFi[8]; uniform vec4 uFp[8]; uniform float uFpi[8];
-  uniform sampler2D uT1,uT2,uT3,uT4,uT5,uT6;
+  uniform sampler2D uT1,uT2,uT3,uT4,uT5,uT6,uT7;   /* uT7: cover cut-out portrait, premultiplied RGBA */
   out vec4 oC;
 
   /* ---------- utils ---------- */
@@ -64,6 +64,7 @@
     if(ra>1.) u.y=(q.y-.5)/ra+.5+(foc.y-.5)*(1.-1./ra); else u.x=(q.x-.5)*ra+.5+(foc.x-.5)*(1.-ra); return u; }
   vec2 cov(vec4 r, vec2 p, vec2 isz, vec2 foc){ return covq(r.z/r.w,(p-r.xy)/r.zw,isz,foc); }
   bool inR(vec4 r, vec2 p){ return p.x>=r.x && p.y>=r.y && p.x<r.x+r.z && p.y<r.y+r.w; }
+  vec4 T7(vec2 uv){ return textureLod(uT7,clamp(uv,vec2(.002),vec2(.998)),0.); }
   float halft(vec2 p,float cs,float ang){ float c=cos(ang),s=sin(ang); vec2 g=vec2(c*p.x-s*p.y,s*p.x+c*p.y)/cs; return length(fract(g)-.5); }
 
   /* ---------- ornament system: everything lives on a 14px cell grid ---------- */
@@ -114,24 +115,33 @@
     float h=smoothstep(.34,.30,halft(p,6.,.785))*(1.-k)*.06; return c-h; }
 
   /* ---------- P1 cover ---------- */
+  /* COVER_MODE 0: colour photo, pure-white lace on top everywhere.
+     COVER_MODE 1: lace is white over the upper photo; lower down the base is a veil (photo ~25%) and the lace shows the photo through. */
+  #define COVER_MODE 0
   vec3 pg1(vec2 p, vec4 F[8], float FI[8], int n){
-    vec3 col=ground(p); vec4 r=F[0];
-    if(p.x>=r.x-4.){
-      vec2 q=(p-r.xy)/r.zw; vec2 foc=vec2(.5,.3); vec2 isz=TS(1);
-      vec3 ph=T(1,cov(r,p,isz,foc));
-      vec2 cq=floor((p-r.xy)/14.)+.5;
-      vec2 pq=cq*14./r.zw; pq.y-=.55*step(.5,pq.y); vec3 pp=T(1,covq(r.z/r.w,pq,isz,foc));
-      float m=chain(cq-vec2(r.z/28.,1.),uT*.45);
-      float jt=hash(cq*1.7); float mm=m*(jt>.2?1.:.3);
-      float fy=smoothstep(.42,.60,q.y), fx=smoothstep(0.,.2,q.x);
-      vec3 phf=mix(ph,vec3(.969),fy);
-      vec3 up=mix(phf,mix(vec3(1.),pp,step(.92,jt)*.5),mm*(1.-fy)*.8);
-      vec3 lo=mix(vec3(.969),pp,mm);
-      vec3 res=mix(up,lo,smoothstep(.46,.64,q.y));
-      res+=vec3(.9,.8,.4)*stars(p,110.,.22)*(1.-smoothstep(.35,.55,q.y));
-      col=mix(col,res,fx);
-    }
-    return col; }
+    vec4 r=F[0]; vec2 q=(p-r.xy)/r.zw;
+    // colour base: the right side keeps the periwinkle sky all the way down, then melts into paper toward the text
+    vec3 col=mix(ground(p),ground(vec2(p.x,p.y*.3)),smoothstep(r.x-420.,r.x+140.,p.x));
+    vec2 isz=vec2(textureSize(uT7,0)); vec2 foc=vec2(.5);
+    vec4 pe=T7(cov(r,p,isz,foc));
+    float fx=smoothstep(0.,.09,q.x);                       // soft left edge of the portrait
+    vec3 res=col*(1.-pe.a*fx)+pe.rgb*fx;
+    // lace chain on the 14px cell grid; each cell reads the portrait at its centre (mosaic)
+    vec2 cq=floor((p-r.xy)/14.)+.5;
+    vec2 pq=cq*14./r.zw; vec4 pc=T7(covq(r.z/r.w,pq,isz,foc)); vec3 pcol=pc.rgb/max(pc.a,.001);
+    float m=chain(cq-vec2(r.z/28.,1.),uT*.45);
+    float jt=hash(cq*1.7); float mm=m*(jt>.2?1.:.3);
+  #if COVER_MODE==0
+    vec3 oc=mix(vec3(1.),pcol,step(.92,jt)*pc.a*.55);
+    res=mix(res,oc,mm*fx*mix(.5,.92,pc.a));
+  #else
+    float v=smoothstep(.44,.64,q.y);
+    res=mix(res,vec3(.969),v*.76*fx);
+    vec3 oc=mix(vec3(1.),mix(vec3(1.),pcol,pc.a),v);
+    res=mix(res,oc,mm*fx*.92);
+  #endif
+    res+=vec3(.9,.8,.4)*stars(p,110.,.22)*(1.-smoothstep(.35,.55,q.y))*fx;
+    return res; }
 
   /* ---------- P2 bubbles / refraction ---------- */
   vec3 pg2(vec2 p, vec4 F[8], float FI[8], int n){
@@ -355,9 +365,10 @@
   const u = { res: U('uRes'), t: U('uT'), te: U('uTe'), prog: U('uProg'), m: U('uM'), pg: U('uPg'), pv: U('uPv'), n: U('uN'), np: U('uNp'),
     f: U('uF[0]'), fi: U('uFi[0]'), fp: U('uFp[0]'), fpi: U('uFpi[0]') };
 
-  function loadTex(i, src) {
+  function loadTex(i, src, premul) {
     return new Promise(res => {
       const im = new Image(); im.onload = () => {
+        gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, !!premul);
         const t = gl.createTexture(); gl.activeTexture(gl.TEXTURE0 + i); gl.bindTexture(gl.TEXTURE_2D, t);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -374,7 +385,16 @@
   function pack(list, a, ia) { a.fill(0); ia.fill(1); list.forEach((f, i) => { a.set(f.r, i * 4); ia[i] = f.img; }); }
 
   const chrome = document.getElementById('chrome'), cch = document.getElementById('c-ch'), cfo = document.getElementById('c-fo'), cpr = document.getElementById('c-pr');
-  for (let i = 0; i < NP; i++) cpr.appendChild(document.createElement('i'));
+  const tip = document.getElementById('c-tip');
+  for (let i = 0; i < NP; i++) { const d = document.createElement('i'); d.dataset.i = i; cpr.appendChild(d); }
+  /* direct page jump: click a square in the pager (any page -> any page), or press 1-8 */
+  cpr.addEventListener('click', e => { const d = e.target.closest('i'); if (d) go(+d.dataset.i); e.stopPropagation(); });
+  cpr.addEventListener('pointerover', e => {
+    const d = e.target.closest('i'); if (!d) return; const sr = stage.getBoundingClientRect(), r = d.getBoundingClientRect();
+    tip.textContent = 'P' + (+d.dataset.i + 1) + ' · ' + slides[+d.dataset.i].dataset.ch;
+    tip.style.right = (1920 - (r.right - sr.left) / scale - 6) + 'px'; tip.classList.add('on');
+  });
+  cpr.addEventListener('pointerleave', () => tip.classList.remove('on'));
   function chromeSet() {
     const s = slides[cur];
     chrome.dataset.theme = s.dataset.theme; chrome.dataset.pg = cur + 1; cch.textContent = s.dataset.ch;
@@ -396,6 +416,7 @@
   addEventListener('keydown', e => {
     if (['ArrowRight', 'PageDown', ' ', 'ArrowDown'].includes(e.key)) { go(cur + 1); e.preventDefault(); }
     else if (['ArrowLeft', 'PageUp', 'ArrowUp'].includes(e.key)) { go(cur - 1); e.preventDefault(); }
+    else if (/^[1-8]$/.test(e.key) && !e.metaKey && !e.ctrlKey && !e.altKey) go(+e.key - 1);
     else if (e.key === 'Home') go(0); else if (e.key === 'End') go(NP - 1);
   });
   addEventListener('click', e => { if (e.clientX < innerWidth * .18) go(cur - 1); else go(cur + 1); });
@@ -405,6 +426,7 @@
   addEventListener('pointermove', e => {
     const sr = stage.getBoundingClientRect(); mouse.tx = (e.clientX - sr.left) / sr.width; mouse.ty = (e.clientY - sr.top) / sr.height; mouse.last = now();
   });
+  addEventListener('hashchange', () => { const n = parseInt(location.hash.slice(1), 10); if (n && n - 1 !== cur) go(n - 1); });
   addEventListener('resize', fit);
 
   function draw() {
@@ -426,7 +448,7 @@
 
   /* ---------- boot ---------- */
   fit();
-  Promise.all([document.fonts.ready, ...[1, 2, 3, 4, 5, 6].map(i => loadTex(i - 1, window.__img['r' + i].url))]).then(() => {
+  Promise.all([document.fonts.ready, ...[1, 2, 3, 4, 5, 6, 7].map(i => loadTex(i - 1, window.__img['r' + i].url, i === 7))]).then(() => {
     const hp = parseInt(Q.get('p') || location.hash.slice(1) || '1', 10) || 1;
     measure(); go(hp - 1, true);
     if (STATIC) { draw(); draw(); draw(); } else requestAnimationFrame(draw);

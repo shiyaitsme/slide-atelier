@@ -75,12 +75,19 @@ body.static .rv,body.static .mk>span{transition:none!important}
 .c-bl{left:96px;bottom:44px}.c-br{right:96px;bottom:44px;display:flex;gap:6px}
 /* p4: the photo is busy right up to the corners, so give the top-right label and pager a paper backing (same treatment as its FIG. caption) */
 .chrome[data-pg="4"] :is(.c-tr,.c-br){background:rgba(232,228,219,.88);padding:6px 10px;margin:-6px -10px;backdrop-filter:blur(6px)}
-.c-br i{display:block;width:12px;height:12px;border:1px solid currentColor;opacity:.45;transition:all .4s}
+.c-br{pointer-events:auto}
+.c-br i{display:block;position:relative;width:12px;height:12px;border:1px solid currentColor;opacity:.45;transition:opacity .3s,background .3s;cursor:pointer}
+.c-br i::after{content:"";position:absolute;inset:-9px -3px}   /* bigger click target than the square itself */
 .c-br i.on{background:currentColor;opacity:1}
-.c-br i.done{opacity:.9;background:currentColor;transform:scale(.55)}
+.c-br i.done{opacity:.9;border-color:transparent;background:linear-gradient(currentColor,currentColor) center/55% 55% no-repeat}
+.c-br i:hover{opacity:1}
+.c-br i.done:hover{border-color:currentColor}
+.c-tip{bottom:78px;right:96px;opacity:0;transition:opacity .2s;padding:7px 12px;background:rgba(251,252,255,.92);color:var(--ink);text-shadow:none;font-size:13px;letter-spacing:.14em;pointer-events:none}
+.chrome[data-theme=dark] .c-tip{background:rgba(22,20,28,.88);color:#f4f1f4}
+.c-tip.on{opacity:1}
 
 /* ---------- P1 cover ---------- */
-#p1 .frame{left:1264px;top:0;width:656px;height:1080px}
+#p1 .frame{left:1140px;top:0;width:780px;height:1080px}
 #p1 .t{grid-column:1/8;grid-row:2/6;align-self:center}
 #p1 .zh-l{grid-column:1/8;grid-row:6/7;align-self:start;font-size:48px;color:var(--ink);margin-top:6px}
 #p1 .e{grid-column:1/8;grid-row:1/2}
