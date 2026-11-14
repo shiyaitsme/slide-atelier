@@ -30,7 +30,7 @@ effects/<name>/
 | `path-draw` | SVG `pathLength="1"` + `stroke-dashoffset` 动画 | 路径加 `class="draw"`,`--d` 延迟 `--t` 时长,节点用 `.pop` | 网页可动;静帧是终态;[预览视频](path-draw/preview.mp4) |
 | `duotone` | SVG 灰度 + `feComponentTransfer` 线性映射到两色 | `fx-duo-a/b/c`,改 `tableValues` 换色 | 静帧、PPTX 都行 |
 | `pixel-ornament` | 40×68 像素花纹遮罩(`art/pixel_ornament.py` 生成 `ornament.css`),同一遮罩可做白色花纹或透出照片,可镜像 | `px-white` / `px-orn` / `flip`,见 demo | 静帧、PPTX 都行 |
-| `sparkle` | 纯 CSS 星光、加号、菱形,可闪烁,可加柔光圈 | `sp-star` / `sp-plus` / `sp-dia`,`--s` 大小 `--c` 颜色;`sp-halo` 放在星星前面带光晕;`tw` 闪烁 | 静帧可导出;闪烁只在网页 |
+| `sparkle` | 五角星,圆角,边缘淡淡发光,颜色可换,放在照片上 | `<svg class="st"><use href="#st5"/></svg>`,`--s` 大小 `--c` 颜色;`tw` 呼吸闪烁;`cyc` 颜色循环 | 静帧可导出;闪烁、循环只在网页 |
 | `thin-lace` | 2 格宽的细线像素蕾丝(卷草+小花+叶),canvas 自绘 | `<canvas class="lace" data-w data-h data-cell data-color data-flip data-seed>` + `thin-lace.js` | 静帧可导出 |
 | `risograph` | SVG 滤镜:拆成两层单色油墨,按明暗取墨量,错位后 `multiply` 叠在纸色上,噪声打掉部分墨点 | `fx-riso`(粉+蓝,暗部上墨)/ `fx-riso-inv`(深底亮主体的图,亮部上墨)/ `fx-riso-2`(橙+青绿);文字用 `.riso-t` + `data-t`,`--a` `--b` 换色 | 静帧、PPTX 都行(文字层是 CSS,导出时当图) |
 | `glitch-slice` | SVG 滤镜:只沿 y 变化的噪声量化成横带,`feDisplacementMap` 左右错位,再做 R/B 通道分离 | `fx-glitch` / `fx-glitch-l`;图片要比页面大一圈;URL 加 `?live` 开动态脉冲 | 静帧、PPTX 都行;动态仅网页;[预览视频](glitch-slice/preview.mp4)(录制要 `QUERY='?live'`) |
