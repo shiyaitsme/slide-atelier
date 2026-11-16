@@ -7,7 +7,7 @@ body { background:#444; }
 .s.brown { background:var(--brown); color:#f1ece6; }
 .s.ink { background:var(--ink); color:#f1ece6; }
 .abs { position:absolute; }
-.band { position:absolute; left:0; top:0; width:1920px; background:var(--mist); overflow:hidden; }
+.band { position:absolute; left:0; top:0; width:1920px; background:var(--ink); overflow:hidden; }
 .band img, .abs.img { position:absolute; }
 .en { font-family:'Poppins','Noto Sans SC',sans-serif; font-weight:800; letter-spacing:-.045em; line-height:.9; }
 .ttl { position:absolute; left:130px; font-weight:900; letter-spacing:-.03em; line-height:1.05; }
