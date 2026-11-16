@@ -1,0 +1,23 @@
+/* 参考风格:米白底 + 上方通栏图 + 超粗标题 + 小号正文 + 右下页码 */
+:root { --cream:#e4e3de; --ink:#141414; --brown:#6f5650; --red:#e8321f; --mist:#f2f2f2; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#444; }
+.s { position:relative; width:1920px; height:1080px; overflow:hidden; margin-bottom:20px;
+     background:var(--cream); color:var(--ink); font-family:'Noto Sans SC',sans-serif; font-weight:500; }
+.s.brown { background:var(--brown); color:#f1ece6; }
+.s.ink { background:var(--ink); color:#f1ece6; }
+.abs { position:absolute; }
+.band { position:absolute; left:0; top:0; width:1920px; background:var(--mist); overflow:hidden; }
+.band img, .abs.img { position:absolute; }
+.en { font-family:'Poppins','Noto Sans SC',sans-serif; font-weight:800; letter-spacing:-.045em; line-height:.9; }
+.ttl { position:absolute; left:130px; font-weight:900; letter-spacing:-.03em; line-height:1.05; }
+.pn { position:absolute; right:110px; bottom:62px; font-family:'Poppins',sans-serif; font-weight:800; font-size:104px; line-height:1; letter-spacing:-.04em; }
+.sm { position:absolute; font-size:23px; line-height:1.45; font-weight:500; letter-spacing:.01em; }
+.sm b { font-weight:900; }
+.hl { position:absolute; height:2px; background:currentColor; }
+.vl { position:absolute; width:2px; background:currentColor; }
+.box { position:absolute; display:flex; align-items:center; justify-content:center; text-align:center; font-weight:900; font-size:27px; line-height:1.3; padding:0 18px; }
+.arrow { position:absolute; font-family:'Poppins',sans-serif; font-weight:800; font-size:44px; line-height:1; }
+.dot { position:absolute; width:26px; height:26px; border-radius:50%; background:var(--ink); }
+.red { color:var(--red); }
+.circle { position:absolute; border-radius:50%; background:var(--red); }
