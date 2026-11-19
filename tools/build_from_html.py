@@ -1,7 +1,7 @@
 """Build an editable PPTX (real text boxes, rounded rectangles, pictures) from a deck's
 index.html, using the layout that tools/extract_layout.js measured in Chromium.
 
-Usage: python tools/build_from_html.py decks/<name> <layout.json> <output.pptx>
+Usage: python tools/build_from_html.py decks/<name> <layout.json> <output.pptx> [--latin FONT] [--ea FONT]
 Needs: python-pptx, pillow
 Coordinates: the 1920x1080 px canvas maps to 13.333x7.5 in, so 1 px = 0.5 pt.
 Fonts (Noto Sans SC, Poppins) must be installed where the file is opened.
@@ -20,6 +20,11 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Emu, Pt
 
 deck, layout_path, out = sys.argv[1], sys.argv[2], sys.argv[3]
+# Optional font overrides: --latin "Helvetica Neue" --ea "PingFang SC"
+def _opt(name, default):
+    return sys.argv[sys.argv.index(name) + 1] if name in sys.argv else default
+LATIN = _opt("--latin", None)
+EA = _opt("--ea", None)
 layout = json.load(open(layout_path, encoding="utf-8"))
 notes_path = os.path.join(deck, "notes.json")
 notes = json.load(open(notes_path, encoding="utf-8")) if os.path.exists(notes_path) else []
@@ -134,14 +139,14 @@ for i, sl in enumerate(layout):
                     f = r.font
                     f.size = Pt(rn["size"] * 0.5)
                     f.bold = rn["bold"]
-                    f.name = rn["font"]
+                    f.name = LATIN or rn["font"]
                     f.color.rgb = rgb(rn["color"])
                     rPr = r._r.get_or_add_rPr()
                     if rn["ls"]:
                         rPr.set("spc", str(int(round(rn["ls"] * 0.5 * 100))))
                     # make CJK text use the same face
                     from pptx.oxml.ns import qn
-                    ea = rPr.makeelement(qn("a:ea"), {"typeface": rn["font"] if "Noto" in rn["font"] else "Noto Sans SC"})
+                    ea = rPr.makeelement(qn("a:ea"), {"typeface": EA or "Noto Sans SC"})
                     rPr.append(ea)
     if i < len(notes):
         s.notes_slide.notes_text_frame.text = notes[i]
