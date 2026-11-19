@@ -53,6 +53,18 @@ python tools/build.py decks/my-deck my-deck       # 打包 pptx 和 pdf
 
 可编辑版的写法见 `tools/build_editable.py` 顶部注释,示例在 `decks/organic-forms/editable.json`(只做了 2 页,没有在 PowerPoint 里实际打开确认过版面)。
 
+### 从 HTML 直接生成可编辑版(`extract_layout.js` + `build_from_html.py`)
+
+适用于只用圆角卡片、普通文字、图片的 deck(如 qiaodan-case),不用手写 `editable.json`:
+
+```bash
+node tools/extract_layout.js decks/<name> /tmp/layout.json     # 在 Chromium 里量出每个块和文字的位置
+python tools/build_from_html.py decks/<name> /tmp/layout.json decks/<name>/<name>_可编辑.pptx
+```
+
+卡片变成圆角矩形,文字变成文本框(保留字号、粗细、颜色、行距),带圆角裁切的图片预先裁好再放入,讲稿写入备注。
+没有在 PowerPoint 里实际打开确认过;`.mono`、混合模式、镂空字、动画不支持。改了 `index.html` 后要重新跑一遍。
+
 ## WebGL deck(dream-high 这一类)
 
 文字和版式用 DOM/CSS 排,一个全屏 WebGL2 着色器按每个 `.frame` 的位置画图和特效。页面里不能直接打印成 PDF,要走截图。
