@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>form fluid — deck template</title>
+<link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600&family=Tinos:wght@400;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!--
+  form-fluid 模板。8 种页型,复制 <section> 改文字即可。
+  · 大理石色块:<g data-blob="cx cy r 种子">,改种子换形状,data-src 换贴图(换成照片也行)
+  · 缠绕细线:<svg class="art lines" data-lines="种子 条数">
+  · 字号档:超大 disp 300–420px / 中文标题 h1 96px / 正文 body 24px / 小字 cap 17px
+-->
+
+<!-- 1 封面 COVER -->
+<section class="s" id="s1">
+  <svg class="art">
+    <g data-blob="640 860 560 11" data-hole="120 40 170 5" data-src="art/marble_mix.jpg"></g>
+    <g data-blob="1640 250 400 4" data-src="art/marble_pink.jpg" data-cut="1100,-50 1980,-50 1980,560 1250,240"></g>
+  </svg>
+  <svg class="art lines" data-lines="3 4"></svg>
+  <div class="txt cap" style="left:560px;top:26px">Deck Template</div>
+  <div class="txt cap" style="left:960px;top:26px">Vol. 01</div>
+  <div class="txt cap" style="left:1300px;top:26px">Slide Atelier</div>
+  <div class="txt disp" data-bleed style="left:-18px;top:44px;font-size:400px">form</div>
+  <div class="txt disp" data-bleed style="left:-18px;top:368px;font-size:400px">fluid</div>
+  <div class="txt cap" style="left:30px;top:724px;width:240px">演示者 / Presenter<br>李诗雅 Li Shiya</div>
+  <div class="txt cap" style="left:330px;top:724px;width:240px">场合 / Occasion<br>课程汇报 Seminar</div>
+  <div class="txt cap" style="left:630px;top:724px;width:240px">地点 / Venue<br>Beijing</div>
+  <div class="txt" style="left:1000px;right:46px;top:720px;display:flex;justify-content:space-between">
+    <span class="num" style="font-size:130px">23</span><span class="num" style="font-size:130px">.</span><span class="num" style="font-size:130px">11</span><span class="num" style="font-size:130px">.</span><span class="num" style="font-size:130px">26</span>
+  </div>
+  <div class="txt num" data-bleed style="left:24px;bottom:-34px;font-size:170px">01</div>
+</section>
+
+<!-- 2 目录 CONTENTS:一排关键词,像海报上的 KÖRPER SPIELEN SELBST -->
+<section class="s" id="s2">
+  <svg class="art">
+    <g data-blob="1010 560 470 23" data-hole="-60 -30 150 9" data-wobble=".3" data-src="art/marble_blue.jpg"></g>
+  </svg>
+  <svg class="art lines" data-lines="12 4"></svg>
+  <div class="txt disp" data-bleed style="left:-14px;top:30px;font-size:300px">index</div>
+  <div class="txt cap" style="left:1340px;top:60px;width:520px;text-align:right">目录 / Contents<br>五个部分 · 约 15 分钟</div>
+  <div class="txt" style="left:40px;right:40px;top:640px;display:flex;justify-content:space-between">
+    <div class="cap" style="font-size:22px">01<br>开场 Intro</div>
+    <div class="cap" style="font-size:22px">02<br>背景 Context</div>
+    <div class="cap" style="font-size:22px">03<br>方法 Method</div>
+    <div class="cap" style="font-size:22px">04<br>结果 Result</div>
+    <div class="cap" style="font-size:22px">05<br>结语 Outro</div>
+  </div>
+  <div class="txt num" data-bleed style="right:30px;bottom:-30px;font-size:170px">05</div>
+</section>
+
+<!-- 3 章节页 CHAPTER(黑底) -->
+<section class="s dark" id="s3">
+  <svg class="art">
+    <g data-blob="1450 430 430 31" data-src="art/marble_pink.jpg" data-outline="#f6f6f3" data-cut="900,-60 1980,-60 1980,1140 1180,1140 1500,620"></g>
+  </svg>
+  <svg class="art lines" data-lines="7 4"></svg>
+  <div class="txt cap" style="left:40px;top:40px">Chapter</div>
+  <div class="txt num" style="left:30px;top:90px;font-size:360px;line-height:.9">02</div>
+  <div class="txt cap" style="left:40px;top:560px;width:520px">背景 / Context<br>为什么现在要谈这个问题</div>
+  <div class="txt disp" data-bleed style="left:-10px;bottom:-60px;font-size:330px">context</div>
+</section>
+
+<!-- 4 内容页 CONTENT:左侧结论句,右侧色块出血 -->
+<section class="s" id="s4">
+  <svg class="art">
+    <g data-blob="1720 560 560 44" data-hole="-160 60 130 3" data-src="art/marble_mix.jpg"></g>
+  </svg>
+  <svg class="art lines" data-lines="21 3"></svg>
+  <div class="txt cap" style="left:120px;top:70px">02 — Context</div>
+  <div class="txt cap" style="left:560px;top:70px">Page 04</div>
+  <div class="txt h1" style="left:116px;top:200px;width:1020px">标题写成一句判断,<br>不超过两行。</div>
+  <div class="rule txt" style="left:120px;top:560px;width:120px"></div>
+  <div class="txt body" style="left:120px;top:600px;width:760px">正文最多三行。说清楚一个观点和它的依据,其余内容放进讲稿备注,不要堆在页面上。</div>
+  <div class="txt cap" style="left:120px;top:960px;width:600px">来源 / Source:作者,年份,标题</div>
+</section>
+
+<!-- 5 数据页 FIGURES:海报上的大号日期写法 -->
+<section class="s" id="s5">
+  <svg class="art">
+    <g data-blob="420 700 520 52" data-src="art/marble_blue.jpg" data-wobble=".28"></g>
+    <g data-blob="1560 320 420 8" data-src="art/marble_pink.jpg" data-cut="1000,-60 1980,-60 1980,700"></g>
+  </svg>
+  <svg class="art lines" data-lines="5 4"></svg>
+  <div class="txt cap" style="left:40px;top:40px">03 — Result</div>
+  <div class="txt" style="left:30px;right:30px;top:190px;display:flex;justify-content:space-between;align-items:flex-start">
+    <div><div class="num" style="font-size:200px">48<span style="font-size:90px">%</span></div><div class="cap" style="margin:40px 0 0 12px">指标 A / Metric A<br>百分比,单位写清楚</div></div>
+    <div class="num" style="font-size:200px">.</div>
+    <div><div class="num" style="font-size:200px">15<span style="font-size:90px">x</span></div><div class="cap" style="margin:40px 0 0 12px">指标 B / Metric B<br>倍数或增长</div></div>
+    <div class="num" style="font-size:200px">.</div>
+    <div><div class="num" style="font-size:200px">120</div><div class="cap" style="margin:40px 0 0 12px">指标 C / Metric C<br>样本数量</div></div>
+  </div>
+  <div class="txt h1" style="left:1000px;top:780px;width:880px;font-size:56px">一句话说明这组数字意味着什么。</div>
+</section>
+
+<!-- 6 图片页 IMAGE:把 data-src 换成照片,色块就是照片的外形 -->
+<section class="s" id="s6">
+  <svg class="art">
+    <g data-blob="660 540 470 61" data-wobble=".3" data-src="art/marble_mix.jpg"></g>
+  </svg>
+  <svg class="art lines" data-lines="44 3"></svg>
+  <div class="txt cap" style="left:40px;top:40px">Fig. 01</div>
+  <div class="txt disp" style="left:1240px;top:150px;font-size:200px">image</div>
+  <div class="txt serif-body" style="left:1250px;top:470px;width:560px">图注写在这里。说明图里是什么、从哪来、为什么放在这一页。两到三行。</div>
+  <div class="txt cap" style="left:1250px;top:700px;width:560px">摄影 / Photo:姓名<br>Year, Place</div>
+  <div class="txt num" data-bleed style="right:30px;bottom:-30px;font-size:170px">06</div>
+</section>
+
+<!-- 7 名单页 LIST(蓝底):参考海报里的人名列表 -->
+<section class="s blue" id="s7">
+  <svg class="art">
+    <g data-blob="1560 700 400 72" data-hole="40 -60 110 12" data-src="art/marble_pink.jpg"></g>
+  </svg>
+  <svg class="art lines" data-lines="9 4"></svg>
+  <div class="txt disp" data-bleed style="left:-14px;top:30px;font-size:300px">credits</div>
+  <div class="txt cap" style="left:40px;top:420px;width:300px;font-size:19px">小组成员<br>Team<br><br>李诗雅 Li Shiya<br>成员二 Member 2<br>成员三 Member 3</div>
+  <div class="txt cap" style="left:420px;top:420px;width:340px;font-size:19px">资料来源<br>Sources<br><br>作者 A, 2024<br>作者 B, 2025<br>机构 C 报告, 2026</div>
+  <div class="txt cap" style="left:840px;top:420px;width:300px;font-size:19px">致谢<br>Thanks<br><br>指导老师<br>Advisor</div>
+</section>
+
+<!-- 8 结尾 CLOSING(黑底) -->
+<section class="s dark" id="s8">
+  <svg class="art">
+    <g data-blob="1280 820 600 83" data-hole="-100 -40 180 2" data-src="art/marble_mix.jpg" data-outline="#f6f6f3"></g>
+  </svg>
+  <svg class="art lines" data-lines="17 4"></svg>
+  <div class="txt disp" data-bleed style="left:-18px;top:44px;font-size:400px">thank</div>
+  <div class="txt disp" data-bleed style="left:-18px;top:368px;font-size:400px">you</div>
+  <div class="txt cap" style="left:40px;top:760px;width:400px">提问 / Q&amp;A<br>name@example.com</div>
+  <div class="txt num" data-bleed style="left:24px;bottom:-34px;font-size:170px">08</div>
+</section>
+
+<script src="deck.js"></script>
+<script src="../../templates/presenter/presenter.js"></script>
+</body>
+</html>

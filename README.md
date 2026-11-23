@@ -89,3 +89,4 @@ node tools/png-pdf.js decks/dream-high/dream-high.pdf decks/dream-high/png/s{1..
 - `decks/organic-forms`:美学中的有机生物(8 页)。
 - `decks/dream-high`:Dream big. Dream high.(8 页,WebGL2)。以 `references/` 的 01 为主色调(约 55%),其余五张各占 3–11%。每页一个不同的着色器效果;导航:点右下角方块可直达任意页(悬停显示章节名),或按数字键 1–8、地址栏 `#页码`,方向键/滚轮/点击翻页;PDF 为 `dream-high.pdf`(静态画面,27 MB)。预览:`node tools/gl-shot.js decks/dream-high/index.html out-%d.png 8 <页码>`;导出 PNG 加 `all`(需 `PAGES=8`),再用 `tools/png-pdf.js` 出 PDF。
 - `decks/stp-member4`:超级猩猩 STP 作业第 9–11 页。
+- `decks/form-fluid`:按「form fluid」展览海报做的 8 页模板(封面、目录、章节、内容、数据、图片、名单、结尾)。蓝粉黑配色,Azeret Mono 小写大标题,大理石色块和缠绕细线由 `deck.js` 按种子画,改 `index.html` 里的 `data-blob` / `data-lines` 种子就能换形状;贴图用 `python decks/form-fluid/make_art.py` 重新生成。参考说明见 `ref/README.md`。
