@@ -1,11 +1,14 @@
 /* form-fluid deck. Palette from the "form fluid — Kunst im Thermalbad" poster (Bagni Popolari, Baden, 2022).
    Fonts: Azeret Mono stands in for the poster's display face (original not identified),
-   Tinos (Times metrics) for the small serif caps, Noto Sans SC / Noto Serif SC for Chinese. */
+   Tinos (Times metrics) for the small serif caps, Noto Sans SC / Noto Serif SC for Chinese.
+   Grid: 12 columns across 1840 px (margins 40 px), column pitch 153.33 px. */
 :root {
   --paper: #f6f6f3;
   --ink: #111111;
   --blue: #8ca6e8;
   --pink: #ee8096;
+  --m: 40px;              /* page margin */
+  --col: 153.333px;       /* grid column pitch */
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: #555; }
@@ -17,25 +20,99 @@ body { background: #555; }
 .s.dark { background: var(--ink); color: var(--paper); }
 .s.blue { background: var(--blue); }
 .s.pink { background: var(--pink); }
-.abs { position: absolute; }
-.block { position: absolute; }
-.rule { position: absolute; height: 2px; background: currentColor; }
+.abs, .block { position: absolute; }
+.rule { position: absolute; height: 1px; background: currentColor; }
 
-/* display: lowercase geometric mono, tight */
+/* ---------- type ---------- */
 .disp { font-family: 'Azeret Mono', 'Noto Sans SC', monospace; font-weight: 500; line-height: .86; letter-spacing: -.035em; text-transform: lowercase; white-space: nowrap; }
 .num { font-family: 'Azeret Mono', monospace; font-weight: 500; line-height: 1; letter-spacing: -.02em; }
-/* small serif caps, like "KUNST IM THERMALBAD" */
-.cap { font-family: 'Tinos', 'Noto Serif SC', serif; font-size: 17px; line-height: 1.35; letter-spacing: .02em; text-transform: uppercase; }
-.cap.list { font-size: 22px; line-height: 1.5; }
-.h1 { font-family: 'Noto Sans SC', sans-serif; font-weight: 700; font-size: 96px; line-height: 1.16; letter-spacing: .01em; }
+.mono { font-family: 'Azeret Mono', 'Noto Sans SC', monospace; font-size: 14px; letter-spacing: .04em; line-height: 1.5; }
+.cap { font-family: 'Tinos', 'Noto Serif SC', serif; font-size: 17px; line-height: 1.35; letter-spacing: .03em; text-transform: uppercase; }
+.cap.lg { font-size: 22px; line-height: 1.5; }
+.h1 { font-family: 'Noto Sans SC', sans-serif; font-weight: 700; font-size: 88px; line-height: 1.16; letter-spacing: .01em; }
+.h2 { font-family: 'Noto Sans SC', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.3; }
 .body { font-family: 'Noto Sans SC', sans-serif; font-weight: 400; font-size: 24px; line-height: 1.75; }
+.small { font-family: 'Noto Sans SC', sans-serif; font-weight: 400; font-size: 19px; line-height: 1.7; }
 .serif-body { font-family: 'Tinos', 'Noto Serif SC', serif; font-size: 24px; line-height: 1.6; }
+.quote { font-family: 'Noto Serif SC', serif; font-weight: 600; font-size: 76px; line-height: 1.4; }
+.u { text-decoration: underline; text-decoration-thickness: .06em; text-underline-offset: .12em; }
+.dim { opacity: .55; }
 
+/* ---------- textures (use one per page) ---------- */
+.dots { background-image: radial-gradient(rgba(17,17,17,.30) 1.4px, transparent 1.7px); background-size: 16px 16px; }
+.dots-w { background-image: radial-gradient(rgba(246,246,243,.45) 1.4px, transparent 1.7px); background-size: 16px 16px; }
+.lines { background-image: repeating-linear-gradient(0deg, rgba(17,17,17,.22) 0 1px, transparent 1px 12px); }
+
+/* ---------- page chrome (filled in by chrome.js) ---------- */
+.hd { position: absolute; left: var(--m); right: var(--m); top: 30px; height: 40px; display: grid; grid-template-columns: repeat(12, 1fr); z-index: 3; }
+.hd > div:nth-child(1) { grid-column: 1 / 5; }
+.hd > div:nth-child(2) { grid-column: 5 / 9; }
+.hd > div:nth-child(3) { grid-column: 9 / 13; text-align: right; }
+/* hairline with a tick at every grid column */
+.ticks { position: absolute; left: var(--m); right: var(--m); top: 62px; height: 7px; z-index: 3;
+  background:
+    linear-gradient(currentColor, currentColor) left top / 100% 1px no-repeat,
+    repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px var(--col)) left top / 100% 7px no-repeat; }
+.ticks::after { content: ''; position: absolute; right: 0; top: 0; width: 1px; height: 7px; background: currentColor; }
+.ft { position: absolute; left: var(--m); right: var(--m); bottom: 30px; display: flex; justify-content: space-between; align-items: center; z-index: 3; }
+.prog { display: flex; gap: 6px; align-items: center; }
+.prog i { display: block; width: 44px; height: 6px; border: 1px solid currentColor; }
+.prog i.done { background: currentColor; opacity: .45; }
+.prog i.on { background: var(--pink); border-color: var(--pink); }
+.s.pink .prog i.on { background: var(--ink); border-color: var(--ink); }
+.prog span { margin-left: 10px; }
+.side { position: absolute; right: 12px; top: 50%; transform: translateY(-50%) rotate(180deg); writing-mode: vertical-rl; z-index: 3; font-size: 12px; }
+
+/* ---------- components ---------- */
 /* contents rows */
-.rows .row { display: flex; gap: 60px; align-items: baseline; padding: 22px 24px; border-top: 2px solid var(--ink); font-family: 'Tinos', 'Noto Serif SC', serif; font-size: 34px; text-transform: uppercase; }
-.rows .row:last-child { border-bottom: 2px solid var(--ink); }
-.rows .row .num { font-size: 34px; }
-.rows .row.on { background: var(--blue); }
+.rows { display: flex; flex-direction: column; }
+.rows .row { display: grid; grid-template-columns: 90px 1fr 120px; align-items: baseline; padding: 26px 20px 24px; border-top: 1px solid currentColor; }
+.rows .row:last-child { border-bottom: 1px solid currentColor; }
+.rows .row .t { font-family: 'Noto Sans SC', sans-serif; font-weight: 700; font-size: 34px; }
+.rows .row .t em { font-family: 'Tinos', serif; font-style: normal; font-weight: 400; font-size: 22px; text-transform: uppercase; margin-left: 16px; letter-spacing: .03em; }
+.rows .row .d { grid-column: 2; font-size: 18px; margin-top: 6px; opacity: .75; }
+.rows .row .p { grid-row: 1; grid-column: 3; text-align: right; }
+.rows .row.on { background: var(--ink); color: var(--paper); }
 
-/* image placeholder: replace with <img class="ph" src="..."> */
-.ph { position: absolute; background: var(--blue); display: flex; align-items: flex-end; padding: 40px; object-fit: cover; }
+/* numbered point */
+.pt .n { font-family: 'Azeret Mono', monospace; font-size: 15px; letter-spacing: .04em; color: var(--pink); }
+.pt .h2 { margin: 14px 0 10px; font-size: 28px; }
+
+/* cards */
+.card { position: absolute; padding: 36px 36px 32px; display: flex; flex-direction: column; }
+.card .num { font-size: 120px; }
+.card .h2 { margin-top: auto; }
+.card .small { margin-top: 14px; }
+.card .cap { margin-top: 26px; padding-top: 14px; border-top: 1px solid currentColor; }
+
+/* image placeholder: swap for <img class="ph" src="..."> (object-fit:cover) */
+.ph { position: absolute; display: flex; align-items: flex-end; padding: 24px; object-fit: cover; }
+.crop { position: absolute; width: 22px; height: 22px; border-color: currentColor; border-style: solid; border-width: 0; }
+.crop.tl { border-left-width: 1px; border-top-width: 1px; }
+.crop.tr { border-right-width: 1px; border-top-width: 1px; }
+.crop.bl { border-left-width: 1px; border-bottom-width: 1px; }
+.crop.br { border-right-width: 1px; border-bottom-width: 1px; }
+
+/* bar chart */
+.chart { position: absolute; }
+.chart .grid { position: absolute; left: 60px; right: 0; border-top: 1px dashed rgba(17,17,17,.3); }
+.chart .grid span { position: absolute; left: -60px; top: -10px; }
+.chart .bars { position: absolute; left: 80px; right: 20px; bottom: 0; top: 0; display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 1px solid var(--ink); }
+.chart .bar { width: 48px; background: var(--blue); position: relative; }
+.chart .bar.hi { background: var(--pink); }
+.chart .bar b { position: absolute; left: 50%; transform: translateX(-50%); top: -26px; font: 500 14px 'Azeret Mono', monospace; }
+.chart .bar i { position: absolute; left: 50%; transform: translateX(-50%); bottom: -30px; font: 400 14px 'Azeret Mono', monospace; font-style: normal; }
+
+/* timeline */
+.tl-node { position: absolute; width: 320px; }
+.tl-node .dot { width: 22px; height: 22px; border: 1.5px solid currentColor; background: var(--ink); margin: 0 0 34px; }
+.tl-node.on .dot { background: var(--pink); border-color: var(--pink); }
+
+/* logo mark: circle in square */
+.mark { position: absolute; width: 52px; height: 52px; border: 1.5px solid currentColor; }
+.mark::before { content: ''; position: absolute; inset: 9px; border: 1.5px solid currentColor; border-radius: 50%; }
+.mark::after { content: ''; position: absolute; left: 21px; top: 21px; width: 7px; height: 7px; background: currentColor; border-radius: 50%; }
+
+/* method step in/out rows */
+.io { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px solid rgba(17,17,17,.25); }
+.io.first { margin-top: 28px; border-top: 1px solid var(--ink); }

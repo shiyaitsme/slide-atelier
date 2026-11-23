@@ -89,4 +89,4 @@ node tools/png-pdf.js decks/dream-high/dream-high.pdf decks/dream-high/png/s{1..
 - `decks/organic-forms`:美学中的有机生物(8 页)。
 - `decks/dream-high`:Dream big. Dream high.(8 页,WebGL2)。以 `references/` 的 01 为主色调(约 55%),其余五张各占 3–11%。每页一个不同的着色器效果;导航:点右下角方块可直达任意页(悬停显示章节名),或按数字键 1–8、地址栏 `#页码`,方向键/滚轮/点击翻页;PDF 为 `dream-high.pdf`(静态画面,27 MB)。预览:`node tools/gl-shot.js decks/dream-high/index.html out-%d.png 8 <页码>`;导出 PNG 加 `all`(需 `PAGES=8`),再用 `tools/png-pdf.js` 出 PDF。
 - `decks/stp-member4`:超级猩猩 STP 作业第 9–11 页。
-- `decks/form-fluid`:8 页模板(封面、目录、章节、内容、数据、图片、名单、结尾)。只取「form fluid」展览海报的蓝粉黑配色,图形全是纯色块,大标题用 Azeret Mono 小写。颜色变量在 `style.css` 顶部,参考说明见 `ref/README.md`。
+- `decks/form-fluid`:12 页模板(封面、目录、章节、内容、三栏要点、方法步骤、数据、柱状图、图片组、引言、名单、结尾)。只取「form fluid」展览海报的蓝粉黑配色,大标题用 Azeret Mono 小写。页眉(带 12 栏刻度线)、页脚(章节进度条、页码)和右侧竖排小字由 `chrome.js` 生成,每页只写 `data-label` 和 `data-chap`。颜色变量在 `style.css` 顶部,参考说明见 `ref/README.md`。
