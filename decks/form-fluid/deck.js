@@ -67,15 +67,15 @@
     for (let c = 0; c < count; c++) {
       // each loop is a lopsided ellipse; swapping two neighbouring points makes one
       // twist (a small crossing), which gives the poster's knotted look
-      const n = 6 + Math.floor(R() * 3), pts = [];
-      const cx = 200 + R() * 1520, cy = 150 + R() * 780;
-      const rx = 380 + R() * 700, ry = 260 + R() * 420, rot = R() * 3.14;
+      // each loop is a large, lopsided ellipse: few points, so the curve stays smooth
+      const n = 5 + Math.floor(R() * 2), pts = [];
+      const cx = 400 + R() * 1120, cy = 300 + R() * 480;
+      const rx = 700 + R() * 500, ry = 380 + R() * 260, rot = (R() - .5) * 1.2;
       for (let i = 0; i < n; i++) {
-        const a = (i + (R() - .5) * .5) / n * 6.283, k = .55 + R() * .75;
+        const a = (i + (R() - .5) * .35) / n * 6.283, k = .7 + R() * .45;
         const x = Math.cos(a) * rx * k, y = Math.sin(a) * ry * k;
         pts.push([cx + x * Math.cos(rot) - y * Math.sin(rot), cy + x * Math.sin(rot) + y * Math.cos(rot)]);
       }
-      if (R() < .7) { const i = Math.floor(R() * n), j = (i + 1) % n; [pts[i], pts[j]] = [pts[j], pts[i]]; }
       svg.appendChild(el('path', { d: closed(pts), fill: 'none', stroke: color, 'stroke-width': getComputedStyle(document.documentElement).getPropertyValue('--line').trim() || 1.6 }));
     }
   }
