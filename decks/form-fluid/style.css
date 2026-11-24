@@ -116,3 +116,43 @@ body { background: #555; }
 /* method step in/out rows */
 .io { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px solid rgba(17,17,17,.25); }
 .io.first { margin-top: 28px; border-top: 1px solid var(--ink); }
+
+/* ---------- added layouts ---------- */
+/* table */
+.tbl .tr { display: grid; grid-template-columns: 110px 300px 1fr 360px 200px; align-items: baseline; padding: 24px 20px; border-bottom: 1px solid var(--ink); }
+.tbl .tr.th { padding: 0 20px 14px; border-bottom: 2px solid var(--ink); }
+.tbl .tr.on { background: var(--paper); }
+.tbl .tr > :last-child { text-align: right; }
+.tbl .tr .h2 { font-size: 26px; }
+
+/* compare */
+.panel { position: absolute; padding: 40px; color: var(--ink); }
+.panel .kv { display: grid; grid-template-columns: 150px 1fr; padding: 18px 0; border-top: 1px solid var(--ink); align-items: baseline; }
+.vs { position: absolute; width: 130px; height: 130px; border-radius: 50%; background: var(--ink); border: 2px solid var(--paper); display: flex; align-items: center; justify-content: center; z-index: 2; }
+
+/* 2x2 matrix */
+.quad { position: absolute; border: 1px solid rgba(246,246,243,.4); padding: 28px; display: flex; flex-direction: column; }
+.quad .h2 { margin-top: auto; }
+.quad .small { margin-top: 8px; opacity: .8; }
+.quad.on { background: var(--pink); color: var(--ink); border-color: var(--pink); }
+.pin { position: absolute; width: 16px; height: 16px; border-radius: 50%; background: var(--paper); }
+.quad.on .pin { background: var(--ink); }
+
+/* horizontal timeline line */
+.tl-line { position: absolute; height: 2px; background: var(--ink); }
+
+/* percentage bar */
+.pbar { position: absolute; height: 44px; border: 1px solid var(--paper); }
+.pbar .fill { height: 100%; background: var(--pink); }
+.pbar .tick { position: absolute; top: 54px; transform: translateX(-50%); }
+
+/* takeaways */
+.take { position: absolute; display: grid; grid-template-columns: 170px 1fr; padding-top: 26px; border-top: 1px solid var(--ink); }
+.take .num { font-size: 96px; color: var(--pink); }
+.take .h2 { font-size: 34px; margin: 6px 0 10px; }
+
+/* team */
+.person { position: absolute; width: 430px; }
+.person .ph { position: relative; height: 330px; }
+.person .h2 { margin: 26px 0 6px; font-size: 30px; }
+.person .mono { margin-top: 14px; padding-top: 12px; border-top: 1px solid currentColor; opacity: .8; }

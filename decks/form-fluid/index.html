@@ -8,7 +8,7 @@
 </head>
 <body>
 <!--
-  form-fluid 模板,12 种页型。只取参考海报的蓝粉黑配色和小写等宽大字,图形全是纯色块。
+  form-fluid 模板,20 种页型。只取参考海报的蓝粉黑配色和小写等宽大字,图形全是纯色块。
   · 页眉页脚由 chrome.js 生成:每页 <section> 写 data-label(页眉中间的字)和 data-chap(第几部分,进度条用)。
     封面和结尾不写 data-label,就没有页眉页脚。作者、标题等全局文字在 chrome.js 顶部改。
   · 网格:12 栏,左右边距 40px,栏距 153.33px(页眉下的刻度线就是栏线)。
@@ -34,47 +34,62 @@
   <div class="abs cap" style="left:40px;top:920px;width:280px">演示者 / Presenter<br>李诗雅 Li Shiya</div>
   <div class="abs cap" style="left:346px;top:920px;width:280px">场合 / Occasion<br>课程汇报 Seminar</div>
   <div class="abs cap" style="left:653px;top:920px;width:280px">地点 / Venue<br>北京 Beijing</div>
-  <div class="abs cap" style="left:960px;top:920px;width:280px">时长 / Duration<br>15 min · 12 pp.</div>
+  <div class="abs cap" style="left:960px;top:920px;width:280px">时长 / Duration<br>15 min · 20 pp.</div>
   <div class="abs cap" style="left:1400px;top:740px">日期 / Date</div>
   <div class="abs num" style="left:1396px;top:790px;font-size:110px;line-height:1.05;white-space:nowrap">23.<span class="u">11</span><br>.26</div>
-  <div class="abs mono" style="left:40px;bottom:30px">01 / 12</div>
+  <div class="abs mono" style="left:40px;bottom:30px">01 / 20</div>
 </section>
 
 <!-- 02 目录 CONTENTS -->
 <section class="s pink" id="s2" data-label="00 — 目录 Contents" data-chap="0">
   <div class="abs disp" style="left:30px;top:120px;font-size:300px">index</div>
   <div class="abs small" style="left:40px;top:440px;width:620px">这份汇报分五个部分,先讲背景和方法,再看结果,最后给出结论和下一步。</div>
-  <div class="abs cap" style="left:40px;top:560px">共 5 部分 · 12 页 · 约 15 分钟</div>
+  <div class="abs cap" style="left:40px;top:560px">共 5 部分 · 20 页 · 约 15 分钟</div>
   <div class="block dots" style="left:40px;top:640px;width:613px;height:300px"></div>
   <div class="abs rows" style="left:960px;top:120px;width:920px">
     <div class="row"><span class="num" style="font-size:30px">01</span><span class="t">开场<em>Intro</em></span><span class="d">研究问题和这次汇报要回答什么</span><span class="p mono">p. 03</span></div>
-    <div class="row on"><span class="num" style="font-size:30px">02</span><span class="t">背景<em>Context</em></span><span class="d">为什么现在要谈这个问题</span><span class="p mono">p. 04–05</span></div>
-    <div class="row"><span class="num" style="font-size:30px">03</span><span class="t">方法<em>Method</em></span><span class="d">数据来源、样本和分析步骤</span><span class="p mono">p. 06–07</span></div>
-    <div class="row"><span class="num" style="font-size:30px">04</span><span class="t">结果<em>Result</em></span><span class="d">关键数字、趋势和图像材料</span><span class="p mono">p. 08–09</span></div>
-    <div class="row"><span class="num" style="font-size:30px">05</span><span class="t">结语<em>Outro</em></span><span class="d">结论、局限和下一步</span><span class="p mono">p. 10–12</span></div>
+    <div class="row on"><span class="num" style="font-size:30px">02</span><span class="t">背景<em>Context</em></span><span class="d">为什么现在要谈这个问题</span><span class="p mono">p. 04–08</span></div>
+    <div class="row"><span class="num" style="font-size:30px">03</span><span class="t">方法<em>Method</em></span><span class="d">数据来源、样本和分析步骤</span><span class="p mono">p. 09–10</span></div>
+    <div class="row"><span class="num" style="font-size:30px">04</span><span class="t">结果<em>Result</em></span><span class="d">关键数字、趋势和图像材料</span><span class="p mono">p. 11–15</span></div>
+    <div class="row"><span class="num" style="font-size:30px">05</span><span class="t">结语<em>Outro</em></span><span class="d">结论、局限和下一步</span><span class="p mono">p. 16–20</span></div>
   </div>
 </section>
 
-<!-- 03 章节页 CHAPTER -->
-<section class="s dark" id="s3" data-label="02 — 背景 Context" data-chap="2">
+<!-- 03 研究问题 QUESTION -->
+<section class="s blue" id="s3" data-label="01 — 开场 Intro" data-chap="1">
+  <div class="abs cap" style="left:40px;top:120px">1.1 — 研究问题 / Question</div>
+  <div class="abs h1" style="left:36px;top:170px;width:1500px;font-size:96px">我们想回答的问题:<br>X 怎样影响 Y?</div>
+  <div class="abs" style="left:40px;top:560px;width:880px">
+    <div class="small io first"><span class="mono">Q1</span><span>第一个子问题,一句话</span></div>
+    <div class="small io"><span class="mono">Q2</span><span>第二个子问题,一句话</span></div>
+    <div class="small io"><span class="mono">Q3</span><span>第三个子问题,一句话</span></div>
+  </div>
+  <div class="abs cap" style="left:40px;top:880px;width:880px">范围 / Scope:研究对象 · 时间 · 地区</div>
+  <div class="block" style="left:1280px;top:560px;width:600px;height:400px;background:var(--pink)"></div>
+  <div class="block dots" style="left:1280px;top:560px;width:600px;height:160px"></div>
+  <div class="abs disp" style="left:1300px;top:740px;font-size:240px">why?</div>
+</section>
+
+<!-- 04 章节页 CHAPTER -->
+<section class="s dark" id="s4" data-label="02 — 背景 Context" data-chap="2">
   <div class="abs cap" style="left:40px;top:110px">Chapter</div>
   <div class="abs num" style="left:24px;top:150px;font-size:420px;line-height:.9;color:var(--pink)">02</div>
   <div class="abs h1" style="left:960px;top:140px">背景</div>
   <div class="abs cap lg" style="left:960px;top:260px">Context — 为什么现在要谈这个问题</div>
   <div class="abs" style="left:960px;top:340px;width:920px">
     <div class="rule" style="position:relative;opacity:.4"></div>
-    <div style="display:grid;grid-template-columns:90px 1fr 100px;padding:20px 0" class="small"><span class="mono" style="color:var(--pink)">2.1</span><span>行业现状与主要参与者</span><span class="mono" style="text-align:right">p. 04</span></div>
+    <div style="display:grid;grid-template-columns:90px 1fr 100px;padding:20px 0" class="small"><span class="mono" style="color:var(--pink)">2.1</span><span>行业现状与主要参与者</span><span class="mono" style="text-align:right">p. 05</span></div>
     <div class="rule" style="position:relative;opacity:.4"></div>
-    <div style="display:grid;grid-template-columns:90px 1fr 100px;padding:20px 0" class="small"><span class="mono" style="color:var(--pink)">2.2</span><span>已有研究说了什么</span><span class="mono" style="text-align:right">p. 05</span></div>
+    <div style="display:grid;grid-template-columns:90px 1fr 100px;padding:20px 0" class="small"><span class="mono" style="color:var(--pink)">2.2</span><span>已有研究说了什么</span><span class="mono" style="text-align:right">p. 06</span></div>
     <div class="rule" style="position:relative;opacity:.4"></div>
-    <div style="display:grid;grid-template-columns:90px 1fr 100px;padding:20px 0" class="small"><span class="mono" style="color:var(--pink)">2.3</span><span>还缺什么</span><span class="mono" style="text-align:right">p. 05</span></div>
+    <div style="display:grid;grid-template-columns:90px 1fr 100px;padding:20px 0" class="small"><span class="mono" style="color:var(--pink)">2.3</span><span>发展脉络与还缺什么</span><span class="mono" style="text-align:right">p. 07–08</span></div>
     <div class="rule" style="position:relative;opacity:.4"></div>
   </div>
   <div class="abs disp" style="left:30px;bottom:100px;font-size:330px;color:var(--blue)">context</div>
 </section>
 
-<!-- 04 内容页 CONTENT:结论句 + 三个要点,右侧色块 -->
-<section class="s" id="s4" data-label="02 — 背景 Context" data-chap="2">
+<!-- 05 内容页 CONTENT:结论句 + 三个要点,右侧色块 -->
+<section class="s" id="s5" data-label="02 — 背景 Context" data-chap="2">
   <div class="block" style="left:1380px;top:0;width:540px;height:1080px;background:var(--blue)"></div>
   <div class="block dots" style="left:1380px;top:110px;width:540px;height:420px"></div>
   <div class="abs cap" style="left:40px;top:120px">2.1 — 行业现状</div>
@@ -90,8 +105,8 @@
   <div class="abs small" style="left:1420px;top:860px;width:440px">关键词的一句话定义,或换成一张图。</div>
 </section>
 
-<!-- 05 三栏要点 THREE POINTS -->
-<section class="s blue" id="s5" data-label="02 — 背景 Context" data-chap="2">
+<!-- 06 三栏要点 THREE POINTS -->
+<section class="s blue" id="s6" data-label="02 — 背景 Context" data-chap="2">
   <div class="abs cap" style="left:40px;top:120px">2.2 — 已有研究</div>
   <div class="abs h1" style="left:36px;top:160px;width:1300px;font-size:72px">三个要点并列,每个一句话。</div>
   <div class="abs cap" style="left:1420px;top:130px;width:460px;text-align:right">按重要性从左到右排<br>Ordered by weight</div>
@@ -106,8 +121,45 @@
   </div>
 </section>
 
-<!-- 06 方法页 METHOD:步骤流程 -->
-<section class="s" id="s6" data-label="03 — 方法 Method" data-chap="3">
+<!-- 07 时间线 TIMELINE -->
+<section class="s" id="s7" data-label="02 — 背景 Context" data-chap="2">
+  <div class="abs cap" style="left:40px;top:120px">2.3 — 发展脉络 / Timeline</div>
+  <div class="abs h1" style="left:36px;top:160px;width:1500px;font-size:72px">五个节点,看清它怎么走到今天。</div>
+  <div class="block" style="left:1160px;top:400px;width:380px;height:400px;background:var(--blue)"></div>
+  <div class="block dots" style="left:40px;top:830px;width:1840px;height:60px"></div>
+  <div class="tl-line" style="left:40px;top:469px;width:1840px"></div>
+  <div class="tl-node" style="left:40px;top:459px"><div class="dot"></div><div class="num" style="font-size:64px">2010</div><div class="h2" style="font-size:26px;margin:18px 0 8px">起点事件</div><div class="small">一句话说明发生了什么。</div></div>
+  <div class="tl-node" style="left:420px;top:459px"><div class="dot"></div><div class="num" style="font-size:64px">2015</div><div class="h2" style="font-size:26px;margin:18px 0 8px">第二个节点</div><div class="small">一句话说明发生了什么。</div></div>
+  <div class="tl-node" style="left:800px;top:459px"><div class="dot"></div><div class="num" style="font-size:64px">2019</div><div class="h2" style="font-size:26px;margin:18px 0 8px">第三个节点</div><div class="small">一句话说明发生了什么。</div></div>
+  <div class="tl-node on" style="left:1180px;top:459px"><div class="dot"></div><div class="num" style="font-size:64px">2023</div><div class="h2" style="font-size:26px;margin:18px 0 8px">转折点</div><div class="small">重点节点用粉色标出。</div></div>
+  <div class="tl-node" style="left:1560px;top:459px"><div class="dot"></div><div class="num" style="font-size:64px">2026</div><div class="h2" style="font-size:26px;margin:18px 0 8px">现在</div><div class="small">一句话说明现状。</div></div>
+  <div class="abs cap" style="left:1180px;top:416px">Turning point</div>
+  <div class="abs cap" style="left:40px;top:950px">来源 / Source:作者,年份,标题</div>
+</section>
+
+<!-- 08 对比 COMPARE -->
+<section class="s dark" id="s8" data-label="02 — 背景 Context" data-chap="2">
+  <div class="abs cap" style="left:40px;top:120px">2.3 — 还缺什么 / Gap</div>
+  <div class="abs h1" style="left:36px;top:150px;width:1600px;font-size:56px">已有做法和我们的做法,差在三处。</div>
+  <div class="panel" style="left:40px;top:270px;width:900px;height:690px;background:var(--pink)">
+    <div class="cap">A — 已有做法 / Before</div>
+    <div class="disp" style="font-size:150px;margin:30px 0 60px">before</div>
+    <div class="small kv"><span class="cap">数据</span><span>小样本,单一来源</span></div>
+    <div class="small kv"><span class="cap">方法</span><span>描述统计为主</span></div>
+    <div class="small kv" style="border-bottom:1px solid var(--ink)"><span class="cap">结论</span><span>只说明现象,没有解释原因</span></div>
+  </div>
+  <div class="panel" style="left:980px;top:270px;width:900px;height:690px;background:var(--blue)">
+    <div class="cap" style="padding-left:70px">B — 我们的做法 / After</div>
+    <div class="disp" style="font-size:150px;margin:30px 0 60px 70px">after</div>
+    <div class="small kv" style="margin-left:70px"><span class="cap">数据</span><span>n = 120,三个来源交叉</span></div>
+    <div class="small kv" style="margin-left:70px"><span class="cap">方法</span><span>回归分析加访谈</span></div>
+    <div class="small kv" style="margin-left:70px;border-bottom:1px solid var(--ink)"><span class="cap">结论</span><span>给出原因和可执行的建议</span></div>
+  </div>
+  <div class="vs" style="left:895px;top:550px"><span class="disp" style="font-size:56px;color:var(--paper)">vs</span></div>
+</section>
+
+<!-- 09 方法页 METHOD:步骤流程 -->
+<section class="s" id="s9" data-label="03 — 方法 Method" data-chap="3">
   <div class="abs cap" style="left:40px;top:120px">3.1 — 分析步骤</div>
   <div class="abs disp" style="left:30px;top:170px;font-size:240px">method</div>
   <div class="abs small" style="left:1240px;top:190px;width:640px">四步走完。每一步写清楚输入、做了什么、得到什么,别的放进备注。</div>
@@ -120,8 +172,23 @@
   <div class="abs cap" style="left:40px;top:950px">样本 / Sample:n = 120 · 时间 / Period:2024–2026</div>
 </section>
 
-<!-- 07 数据页 FIGURES -->
-<section class="s pink" id="s7" data-label="04 — 结果 Result" data-chap="4">
+<!-- 10 表格 TABLE -->
+<section class="s blue" id="s10" data-label="03 — 方法 Method" data-chap="3">
+  <div class="abs cap" style="left:40px;top:120px">3.2 — 变量与样本 / Variables</div>
+  <div class="abs h1" style="left:36px;top:160px;width:1300px;font-size:64px">四个变量,各自怎么量。</div>
+  <div class="abs cap" style="left:1420px;top:130px;width:460px;text-align:right">高亮行是核心变量<br>Key variable highlighted</div>
+  <div class="abs tbl" style="left:40px;top:330px;width:1840px">
+    <div class="tr th cap"><span>No.</span><span>变量 / Variable</span><span>定义 / Definition</span><span>来源 / Source</span><span>样本 / n</span></div>
+    <div class="tr small"><span class="mono">V1</span><span class="h2">变量一</span><span>一句话定义,写清口径</span><span>问卷 Survey</span><span class="mono">120</span></div>
+    <div class="tr small on"><span class="mono">V2</span><span class="h2">变量二</span><span>核心变量,用浅色底标出</span><span>平台数据 Platform</span><span class="mono">1,284</span></div>
+    <div class="tr small"><span class="mono">V3</span><span class="h2">变量三</span><span>一句话定义,写清口径</span><span>访谈 Interview</span><span class="mono">12</span></div>
+    <div class="tr small"><span class="mono">V4</span><span class="h2">变量四</span><span>一句话定义,写清口径</span><span>公开报告 Report</span><span class="mono">—</span></div>
+  </div>
+  <div class="abs cap" style="left:40px;top:950px">* 口径说明 / Note:时间范围 2024–2026</div>
+</section>
+
+<!-- 11 数据页 FIGURES -->
+<section class="s pink" id="s11" data-label="04 — 结果 Result" data-chap="4">
   <div class="abs cap" style="left:40px;top:120px">4.1 — 关键数字</div>
   <div class="block" style="left:613px;top:170px;width:620px;height:560px;background:var(--ink)"></div>
   <div class="block dots-w" style="left:613px;top:560px;width:620px;height:170px"></div>
@@ -136,8 +203,8 @@
   <div class="abs cap" style="left:1480px;top:820px;width:400px;text-align:right">* 数据来源 / Data:机构,年份<br>统计口径写在这里</div>
 </section>
 
-<!-- 08 图表页 CHART:纯 CSS 柱状图,改 height 和数字即可 -->
-<section class="s" id="s8" data-label="04 — 结果 Result" data-chap="4">
+<!-- 12 图表页 CHART:纯 CSS 柱状图,改 height 和数字即可 -->
+<section class="s" id="s12" data-label="04 — 结果 Result" data-chap="4">
   <div class="abs cap" style="left:40px;top:120px">4.2 — 趋势 / Fig. 02</div>
   <div class="abs h1" style="left:36px;top:160px;width:640px;font-size:64px">图表标题写结论:<br>下半年明显上升。</div>
   <div class="abs small" style="left:40px;top:420px;width:560px">一两句话解释图里最重要的变化,读者不用自己找。</div>
@@ -170,8 +237,25 @@
   <div class="abs cap" style="left:840px;top:930px">月份 / Month · 单位 / Unit:件</div>
 </section>
 
-<!-- 09 图片页 IMAGE:一大两小,带裁切标记 -->
-<section class="s" id="s9" data-label="04 — 结果 Result" data-chap="4">
+<!-- 13 矩阵 MATRIX -->
+<section class="s dark" id="s13" data-label="04 — 结果 Result" data-chap="4">
+  <div class="abs cap" style="left:40px;top:120px">4.3 — 定位矩阵 / Matrix</div>
+  <div class="abs h1" style="left:36px;top:170px;width:720px;font-size:64px">四类对象,<br>落在四个象限。</div>
+  <div class="abs small" style="left:40px;top:400px;width:680px">横轴和纵轴各选一个维度。右上角是我们最关心的一类,用粉色标出。</div>
+  <div class="abs" style="left:40px;top:600px;width:680px">
+    <div class="small io first" style="border-color:var(--paper)"><span class="cap">横轴 / X</span><span>维度一:低 → 高</span></div>
+    <div class="small io" style="border-color:rgba(246,246,243,.3)"><span class="cap">纵轴 / Y</span><span>维度二:低 → 高</span></div>
+  </div>
+  <div class="quad" style="left:900px;top:120px;width:490px;height:420px"><div class="pin" style="left:330px;top:120px"></div><span class="mono">B · 低 X 高 Y</span><div class="h2">第二类</div><div class="small">一句话描述这一类。</div></div>
+  <div class="quad on" style="left:1390px;top:120px;width:490px;height:420px"><div class="pin" style="left:150px;top:90px"></div><div class="pin" style="left:300px;top:170px"></div><span class="mono">A · 高 X 高 Y</span><div class="h2">第一类(重点)</div><div class="small">一句话描述这一类。</div></div>
+  <div class="quad dots-w" style="left:900px;top:540px;width:490px;height:420px"><div class="pin" style="left:120px;top:110px"></div><span class="mono">C · 低 X 低 Y</span><div class="h2">第三类</div><div class="small">一句话描述这一类。</div></div>
+  <div class="quad" style="left:1390px;top:540px;width:490px;height:420px"><div class="pin" style="left:260px;top:140px"></div><span class="mono">D · 高 X 低 Y</span><div class="h2">第四类</div><div class="small">一句话描述这一类。</div></div>
+  <div class="abs mono" style="left:900px;top:972px">X →</div>
+  <div class="abs mono" style="left:860px;top:120px">Y ↑</div>
+</section>
+
+<!-- 14 图片页 IMAGE:一大两小,带裁切标记 -->
+<section class="s" id="s14" data-label="04 — 结果 Result" data-chap="4">
   <div class="ph" style="left:40px;top:110px;width:1060px;height:830px;background:var(--blue)"><span class="cap">Fig. 03 · 1060 × 830</span></div>
   <div class="crop tl" style="left:24px;top:94px"></div><div class="crop tr" style="left:1094px;top:94px"></div>
   <div class="crop bl" style="left:24px;top:934px"></div><div class="crop br" style="left:1094px;top:934px"></div>
@@ -184,8 +268,37 @@
   <div class="abs cap" style="left:1540px;top:876px;width:340px">Fig. 04–05 — 细节<br>Year, Place</div>
 </section>
 
-<!-- 10 引言页 QUOTE -->
-<section class="s blue" id="s10" data-label="05 — 结语 Outro" data-chap="5">
+<!-- 15 大数字 BIG NUMBER -->
+<section class="s dark" id="s15" data-label="04 — 结果 Result" data-chap="4">
+  <div class="abs cap" style="left:40px;top:120px">4.4 — 一个数字 / One figure</div>
+  <div class="abs num" style="left:20px;top:170px;font-size:500px;color:var(--pink);letter-spacing:-.06em">72<span style="font-size:220px">%</span></div>
+  <div class="abs h1" style="left:1160px;top:220px;width:740px;font-size:54px">七成样本在第一周内流失。</div>
+  <div class="abs small" style="left:1160px;top:420px;width:700px">一句话解释这个数字为什么重要,和读者有什么关系。</div>
+  <div class="rule" style="left:1160px;top:540px;width:720px;opacity:.5"></div>
+  <div class="abs cap" style="left:1160px;top:560px">来源 / Source:数据集,年份 · n = 120</div>
+  <div class="pbar" style="left:40px;top:800px;width:1840px"><div class="fill" style="width:72%"></div>
+    <span class="tick mono" style="left:0">0</span><span class="tick mono" style="left:25%">25</span><span class="tick mono" style="left:50%">50</span><span class="tick mono" style="left:72%;color:var(--pink)">72</span><span class="tick mono" style="left:100%">100</span></div>
+</section>
+
+<!-- 16 总结 SUMMARY -->
+<section class="s" id="s16" data-label="05 — 结语 Outro" data-chap="5">
+  <div class="abs cap" style="left:40px;top:120px">5.1 — 结论 / Takeaways</div>
+  <div class="abs disp" style="left:30px;top:160px;font-size:200px">summary</div>
+  <div class="take" style="left:40px;top:420px;width:1240px"><div class="num">01</div><div><div class="h2">第一条结论,写成判断句</div><div class="small">一句话的依据,指回前面哪一页。</div></div></div>
+  <div class="take" style="left:40px;top:600px;width:1240px"><div class="num">02</div><div><div class="h2">第二条结论,写成判断句</div><div class="small">一句话的依据,指回前面哪一页。</div></div></div>
+  <div class="take" style="left:40px;top:780px;width:1240px;border-bottom:1px solid var(--ink);padding-bottom:26px"><div class="num">03</div><div><div class="h2">第三条结论,写成判断句</div><div class="small">一句话的依据,指回前面哪一页。</div></div></div>
+  <div class="block" style="left:1360px;top:420px;width:520px;height:540px;background:var(--ink)"></div>
+  <div class="abs" style="left:1400px;top:460px;width:440px;color:var(--paper)">
+    <div class="cap">下一步 / Next steps</div>
+    <div class="disp" style="font-size:96px;margin:24px 0 36px;color:var(--blue)">next</div>
+    <div class="small io first" style="border-color:var(--paper)"><span class="mono" style="color:var(--pink)">→ 01</span><span>补充样本</span></div>
+    <div class="small io" style="border-color:rgba(246,246,243,.3)"><span class="mono" style="color:var(--pink)">→ 02</span><span>跟踪半年</span></div>
+    <div class="small io" style="border-color:rgba(246,246,243,.3)"><span class="mono" style="color:var(--pink)">→ 03</span><span>试点落地</span></div>
+  </div>
+</section>
+
+<!-- 17 引言页 QUOTE -->
+<section class="s blue" id="s17" data-label="05 — 结语 Outro" data-chap="5">
   <div class="abs num" style="left:30px;top:80px;font-size:360px;color:var(--pink);line-height:1">“</div>
   <div class="abs quote" style="left:240px;top:260px;width:1440px">一句值得被记住的话放在这里,不超过三行,用宋体让它慢下来。</div>
   <div class="rule" style="left:244px;top:690px;width:120px;height:8px;background:var(--ink)"></div>
@@ -193,8 +306,18 @@
   <div class="block dots" style="left:1380px;top:760px;width:500px;height:220px"></div>
 </section>
 
-<!-- 11 名单页 CREDITS -->
-<section class="s" id="s11" data-label="05 — 结语 Outro" data-chap="5">
+<!-- 18 团队 TEAM -->
+<section class="s dark" id="s18" data-label="05 — 结语 Outro" data-chap="5">
+  <div class="abs disp" style="left:30px;top:120px;font-size:280px">team</div>
+  <div class="abs small" style="left:1240px;top:150px;width:640px">每人一张照片,把 .ph 换成 &lt;img&gt;。名字下面写分工和联系方式。</div>
+  <div class="person" style="left:40px;top:450px"><div class="ph" style="background:var(--pink);color:var(--ink)"><span class="cap">Portrait 01</span></div><div class="h2">李诗雅</div><div class="cap">Li Shiya · 版面设计 / Design</div><div class="mono">name@example.com</div></div>
+  <div class="person" style="left:510px;top:450px"><div class="ph" style="background:var(--blue);color:var(--ink)"><span class="cap">Portrait 02</span></div><div class="h2">成员二</div><div class="cap">Member 2 · 数据分析 / Data</div><div class="mono">name@example.com</div></div>
+  <div class="person" style="left:980px;top:450px"><div class="ph" style="background:var(--paper);color:var(--ink)"><span class="cap">Portrait 03</span></div><div class="h2">成员三</div><div class="cap">Member 3 · 资料收集 / Research</div><div class="mono">name@example.com</div></div>
+  <div class="person" style="left:1450px;top:450px"><div class="ph dots-w" style="background-color:#2a2a2a"><span class="cap">Portrait 04</span></div><div class="h2">成员四</div><div class="cap">Member 4 · 汇报 / Speaker</div><div class="mono">name@example.com</div></div>
+</section>
+
+<!-- 19 名单页 CREDITS -->
+<section class="s" id="s19" data-label="05 — 结语 Outro" data-chap="5">
   <div class="block" style="left:0;top:0;width:1920px;height:470px;background:var(--pink)"></div>
   <div class="abs disp" style="left:30px;top:130px;font-size:300px">credits</div>
   <div class="abs" style="left:40px;top:530px;width:1840px;display:grid;grid-template-columns:repeat(4,1fr);gap:40px">
@@ -205,8 +328,8 @@
   </div>
 </section>
 
-<!-- 12 结尾 CLOSING -->
-<section class="s dark" id="s12">
+<!-- 20 结尾 CLOSING -->
+<section class="s dark" id="s20">
   <div class="mark" style="left:1828px;top:40px"></div>
   <div class="abs cap" style="left:40px;top:40px">Form Fluid — Deck Template</div>
   <div class="abs cap" style="left:960px;top:40px">Slide Atelier · 2026</div>
@@ -224,7 +347,7 @@
   <div class="block" style="left:0;top:900px;width:1920px;height:90px;background:var(--pink)"></div>
   <div class="block" style="left:0;top:990px;width:1920px;height:90px;background:var(--blue)"></div>
   <div class="block dots" style="left:1380px;top:990px;width:540px;height:90px"></div>
-  <div class="abs mono" style="left:40px;top:1022px;color:var(--ink)">12 / 12</div>
+  <div class="abs mono" style="left:40px;top:1022px;color:var(--ink)">20 / 20</div>
 </section>
 
 <script src="chrome.js"></script>
